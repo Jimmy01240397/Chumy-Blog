@@ -44,7 +44,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: Jimmy01240397/Chumy-Blog
           publish_dir: ./public
           publish_branch: gh-pages
