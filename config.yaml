@@ -1,0 +1,392 @@
+baseURL: "https://hugo-profile.netlify.app"
+languageCode: "en-us"
+title: "Chumy's Blog"
+theme: profile
+
+outputs:
+  home:
+    - "HTML"
+    - "RSS"
+    - "JSON"
+  page:
+    - "HTML"
+    - "RSS"
+
+Paginate: 3
+enableRobotsTXT: true
+# disqusShortname: your-disqus-shortname
+# googleAnalytics: G-MEASUREMENT_ID
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+Menus:
+  main:
+    - identifier: blog
+      name: Blog
+      title: Blog posts
+      url: /blogs
+      weight: 1
+    - identifier: gallery
+      name: Gallery
+      title: Blog posts
+      url: /gallery
+      weight: 2
+    #Dropdown menu
+    # - identifier: dropdown
+    #   title: Example dropdown menu
+    #   name: Dropdown
+    #   weight: 3
+    # - identifier: dropdown1
+    #   title: example dropdown 1
+    #   name: example 1
+    #   url: /#
+    #   parent: dropdown
+    #   weight: 1
+    # - identifier: dropdown2
+    #   title: example dropdown 2
+    #   name: example 2
+    #   url: /#
+    #   parent: dropdown
+    #   weight: 2
+
+params:
+  title: "Chumy's Blog"
+  description: Text about my cool site
+  # staticPath: ""  # The path to serve the static files from
+  favicon: "/myfav.png"
+
+  # Whether to serve bootstrap css and js files from CDN or not. Can be set to true, "css" or "js" to choose between
+  # serving both, only the css, or only the js files through the CDN. Any other value will make so that CDN is not used.
+  # Note the lack of "" in true, it should be of boolean type.
+  useBootstrapCDN: false
+
+  # If you want to load dynamically responsive images from Cloudinary
+  # This requires your images to be uploaded + hosted on Cloudinary
+  # Uncomment and change YOUR_CLOUD_NAME to the Cloud Name in your Cloudinary console
+  # cloudinary_cloud_name: "YOUR_CLOUD_NAME"
+
+  # Whether the fade animations on the home page will be enabled
+  animate: true
+
+  theme:
+    # disableThemeToggle: true
+    # defaultTheme: "light" # dark
+
+  font:
+    fontSize: 1rem # default: 1rem
+    fontWeight: 400 # default: 400
+    lineHeight: 1.5 # default: 1.5
+    textAlign: left # default: left
+
+  # color preference
+  # color:
+  #   textColor:
+  #   secondaryTextColor:
+  #   backgroundColor:
+  #   secondaryBackgroundColor:
+  #   primaryColor:
+  #   secondaryColor:
+
+  #   darkmode:
+  #     textColor:
+  #     secondaryTextColor:
+  #     backgroundColor:
+  #     secondaryBackgroundColor:
+  #     primaryColor:
+  #     secondaryColor:
+
+  # If you want to customize the menu, you can change it here
+  navbar:
+    align: ms-auto # Left: ms-auto | center: mx-auto | right: me-auto | Default: ms-auto
+    # brandLogo: "/logo.png" # Logo for the brand | default is the favicon variable
+    # showBrandLogo: false # Show brand logo in nav bar | default is true
+    brandName: "Chumy's Blog" # Brand name for the brand | default is the title variable
+    disableSearch: false
+    menus:
+      disableAbout: false
+      disableExperience: false
+      disableEducation: false
+      disableProjects: false
+      disableAchievements: false
+      disableContact: false
+
+  # Hero
+  hero:
+    enable: true
+    intro: "Hi, I'm"
+    title: "Chumy"
+    subtitle: "資訊與網路技術的愛好者"
+    content: "致力於研究各式各樣的資訊技術並持續探索。"
+    image: /images/me.png
+    # roundImage: true # Make hero image circular | default false
+    #button:
+    #  enable: true
+    #  name: "Resume"
+    #  url: "#"
+    #  download: true
+    #  newPage: false
+    socialLinks:
+      fontAwesomeIcons:
+        - icon: fab fa-github
+          url: https://github.com/Jimmy01240397
+        - icon: fab fa-facebook
+          url: https://www.facebook.com/profile.php?id=100005111161079
+        - icon: fab fa-instagram
+          url: https://www.instagram.com/rm_rf_chumy/
+        - icon: fab fa-telegram
+          url: https://t.me/Jimmy0124
+     #customIcons:
+     #  - icon: /fav.png
+     #    url: "https://example.com"
+
+  # About
+  about:
+    enable: true
+    title: "About Me"
+    image: "/images/me.png"
+    content: |-
+      我是一名致力於研究資訊與網路相關技術的技術愛好者，擁有網路與雲端設備維運、資訊安全、網頁後端設計、爬蟲、聊天機器人、網路程式設計、視窗程式設計、遊戲程式設計等多種領域的經驗，主要擅長網路設備管理與伺服器架設。
+    skills:
+      enable: true
+      title: "主要技能"
+      items:
+        - "Linux"
+        - "Windows\nWindows_Server"
+        - "VPN"
+        - "Networking"
+        - "Routing"
+        - "Docker"
+        - "Ldap\nActive_Directory"
+        - "Git"
+        - "C\nC++"
+        - "C#"
+        - "Java"
+        - "Python"
+        - "JavaScript"
+        - "Golang"
+
+  # Experience
+  experience:
+    enable: true
+    # title: "Custom Name"
+    items:
+      - job: "自由工作者"
+        company: "自由工作者"
+        companyUrl: ""
+        date: "Oct 2022 - present"
+          #featuredLink:
+          #  enable: true
+          #  name: "View the project"
+          #  url: "https://example.com"
+        content: |-
+          目前於部分接案平台做接案
+          - Remote control Rasp-pi Gateway - SSH Reverse Proxy System
+          - OMNET 範例程式ExtPinger訪問外網 - OMNET inet framwork 4.4 bug response
+            - [github issue](https://github.com/inet-framework/inet/issues/854)
+          - 公司架設 L2 tunnel 的 VPN SERVER 並且做 PPPOE Relay
+
+
+  # Education
+  education:
+    enable: true
+    # title: "Custom Name"
+    index: false
+    items:
+      - title: "資訊工程學士"
+        school:
+          name: "國立成功大學"
+          url: "https://www.ncku.edu.tw/"
+        date: "2021 - "
+        #GPA: "3.8 out of 5.0"
+        content: |-
+          - 活動
+            - 大一
+              - HITCON 2021 - 會眾 ([link](https://hitcon.org/2021/))
+              - 前瞻系統研究實驗室 伺服器管理者。
+              - 成功大學 System and Network Administrator (SA/NA) 課程助教 兼 課程 online judge 開發與管理者。
+            - 大二
+              - HITCON 2022 - 會眾 ([link](https://hitcon.org/2022/))
+              - SITCON 2022 - 場務組機動股組員 ([link](https://sitcon.org/2022))
+              - 成功大學 System Administrator (SA) 課程助教 兼 課程 online judge 開發與管理者。
+          - 競賽
+            - 大一
+              - 第 51 屆全國技能競賽 資訊與網路技術 第四名
+              - balsn CTF 2021 - rank 9
+                - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/balsn-2021-writeup)
+              - ais3eof 2021
+                - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/ais3eof-2021-writeup)
+              - ais3 pre exam 2022 - rank 16
+                - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/ais3-pre-exam-2022-writeup)
+                - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/hitconctf-2022-writeup)
+              - 第 52 屆全國技能競賽 資訊與網路技術 南區 第一名
+            - 大二
+              - 第 52 屆全國技能競賽 資訊與網路技術 第二名
+              - HITCON CTF 2022 - rank.2(台灣區排名) / rank.37(全球排名)
+                - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/hitconctf-2022-writeup)
+
+        #featuredLink: 
+        #  enable: true
+        #  name: "My academic record"
+        #  url: "https://example.com"
+      - title: "資訊工程學士"
+        school:
+          name: "國立勤益科技大學"
+          url: "https://www.ncut.edu.tw/"
+        date: "2020 - 2021"
+        content: |-
+          - 競賽
+            - 大一
+              - 第 50 屆全國技能競賽 資訊與網路技術 佳作
+              - 第 51 屆全國技能競賽 資訊與網路技術 中區 第二名
+      - title: "高職"
+        school:
+          name: "高雄高工"
+          url: "https://www.ksvs.kh.edu.tw/v3/"
+        date: "2017 - 2020"
+        content: |-
+          - 競賽
+            - 高二
+              - 高雄市 107 年中學生應用程式設計比賽 第二名
+                - [比賽專題 google play (當時為較舊版本非目前版本，此專案目前已停止維護)](https://play.google.com/store/apps/details?id=com.Jimmiker.FightGame&hl=zh-TW)
+              - 第49屆全國技能競賽 資訊與網路技術 南區 佳作
+            - 高三
+              - 第50屆全國技能競賽 資訊與網路技術 南區 第二名
+        #GPA: "4.2 out of 5.0"
+        #featuredLink:
+        #  enable: true
+        #  url: "https://example.com"
+
+  # Achievements
+  achievements:
+    enable: false
+    # title: "Custom Name"
+    items:
+      - title: Google kickstart runner
+        content: I solved all problems with optimal solution.
+        url: https://example.com
+      - title: Facebook Hackathon Winner
+        content: Developed a product using Artificial Intelligence.
+      - title: Hugo Profile
+        content: Developed a theme and getting 1K+ downloads per month.
+        url: "https://github.com/gurusabarish/hugo-profile"
+      - title: Microsoft Imagine Runner
+        content: We are developed a product which can help others.
+      - title: Google Summer of Code
+        content: Contributed to a open source project.
+        url: https://example.com
+
+  # projects
+  projects:
+    enable: true
+    # title: "Custom Name"
+    items:
+      - title: LANRSAAuthenticationService
+        content: It is a web site for router's LAN Network Authentication with RSA signature make by Debian 11.
+        image: https://user-images.githubusercontent.com/57281249/137624898-3a2d96b5-78d3-486d-a2ae-c88e2642bc50.png
+        badges:
+          - "python3"
+          - "flask"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/LANRSAAuthenticationService
+      - title: NetworkServicePackage
+        content: A Framwork for Network Application for C#
+        image: /images/me.png
+        #featured:
+        #  name: Github
+        #  link: https://github.com/Jimmy01240397/NetworkServicePackage
+        badges:
+          - "C#"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/NetworkServicePackage
+
+      - title: Chuon
+        content: Chummy Object Notation is a data interchange format and a serialization format that uses human-readable text to store and transmit data objects consisting of attribute-value pairs and arrays (or other serializable values). Or it can use the most suitable serialization format to serialize data objects consisting of attribute-value pairs and arrays (or other serializable values).
+        image: https://user-images.githubusercontent.com/57281249/141677492-09a5cecf-df4b-4acc-8574-dcef457d7efe.png
+        #featured:
+        #  name: Demo
+        #  link: https://django-converter.herokuapp.com
+        badges:
+          - "C#"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/Chuon
+      - title: FL_Note
+        content: This is a APP for magic props. Magician shows a Sketch to spectator, then let spectator write something on app. Magician can reveal spectator write.
+        image: /images/projects/FL_note_demo.png
+        featured:
+          name: Demo
+          link: https://github.com/Jimmy01240397/FL_Note/releases/tag/v1.1
+        badges: 
+          - "C#"
+          - "Xamarin"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/FL_Note
+      - title: Stick Fight Online
+        content: This is a online game APP. Use unity and NetworkServicePackage.(This project is currently out of maintenance)
+        image: https://play-lh.googleusercontent.com/yz32N_g8VCmHgefFJb8xYsGTEkujlMBjRqwZjslXbQP45GS1GC34_fOK_TU38MiN70A=w2560-h1440-rw
+        badges: 
+          - "C#"
+          - "Unity"
+          - "NetworkServicePackage"
+          - "Chuon"
+        links:
+          - icon: fab fa-google-play
+            url: https://play.google.com/store/apps/details?id=com.Jimmiker.FightGame
+
+  #Contact
+  contact:
+    enable: true
+    # title: "Custom Name"
+    content: My inbox is always open. Whether you have a question or just want to say hi, I’ll try my best to get back to you!
+    email: jimmy012403976@gmail.com
+    btnName: Mail me
+    # formspree:
+    #   enable: true # `contact.email` value will be ignored
+    #   formId: abcdefgh # Take it from your form's endpoint, like 'https://formspree.io/f/abcdefgh'
+    #   emailCaption: "Enter your email address"
+    #   messageCaption: "Enter your message here"
+
+  footer:
+    recentPosts:
+      path: "blogs"
+      count: 3
+      title: Recent Posts
+      enable: true
+      disableFeaturedImage: false
+    socialNetworks:
+      github: https://github.com/Jimmy01240397
+      linkedin: https://www.linkedin.com/in/%E8%81%BF%E5%96%84-%E8%94%A1-9b01b4254/
+      twitter: https://twitter.com/jimmy01240397
+      instagram: https://www.instagram.com/rm_rf_chumy/
+      facebook: https://www.facebook.com/profile.php?id=100005111161079
+
+  # List pages like blogs and posts
+  listPages:
+    disableFeaturedImage: false
+
+  # Single pages like blog and post
+  singlePages:
+    readTime:
+      enable: true
+      content: "min read"
+    scrollprogress:
+      enable: true
+
+  # For translations
+  terms:
+    read: "Read"
+    toc: "Table Of Contents"
+    copyright: "All rights reserved"
+    pageNotFound: "Page not found"
+    emailText: "Check out this site"
+
+  datesFormat:
+    article: "Jan 2, 2006"
+    articleList: "Jan 2, 2006"
+    articleRecent: "Jan 2, 2006"
