@@ -34,6 +34,11 @@ Menus:
       title: Blog posts
       url: /gallery
       weight: 2
+    - identifier: cv
+      name: CV
+      title: CV
+      url: /cv.pdf
+      weight: 3
     #Dropdown menu
     # - identifier: dropdown
     #   title: Example dropdown menu
@@ -187,6 +192,8 @@ params:
           - OMNET 範例程式ExtPinger訪問外網 - OMNET inet framwork 4.4 bug response
             - [github issue](https://github.com/inet-framework/inet/issues/854)
           - 公司架設 L2 tunnel 的 VPN SERVER 並且做 PPPOE Relay
+            - OpenVPN Bug Response and Contribution
+            - [github issue](https://github.com/OpenVPN/tap-windows6/issues/158)
 
 
   # Education
