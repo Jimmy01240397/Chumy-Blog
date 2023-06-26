@@ -171,6 +171,7 @@ params:
         - "Java"
         - "Python"
         - "JavaScript"
+        - "Vue"
         - "Golang"
 
   # Experience
