@@ -215,10 +215,20 @@ params:
               - HITCON 2021 - 會眾 ([link](https://hitcon.org/2021/))
               - 前瞻系統研究實驗室 伺服器管理者。
               - 成功大學 System and Network Administrator (SA/NA) 課程助教 兼 課程 online judge 開發與管理者。
+                - [Github repo 1](https://github.com/NCKU-NASA/nasa-judge)
+                - [Github repo 2](https://github.com/NCKU-NASA/nasa-judge-backend)
+                - [Github repo 3](https://github.com/NCKU-NASA/nasa-judge-api)
             - 大二
               - HITCON 2022 - 會眾 ([link](https://hitcon.org/2022/))
               - SITCON 2022 - 場務組機動股組員 ([link](https://sitcon.org/2022))
               - 成功大學 System Administrator (SA) 課程助教 兼 課程 online judge 開發與管理者。
+                - [Github repo 1](https://github.com/NCKU-NASA/nasa-judge)
+                - [Github repo 2](https://github.com/NCKU-NASA/nasa-judge-backend)
+                - [Github repo 3](https://github.com/NCKU-NASA/nasa-judge-api)
+              - AIS3 2022 新型態資安暑期課程 網頁安全組
+              - DNS公共政策研習營 - 學員
+            - 大三
+              - AIS3 2023 新型態資安暑期課程 網頁安全組
           - 競賽
             - 大一
               - 第 51 屆全國技能競賽 資訊與網路技術 第四名
@@ -234,6 +244,9 @@ params:
               - 第 52 屆全國技能競賽 資訊與網路技術 第二名
               - HITCON CTF 2022 - rank.2(台灣區排名) / rank.37(全球排名)
                 - [write up](https://github.com/Jimmy01240397/CTF-writeup/tree/master/hitconctf-2022-writeup)
+              - ais3eof 2022 - 進決賽
+            - 大三
+              - 第 53 屆全國技能競賽 資訊與網路技術 國手選拔賽 備取國手
 
         #featuredLink: 
         #  enable: true
@@ -291,6 +304,23 @@ params:
     enable: true
     # title: "Custom Name"
     items:
+      - title: LDAPUserTools
+        content: A simple command for LDAP user manager
+        image: https://github.com/Jimmy01240397/LDAPUserTools/assets/57281249/dbbebbd8-c5a8-401d-8c42-2e381a34ea77
+        badges:
+          - "shell script"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/LDAPUserTools
+      - title: Bind9Manager
+        content: A simple command and http api for bind9 dns server manager
+        image: https://github.com/Jimmy01240397/LDAPUserTools/assets/57281249/dbbebbd8-c5a8-401d-8c42-2e381a34ea77
+        badges:
+          - "shell script"
+          - "ansible"
+        links:
+          - icon: fab fa-github
+            url: https://github.com/Jimmy01240397/Bind9Manager
       - title: LANRSAAuthenticationService
         content: It is a web site for router's LAN Network Authentication with RSA signature make by Debian 11.
         image: https://user-images.githubusercontent.com/57281249/137624898-3a2d96b5-78d3-486d-a2ae-c88e2642bc50.png
