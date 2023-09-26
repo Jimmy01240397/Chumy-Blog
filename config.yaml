@@ -314,7 +314,7 @@ params:
             url: https://github.com/Jimmy01240397/LDAPUserTools
       - title: Bind9Manager
         content: A simple command and http api for bind9 dns server manager
-        image: https://github.com/Jimmy01240397/LDAPUserTools/assets/57281249/dbbebbd8-c5a8-401d-8c42-2e381a34ea77
+        image: https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/f948964b-0677-40ac-a645-6dc94400d2b2
         badges:
           - "shell script"
           - "ansible"
