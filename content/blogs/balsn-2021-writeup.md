@@ -6,7 +6,7 @@ github_link: "https://github.com/Jimmy01240397/CTF-writeup/tree/master/balsn-202
 author: "Chumy"
 tags:
   - CTF
-image: /images/CTF.jpg
+image: /images/CTF.png
 description: ""
 toc: 
 ---
