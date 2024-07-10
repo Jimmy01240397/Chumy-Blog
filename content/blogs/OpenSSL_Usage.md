@@ -1,5 +1,5 @@
 ---
-title: "OpenSSL Usage 簽憑證教學"
+title: "OpenSSL 簽憑證教學"
 date: 2024-07-10T11:00:00+08:00
 draft: false
 github_link: ""
