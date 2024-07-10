@@ -5,7 +5,7 @@ draft: false
 github_link: ""
 author: "Chumy"
 tags:
-  - Certificate
+  - Networking
   - Infra
 image: ""
 description: ""
