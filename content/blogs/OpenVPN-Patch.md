@@ -6,6 +6,7 @@ github_link: "https://github.com/OpenVPN/tap-windows6/issues/158"
 author: "Chumy"
 tags:
   - Networking
+  - Infra
   - Open Source Contribution
 image: /images/ovpn.png
 description: ""
