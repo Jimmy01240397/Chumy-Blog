@@ -206,7 +206,7 @@ conn.sendline(payloadbase64)
 print(conn.recvuntil(b'\n\n'))
 ```
 
-![image](https://hackmd.io/_uploads/S1rBTNfu0.png)
+![image](https://github.com/user-attachments/assets/22bbb2b6-242e-4211-a3ac-12936b702fe0)
 
 `hitcon{is_it_still_possible_if_I_banned_the_presense_of_flag.txt_in_the_binary_data_of_the_tar_file?}`
 
