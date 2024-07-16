@@ -1,6 +1,6 @@
 ---
 title: "HITCON CTF 2024 Writeup"
-date: 2024-07-28T00:00:00+08:00
+date: 2024-07-16T00:00:00+08:00
 draft: false
 github_link: "https://github.com/Jimmy01240397/CTF-writeup"
 author: "Chumy"
