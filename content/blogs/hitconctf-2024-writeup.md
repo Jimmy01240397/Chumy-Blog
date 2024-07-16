@@ -19,6 +19,8 @@ toc:
 
 ## 戰績
 
+![image](https://github.com/user-attachments/assets/1f60d911-041b-4419-9eb3-b1cfe0e46feb)
+
 ![image](https://github.com/user-attachments/assets/4278d28e-9f26-4ef1-9ebb-443a0a18adce)
 
 ![image](https://github.com/user-attachments/assets/fb014145-7e99-4cb2-8f6d-b3e50ee87d4d)
@@ -208,4 +210,7 @@ print(conn.recvuntil(b'\n\n'))
 
 `hitcon{is_it_still_possible_if_I_banned_the_presense_of_flag.txt_in_the_binary_data_of_the_tar_file?}`
 
+## 其他隊友的 writeup
+
+[Hackmd](https://hackmd.io/@Vincent550102/rydOoLWOR)
 
