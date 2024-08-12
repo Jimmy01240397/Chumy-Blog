@@ -59,7 +59,7 @@ Menus:
 
 params:
   title: "Chumy's Blog"
-  description: Text about my cool site
+  description: 咖波可愛
   # staticPath: ""  # The path to serve the static files from
   favicon: "/myfav.png"
 
@@ -179,6 +179,11 @@ params:
     enable: true
     # title: "Custom Name"
     items:
+      - job: "資安組實習生"
+        company: "TTC"
+        companyUrl: ""
+        date: "Feb 2024 - June 2024"
+        content: ""
       - job: "自由工作者"
         company: "自由工作者"
         companyUrl: ""
@@ -230,7 +235,7 @@ params:
             - 大三
               - AIS3 2023 新型態資安暑期課程 網頁安全組
           - 競賽
-            - [比賽紀錄](https://docs.google.com/document/d/1Uv-Bmr3191NJ72wUsLvRq1ZZwXiYX48-VVgkdqYM2LA/edit)
+            - [比賽紀錄](https://docs.google.com/document/d/1Uv-Bmr3191NJ72wUsLvRq1ZZwXiYX48-VVgkdqYM2LA)
             - 大一
               - 第 51 屆全國技能競賽 資訊與網路技術 第四名
               - balsn CTF 2021 - rank 9
@@ -248,6 +253,10 @@ params:
               - ais3eof 2022 - 進決賽
             - 大三
               - 第 53 屆全國技能競賽 資訊與網路技術 國手選拔賽 備取國手
+            - 大四
+              - 第 54 屆全國技能競賽 網路安全 第三名
+              - HITCON CTF 2024 Quals — rank.1(TW) / rank.24
+              - 2024 AIS3 Camp 最佳專題獎 —當政府標案文件傳輸程式成為駭客的任意門
 
         #featuredLink: 
         #  enable: true
