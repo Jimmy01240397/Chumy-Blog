@@ -6,6 +6,7 @@ github_link: "https://github.com/OpenVPN/tap-windows6/issues/158"
 author: "Chumy"
 tags:
   - Networking
+  - Infra
   - Open Source Contribution
 image: /images/ovpn.png
 description: ""
@@ -23,9 +24,27 @@ toc:
 
 ![未命名绘图 drawio (63)](https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/d1df4baf-2101-4aee-87d8-555316cc8d23)
 
-由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看[這篇文章](https://www.comparitech.com/blog/vpn-privacy/tun-tap-adapters/)與[這篇文章](https://ipwithease.com/layer-2-vs-layer-3-vpn/)。
+至於他們原本的架構，也是很有趣，首先會找人重架的原因是因為他們說接 VPN 後網路很不穩定，speedtest 也無法測速的那種。
+
+於是我問了架構發現他們架構很酷。
+
+首先他們是用那種小電腦做 server，如下圖。
+
+![image](https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/9f9de987-f4fd-499c-9ca5-f1d345b64b80)
+
+而裡面長這樣。
+
+![image](https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/339e3dde-62a9-4679-9cb5-5b12bcad7151)
+
+就是他小電腦裝 windows 10，裡面只有裝 VMware，然後開兩台 windows 的 VM，一台是 windows 7 做 VPN server，裡面用 softether vpn，另一台 windows 10 我不知道用途，他們說測試用。
+
+然後我就想這一台小電腦塞那麼多台 windows 不當才怪，再加上 softether vpn 沒架過並沒有很熟，也不確定這個效能好不好。
+
+於是我就推薦他們 host 機可以用 Proxmox VE 做虛擬化環境，然後 VPN 的部分由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看[這篇文章](https://www.comparitech.com/blog/vpn-privacy/tun-tap-adapters/)與[這篇文章](https://ipwithease.com/layer-2-vs-layer-3-vpn/)。
 
 這邊我選擇用 OpenVPN tap 作為 L2 Tunnel。
+
+因此架構就改成 Proxmox VE 裡面裝 Debian 跟 Windows 10，Debian 用 OpenVPN tap。
 
 ## 過程
 於是乎我開始架設 VPN 架設的 config 可以參考[這裡](https://github.com/Jimmy01240397/Chumy_Note/tree/master/Linux/openvpn/L2TunnelWithBridge)。
