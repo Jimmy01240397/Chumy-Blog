@@ -151,5 +151,13 @@ https://codimd.nckuctf.org/60FJeMdIScqigYw5O9qpxQ
 
 順便放個所有研究所的面試結果：
 
+- 丙組正取
+- 丁組備 9
+- 數據備 72
+- 資安甲備 26
+- 資訊聯招 下去
+- 智能系統 正取
+
+![image](https://github.com/user-attachments/assets/c3207efa-6d99-4a9f-939d-b0379104a29f)
 
 
