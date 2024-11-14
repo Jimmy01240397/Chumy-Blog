@@ -12,7 +12,12 @@ https://codimd.nckuctf.org/60FJeMdIScqigYw5O9qpxQ
 丁組 第一天 總共兩場，每場都是大約 10 個學長圍著你面試
 基本上兩邊都問我 Net 的問題，可能看我性向測驗的 Net 寫好寫滿吧？
 憑印象大概是：
-第一場 既然你有碰 ASN 的經驗，請問如何防止 BGP Hijacking 我寫的 SA/NA judge 相關問題 第二場 你是技能競賽資訊與網路技術的備取國手，你覺得你的弱項在哪，為何沒被選為國手 如果你比賽失利你會怎麼辦？ 你有當組長或隊長的經驗嗎？ 你怎麼發現成大沒檔 src IP 你覺得你適合丁組嗎？ 感覺第一天過得不錯。</description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>hitconctf-2024-writeup 這場與 星爆吉娃娃、BambooFox、以及我們 B33f 50UP 所組成的 星爆牛炒竹狐 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。
+第一場 既然你有碰 ASN 的經驗，請問如何防止 BGP Hijacking 我寫的 SA/NA judge 相關問題 第二場 你是技能競賽資訊與網路技術的備取國手，你覺得你的弱項在哪，為何沒被選為國手 如果你比賽失利你會怎麼辦？ 你有當組長或隊長的經驗嗎？ 你怎麼發現成大沒檔 src IP 你覺得你適合丁組嗎？ 感覺第一天過得不錯。</description></item><item><title>HITCON CTF 2024 Final 心得</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-final/</link><pubDate>Mon, 11 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-final/</guid><description>HITCON CTF 2024 Final 心得 承接 Quals 來聊聊決賽吧！
+前言 這次參加 HITCON CTF Final 也算是我第一次參加這種比較大型的 CTF 決賽比賽，而我基本上負責規劃與設定整個隊伍的基礎建設，並提供機器給隊友架設並設定對內的自動化攻擊與防禦系統如 attack manager 或封包工具與攻擊重送工具。由於考慮到這場有提供 game box 且不會用到會場內網然後賽中我可能要顧 infra 加上 Ching 通靈到可能有 live CTF 所以我就在場外的飯店房間總部打比賽。
+賽前準備 賽前一個月先把整個主要架構架好上好 ldap、file server、VPN 等等測試完寫好 document 然後交給 Caleb 架 attack manager 與 elk、Curious 架抓封包與重送工具，然後 Ching 架模擬環境給隊員學工具使用方式。
+賽前一天 首先比賽前一天因為剛好去取貨撿到的二手 L3 switch 想說飯店如果有網路孔會很方便還能直接打 sitetosite 就扛了一台 7 公斤的東西過去，結果房間沒網路孔只有 wifi
+晚上十點多規則放出來就要馬上工作當水管工把 tunnel 打通路由設通 MTU 調好然後測試，然後再應 Vincent55 與 kazma 需求把內網也串到社團內網上（外加幫隊友修網路（X）中途設到一半突然 jumpbox 斷線差點嚇死，結果看一下 DC 才發現是大家都斷掉，全部檢查完以後就等隔天。
+第一天 比賽第一天剛開賽的時候發現連 scoreboard 會 403 但是 live 組連的上，因為我前一天沒有想到（或者規則沒看到） scoreboard 會鎖 ip，因為我只有設定 10.</description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>hitconctf-2024-writeup 這場與 星爆吉娃娃、BambooFox、以及我們 B33f 50UP 所組成的 星爆牛炒竹狐 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。
 這邊就來寫一下我解的題目 writeup。
 戰績 Flag Reader 目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。
 首先我先去看tarfile 定義為 isfile 的檔案類型
