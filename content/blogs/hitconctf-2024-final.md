@@ -53,3 +53,12 @@ Infra 整體上除了開賽 scoreboard 的問題還有教一些狀況外連有 f
 
 附個第五題 [decompile 結果](https://github.com/Jimmy01240397/CTF-writeup/blob/master/hitconctf-2024-final-writeup/ad-fulu/decompiler/allresult.py)
 
+![image](https://github.com/user-attachments/assets/a7ec9f7e-9655-4282-a83c-9418222ded8a)
+
+![image](https://github.com/user-attachments/assets/bb0aa319-80e7-48c2-ac14-dadec317326e)
+
+![image](https://github.com/user-attachments/assets/93510995-0cf6-468e-a1cc-55123dae7c9b)
+
+
+
+
