@@ -1,4 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blogs on Chumy's Blog</title><link>https://blog.chummydns.com/blogs/</link><description>Recent content in Blogs on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 16 Jul 2024 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>hitconctf-2024-writeup 這場與 星爆吉娃娃、BambooFox、以及我們 B33f 50UP 所組成的 星爆牛炒竹狐 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blogs on Chumy's Blog</title><link>https://blog.chummydns.com/blogs/</link><description>Recent content in Blogs on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 15 Nov 2024 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>交大碩士推甄</title><link>https://blog.chummydns.com/blogs/nycu-interview/</link><pubDate>Fri, 15 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/nycu-interview/</guid><description>交大碩士推甄 今年大四要弄推甄，由於我覺得全台灣在網路與資安的資源上最好的會是交大，然後我覺得台大投不上，我在校成績 80%，所以我就只有投交大。
+書審 這次記取我過去特選寫的爛備審的教訓，這次稍微參考別人一些人的寫法用條列式把重點寫上去就好，雖說沒有甚麼美編的元素在，但是比較有重點。
+備審
+homelab
+有利資料
+推薦函 雖說規定說要兩封，但是最多能五封，那肯定是寫好寫滿。
+報考組別 資工丙組 資工丁組 資工戊組 資工數據所 資安甲組 資訊聯招 網工 資工甲組 多媒體 智能系統研究所碩士班聯招 乙組 主修資安與資訊工程 丙組 主修寬頻通訊與物聯網 丁組 主修人工智慧與資通訊網路 甲組 主修人工智慧、資料科學、運算與應用 性向測驗 BJ4，直接上共筆
+https://hackmd.io/@VA9Kkd2XS6emLGuTGVde0A/rktkA9Xfkl
+https://codimd.nckuctf.org/60FJeMdIScqigYw5O9qpxQ
+面試 公式基本上是：
+自我介紹 40 秒 教授或學長開始問問題 面試的時候其實我很緊張，怕有東西不小心回答錯或回答得不好然後就被追著打。或者是問我一些沒有把握的問題，因為我記性其實沒有很好，有點怕問一些比較背的問題比如說 RFC 號碼或者是一些比較深的專有名詞之類的，但看起沒沒有。
+丁組 第一天 總共兩場，每場都是大約 10 個學長圍著你面試
+基本上兩邊都問我 Net 的問題，可能看我性向測驗的 Net 寫好寫滿吧？
+憑印象大概是：
+第一場 既然你有碰 ASN 的經驗，請問如何防止 BGP Hijacking 我寫的 SA/NA judge 相關問題 第二場 你是技能競賽資訊與網路技術的備取國手，你覺得你的弱項在哪，為何沒被選為國手 如果你比賽失利你會怎麼辦？ 你有當組長或隊長的經驗嗎？ 你怎麼發現成大沒檔 src IP 你覺得你適合丁組嗎？ 感覺第一天過得不錯。</description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>hitconctf-2024-writeup 這場與 星爆吉娃娃、BambooFox、以及我們 B33f 50UP 所組成的 星爆牛炒竹狐 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。
 這邊就來寫一下我解的題目 writeup。
 戰績 Flag Reader 目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。
 首先我先去看tarfile 定義為 isfile 的檔案類型
