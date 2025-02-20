@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chumy's Blog</title><link>https://blog.chummydns.com/</link><description>Recent content on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 15 Nov 2024 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/index.xml" rel="self" type="application/rss+xml"/><item><title>交大碩士推甄</title><link>https://blog.chummydns.com/blogs/nycu-interview/</link><pubDate>Fri, 15 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/nycu-interview/</guid><description>交大碩士推甄 今年大四要弄推甄，由於我覺得全台灣在網路與資安的資源上最好的會是交大，然後我覺得台大投不上，我在校成績 80%，所以我就只有投交大。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chumy's Blog</title><link>https://blog.chummydns.com/</link><description>Recent content on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 12:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/index.xml" rel="self" type="application/rss+xml"/><item><title>AIS3 EOF 2025 Final 心得</title><link>https://blog.chummydns.com/blogs/ais3-eof-2025/</link><pubDate>Thu, 20 Feb 2025 12:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2025/</guid><description>HITCON CTF 2024 Final 心得 這波 EOF 自幹全套 A&amp;amp;D 工具兼首次實戰測試大成功，只差 ELK 沒整併進來了，但能夠把上次 HITCON CTF 的一些想法實現出來也是很不錯。
+round alert 實在方便甚至跳通知比視覺化快，讓 葉東逸 跟 vincent55 可以用最快速度登入 game 完成任務。
+attack manager 第一天運行的很完美，舒服的顯示哪一隊這輪有打穿，這樣就能迅速應對更新 exploit 。
+pcap analysis 也是完美的將所有的流量整理好，也完美的分類每台電腦的流量，只可惜還是需要導入 elk 才能看。
+patch manager 第一天壞掉所以一直修，但是好險第一天沒有太多人在 patch，當天晚上將他修好測好以後第二天就完美運行，讓 三角蛇 可以快樂追 patch。但是最可惜的是賽前 WeakGod Chiu 準備的 binary diff 沒有用到。
+另外我們的超讚 crypto jeopardy 隊友 李彥佑 也是第一天就解完了超讚的。
+另外第一次試著戴一台小 server 來充當 router 兼 NAS 也是一個蠻成功的，畢竟能夠內網傳檔案也不用在自己電腦接 vpn 去比賽環境還是比較方便的。
+最後有些人問我為啥不用現成的，要客製化自己想要的功能直接自幹肯定是最快的對ㄅ（X
+最後感謝 楊竣鴻 幫我寫前端♥️</description></item><item><title>交大碩士推甄</title><link>https://blog.chummydns.com/blogs/nycu-interview/</link><pubDate>Fri, 15 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/nycu-interview/</guid><description>交大碩士推甄 今年大四要弄推甄，由於我覺得全台灣在網路與資安的資源上最好的會是交大，然後我覺得台大投不上，我在校成績 80%，所以我就只有投交大。
 書審 這次記取我過去特選寫的爛備審的教訓，這次稍微參考別人一些人的寫法用條列式把重點寫上去就好，雖說沒有甚麼美編的元素在，但是比較有重點。
 備審
 homelab
