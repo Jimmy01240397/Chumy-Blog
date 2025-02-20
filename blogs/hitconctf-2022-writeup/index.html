@@ -13,46 +13,36 @@ Nov 28, 2022
 <span id=readingTime>min read</span></div></div><div class=featured-image><img class=img-fluid src=/images/CTF.png alt="HITCON CTF 2021 Writeup"></div><article class="page-content p-2"><h1 id=hitconctf-2022-writeup>hitconctf-2022-writeup</h1><h2 id=戰績>戰績</h2><p><img src=https://user-images.githubusercontent.com/57281249/204162751-27c34090-7cab-418d-a0ec-0379f0e99436.png alt=image>
 <img src=https://user-images.githubusercontent.com/57281249/204162537-eb1eceec-010c-4b65-b228-5b43ec9535bb.png alt=image></p><h2 id=checker>checker</h2><p><img src=https://user-images.githubusercontent.com/57281249/204158150-d012979f-8227-450d-a458-be0d2ffa67f9.png alt=image></p><p>Disassemble checker.exe and checker_drv.sys using IDA Pro. We can know that the checker sends the 0x222080u code to the checker_drv driver to check if there is a &ldquo;hitcon&rdquo; at address 0x140003000.</p><p>checker.exe:</p><p><img src=https://user-images.githubusercontent.com/57281249/204158308-726e9f4c-04f3-48de-b588-0a1f603af5a0.png alt=image></p><p>checker_drv.sys:</p><p><img src=https://user-images.githubusercontent.com/57281249/204158381-0616e107-20b6-4e4c-9fa7-6c7e6e5cf9fc.png alt=image></p><p>Also, there are other codes that can be sent that will use the data from addresses 0x140003030 to 0x14000312F to change the function at address 0x14001B30, and then use that function to calculate the hex data from addresses 0x140003000 to 0x14000302A.</p><p>checker_drv.sys:</p><p><img src=https://user-images.githubusercontent.com/57281249/204158683-35f275c5-6d17-46f9-9082-908e0bfef896.png alt=image>
 <img src=https://user-images.githubusercontent.com/57281249/204158704-5374f7af-1d8c-4dd9-9c76-1aa5ef62d02c.png alt=image></p><p>When the driver is loaded, it will first use the data from address 0x140001430 to 0x14000144A to change the hexadecimal data at address 0x14001B30.</p><p>checker_drv.sys:</p><p><img src=https://user-images.githubusercontent.com/57281249/204158746-cdac8ff7-2d75-4ba7-8dcf-363da013e6b3.png alt=image></p><p>We need to send these codes in a specific order to get the correct flags.</p><p>We can find the order by choosing the code that makes the disassembly of function 0x14001B30 valid.</p><p>The order is 0x222070u,0x222020u,0x222060u,0x222000u,0x222010u,0x222040u,0x222030u,0x222050u</p><p>Then use the function we got to calculate the hex for addresses 0x140003000 to 0x14000302A and then we can get the flags.</p><h3 id=exploit>Exploit</h3><h4 id=exploit1>exploit1</h4><p>Use exploit1 to choose the order of codes.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> sys
-
-sourcedata3180 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>&#39;80E92280F1AD0FB6C16BC811B89E0000&#39;</span>)
-
-data3188 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>&#39;40534883EC20488B053B0C0000488BDA488B4A104839087537488B4A08FF151D&#39;</span>)
-
-data3178 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>&#39;19BC8F82D02C6134C09FF650D5FB0C6ED0EBE5E3CEB54CCA45AA11B23E626F7DD0EBA9E3B22F06477C28C5DEDE1A4ED6D82D934F826564FD08624B877E524730B7BAD039685350AB20D5CA8426716F911B364611A5F14E586C74D49C15E228D5D90F3D83F3FCD1131A621240AAEACDCBE1C6088198F66888BE23B59E55B9E27D5ADA3907F02E322059564CB48F3E0761D90F2D61F1913314CB4968FE1FD48AFEE1C618639A9B8A8A7F08C3E8E1EC0B8F3B0094A511E74766C49F981870F030F69471B195D1F06FB7D93D059EC15333769B4B69CADEFD7D67B8292BC7C5842CD18787F1989774AD4B32F04A5172EA09F738FD27BD1C527143959C1A86F2C0F9F8&#39;</span>)
-
+<p>sourcedata3180 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>'80E92280F1AD0FB6C16BC811B89E0000'</span>)</p>
+<p>data3188 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>'40534883EC20488B053B0C0000488BDA488B4A104839087537488B4A08FF151D'</span>)</p>
+<p>data3178 <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>'19BC8F82D02C6134C09FF650D5FB0C6ED0EBE5E3CEB54CCA45AA11B23E626F7DD0EBA9E3B22F06477C28C5DEDE1A4ED6D82D934F826564FD08624B877E524730B7BAD039685350AB20D5CA8426716F911B364611A5F14E586C74D49C15E228D5D90F3D83F3FCD1131A621240AAEACDCBE1C6088198F66888BE23B59E55B9E27D5ADA3907F02E322059564CB48F3E0761D90F2D61F1913314CB4968FE1FD48AFEE1C618639A9B8A8A7F08C3E8E1EC0B8F3B0094A511E74766C49F981870F030F69471B195D1F06FB7D93D059EC15333769B4B69CADEFD7D67B8292BC7C5842CD18787F1989774AD4B32F04A5172EA09F738FD27BD1C527143959C1A86F2C0F9F8'</span>)</p>
+<p>data3180 <span style=color:#f92672>=</span> bytearray(sourcedata3180)</p>
+<p><span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>32</span>):
+data3180[a<span style=color:#f92672>%</span><span style=color:#ae81ff>16</span>] <span style=color:#f92672>=</span> data3180[a<span style=color:#f92672>%</span><span style=color:#ae81ff>16</span>] <span style=color:#f92672>^</span> data3188[a]</p>
+<p>sourcedata3180 <span style=color:#f92672>=</span> bytes(data3180)</p>
+<p><span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>&quot;usage: {sys.argv[0]} &lt;index 0(0~7)&gt; &lt;index 1&gt;  &lt;index 2&gt; &hellip;&quot;</span>)</p>
+<p>order<span style=color:#f92672>=</span>[ int(a) <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> sys<span style=color:#f92672>.</span>argv[<span style=color:#ae81ff>1</span>:len(sys<span style=color:#f92672>.</span>argv)] ]</p>
+<p>codes<span style=color:#f92672>=</span>list(range(<span style=color:#ae81ff>8</span>))</p>
+<p><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>8</span>):
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&quot;index &quot;</span> <span style=color:#f92672>+</span> str(i) <span style=color:#f92672>+</span> <span style=color:#e6db74>&quot;: &quot;</span>)
+<span style=color:#66d9ef>if</span> i <span style=color:#f92672>&gt;=</span> len(order):
+<span style=color:#66d9ef>for</span> now <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>8</span>):
 data3180 <span style=color:#f92672>=</span> bytearray(sourcedata3180)
-
-<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>32</span>):
-    data3180[a<span style=color:#f92672>%</span><span style=color:#ae81ff>16</span>] <span style=color:#f92672>=</span> data3180[a<span style=color:#f92672>%</span><span style=color:#ae81ff>16</span>] <span style=color:#f92672>^</span> data3188[a]
-
+<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
+data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[now<span style=color:#f92672><em></span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> a]
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&quot;try &quot;</span> <span style=color:#f92672>+</span> str(now) <span style=color:#f92672>+</span> <span style=color:#e6db74>&quot;: &quot;</span> <span style=color:#f92672>+</span> bytes(data3180)<span style=color:#f92672>.</span>hex())
+x <span style=color:#f92672>=</span> int(input(<span style=color:#e6db74>&quot;select code (0~7): &quot;</span>))
+<span style=color:#66d9ef>while</span> x <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>and</span> x <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>7</span>:
+x<span style=color:#f92672>=</span>int(input(<span style=color:#e6db74>&quot;select code (0~7): &quot;</span>))
+order<span style=color:#f92672>.</span>append(x)
+data3180 <span style=color:#f92672>=</span> bytearray(sourcedata3180)
+<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
+data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[order[i]<span style=color:#f92672></em></span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> a]
+<span style=color:#66d9ef>print</span>(str(order[i]) <span style=color:#f92672>+</span> <span style=color:#e6db74>&quot;: &quot;</span> <span style=color:#f92672>+</span> bytes(data3180)<span style=color:#f92672>.</span>hex())
+<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
+data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[order[i]<span style=color:#f92672>*</span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x10</span> <span style=color:#f92672>+</span> a]
 sourcedata3180 <span style=color:#f92672>=</span> bytes(data3180)
-
-<span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>&#34;usage: {sys.argv[0]} &lt;index 0(0~7)&gt; &lt;index 1&gt;  &lt;index 2&gt; ...&#34;</span>)
-
-order<span style=color:#f92672>=</span>[ int(a) <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> sys<span style=color:#f92672>.</span>argv[<span style=color:#ae81ff>1</span>:len(sys<span style=color:#f92672>.</span>argv)] ]
-
-codes<span style=color:#f92672>=</span>list(range(<span style=color:#ae81ff>8</span>))
-
-<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>8</span>):
-    <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;index &#34;</span> <span style=color:#f92672>+</span> str(i) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;: &#34;</span>)
-    <span style=color:#66d9ef>if</span> i <span style=color:#f92672>&gt;=</span> len(order):
-        <span style=color:#66d9ef>for</span> now <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>8</span>):
-            data3180 <span style=color:#f92672>=</span> bytearray(sourcedata3180)
-            <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
-                data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[now<span style=color:#f92672>*</span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> a]
-            <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;try &#34;</span> <span style=color:#f92672>+</span> str(now) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;: &#34;</span> <span style=color:#f92672>+</span> bytes(data3180)<span style=color:#f92672>.</span>hex())
-        x <span style=color:#f92672>=</span> int(input(<span style=color:#e6db74>&#34;select code (0~7): &#34;</span>))
-        <span style=color:#66d9ef>while</span> x <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>and</span> x <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>7</span>:
-            x<span style=color:#f92672>=</span>int(input(<span style=color:#e6db74>&#34;select code (0~7): &#34;</span>))
-        order<span style=color:#f92672>.</span>append(x)
-    data3180 <span style=color:#f92672>=</span> bytearray(sourcedata3180)
-    <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
-        data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[order[i]<span style=color:#f92672>*</span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> a]
-    <span style=color:#66d9ef>print</span>(str(order[i]) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;: &#34;</span> <span style=color:#f92672>+</span> bytes(data3180)<span style=color:#f92672>.</span>hex())
-    <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>,<span style=color:#ae81ff>16</span>):
-        data3180[a] <span style=color:#f92672>=</span> data3180[a] <span style=color:#f92672>^</span> data3178[order[i]<span style=color:#f92672>*</span><span style=color:#ae81ff>0x20</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x10</span> <span style=color:#f92672>+</span> a]
-    sourcedata3180 <span style=color:#f92672>=</span> bytes(data3180)
-</code></pre></div><h4 id=exploit2>exploit2</h4><p>Use exploit2 for get flag.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=color:#75715e>#include</span><span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</code></pre></div><h4 id=exploit2>exploit2</h4></p><p>Use exploit2 for get flag.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-C data-lang=C><span style=color:#75715e>#include</span><span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
 </span><span style=color:#75715e>#include</span><span style=color:#75715e>&lt;string.h&gt;</span><span style=color:#75715e>
 </span><span style=color:#75715e></span>
 <span style=color:#75715e>#define _BYTE unsigned char
@@ -60,102 +50,91 @@ codes<span style=color:#f92672>=</span>list(range(<span style=color:#ae81ff>8</s
 </span><span style=color:#75715e>#define __int8 char
 </span><span style=color:#75715e></span>
 <span style=color:#66d9ef>typedef</span> <span style=color:#a6e22e>__int64</span> (<span style=color:#f92672>*</span>func)(<span style=color:#66d9ef>int</span>);
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func0</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func0</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
+<span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
 </span><span style=color:#75715e></span>
-  result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>8</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>5</span>);
-  <span style=color:#66d9ef>return</span> result;
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func1</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>8</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>5</span>);
+<span style=color:#66d9ef>return</span> result;
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func1</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>return</span> a1 <span style=color:#f92672>^</span> <span style=color:#ae81ff>0x26u</span>;
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func2</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+<span style=color:#66d9ef>return</span> a1 <span style=color:#f92672>^</span> <span style=color:#ae81ff>0x26u</span>;
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func2</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
+<span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
 </span><span style=color:#75715e></span>
-  result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>16</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>4</span>);
-  <span style=color:#66d9ef>return</span> result;
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func3</span>(<span style=color:#66d9ef>int</span> a1)
+result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>16</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>4</span>);
+<span style=color:#66d9ef>return</span> result;
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func3</span>(<span style=color:#66d9ef>int</span> a1)
 {
-  <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)(a1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>55</span>);
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func4</span>(<span style=color:#66d9ef>int</span> a1)
+<span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)(a1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>55</span>);
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func4</span>(<span style=color:#66d9ef>int</span> a1)
 {
-  <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)(a1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>123</span>);
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func5</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+<span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)(a1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>123</span>);
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func5</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
+<span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
 </span><span style=color:#75715e></span>
-  result <span style=color:#f92672>=</span> (a1 <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>7</span>) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>);
-  <span style=color:#66d9ef>return</span> result;
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func6</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+result <span style=color:#f92672>=</span> (a1 <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>7</span>) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>);
+<span style=color:#66d9ef>return</span> result;
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func6</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>173</span> <span style=color:#f92672>*</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)a1;
-}
-
-<span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func7</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
+<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>173</span> <span style=color:#f92672>*</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>)a1;
+}</p>
+<p><span style=color:#66d9ef>__int64</span> <span style=color:#a6e22e>func7</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>__int8</span> a1)
 {
-  <span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
+<span style=color:#66d9ef>__int64</span> result; <span style=color:#75715e>// rax
 </span><span style=color:#75715e></span>
-  result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>4</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>6</span>);
-  <span style=color:#66d9ef>return</span> result;
-}
-
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
+result <span style=color:#f92672>=</span> (<span style=color:#ae81ff>4</span> <span style=color:#f92672>*</span> a1) <span style=color:#f92672>|</span> (a1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>6</span>);
+<span style=color:#66d9ef>return</span> result;
+}</p>
+<p><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
 {
-    <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>defaultdatahex <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;6360A5B9FFFC300A48BBFEFE322C0AD6E6FEFE322C0AD6BB4A4A322CFCFF0AFDBBFE2CB963D6B962D60A4F&#34;</span>;
-    <span style=color:#66d9ef>char</span> datahex[<span style=color:#ae81ff>1000</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>}, data[<span style=color:#ae81ff>50</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>};
-
-    <span style=color:#66d9ef>if</span>(defaultdatahex) strcpy(datahex, defaultdatahex);
-    <span style=color:#66d9ef>else</span> gets(datahex);
-    <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>, count <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; datahex[i]; count<span style=color:#f92672>++</span>)
+<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>defaultdatahex <span style=color:#f92672>=</span> <span style=color:#e6db74>&quot;6360A5B9FFFC300A48BBFEFE322C0AD6E6FEFE322C0AD6BB4A4A322CFCFF0AFDBBFE2CB963D6B962D60A4F&quot;</span>;
+<span style=color:#66d9ef>char</span> datahex[<span style=color:#ae81ff>1000</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>}, data[<span style=color:#ae81ff>50</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>};</p>
+<pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt;(defaultdatahex) strcpy(datahex, defaultdatahex);
+&lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt; gets(datahex);
+&lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt;(&lt;span style=&quot;color:#66d9ef&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;, count &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;; datahex[i]; count&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;)
+{
+    &lt;span style=&quot;color:#66d9ef&quot;&gt;char&lt;/span&gt; now[&lt;span style=&quot;color:#ae81ff&quot;&gt;3&lt;/span&gt;] &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; {&lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;};
+    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt;(&lt;span style=&quot;color:#66d9ef&quot;&gt;int&lt;/span&gt; k &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;; k &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;2&lt;/span&gt;; k&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;, i&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;)
     {
-        <span style=color:#66d9ef>char</span> now[<span style=color:#ae81ff>3</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>};
-        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; k <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>2</span>; k<span style=color:#f92672>++</span>, i<span style=color:#f92672>++</span>)
+        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt;((datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;A&amp;#39;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;F&amp;#39;&lt;/span&gt;) &lt;span style=&quot;color:#f92672&quot;&gt;||&lt;/span&gt; (datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;a&amp;#39;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;f&amp;#39;&lt;/span&gt;) &lt;span style=&quot;color:#f92672&quot;&gt;||&lt;/span&gt; (datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;0&amp;#39;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; datahex[i] &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#39;9&amp;#39;&lt;/span&gt;))
         {
-            <span style=color:#66d9ef>if</span>((datahex[i] <span style=color:#f92672>&gt;=</span> <span style=color:#e6db74>&#39;A&#39;</span> <span style=color:#f92672>&amp;&amp;</span> datahex[i] <span style=color:#f92672>&lt;=</span> <span style=color:#e6db74>&#39;F&#39;</span>) <span style=color:#f92672>||</span> (datahex[i] <span style=color:#f92672>&gt;=</span> <span style=color:#e6db74>&#39;a&#39;</span> <span style=color:#f92672>&amp;&amp;</span> datahex[i] <span style=color:#f92672>&lt;=</span> <span style=color:#e6db74>&#39;f&#39;</span>) <span style=color:#f92672>||</span> (datahex[i] <span style=color:#f92672>&gt;=</span> <span style=color:#e6db74>&#39;0&#39;</span> <span style=color:#f92672>&amp;&amp;</span> datahex[i] <span style=color:#f92672>&lt;=</span> <span style=color:#e6db74>&#39;9&#39;</span>))
-            {
-                now[k] <span style=color:#f92672>=</span> datahex[i];
-            }
-            <span style=color:#66d9ef>else</span>
-            {
-                k<span style=color:#f92672>--</span>;
-            }
+            now[k] &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; datahex[i];
         }
-        sscanf(now, <span style=color:#e6db74>&#34;%x&#34;</span>, <span style=color:#f92672>&amp;</span>data[count]);
-    }
-
-    func allfunc[<span style=color:#ae81ff>8</span>] <span style=color:#f92672>=</span> {func0,func1,func2,func3,func4,func5,func6,func7};
-
-    <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>8</span>; i<span style=color:#f92672>++</span>)
-    {
-        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; k <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>43</span>; k<span style=color:#f92672>++</span>)
+        &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;
         {
-            data[k] <span style=color:#f92672>=</span> allfunc[i](data[k]);
+            k&lt;span style=&quot;color:#f92672&quot;&gt;--&lt;/span&gt;;
         }
     }
-
-    printf(<span style=color:#e6db74>&#34;hex: &#34;</span>);
-    <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>43</span>; i<span style=color:#f92672>++</span>)
-    {
-        printf(<span style=color:#e6db74>&#34;%02x &#34;</span>, (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span>)data[i]);
-    }
-    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-    printf(<span style=color:#e6db74>&#34;%s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, data);
+    sscanf(now, &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;%x&amp;#34;&lt;/span&gt;, &lt;span style=&quot;color:#f92672&quot;&gt;&amp;amp;&lt;/span&gt;data[count]);
 }
-</code></pre></div><h3 id=flag>Flag</h3><p><code>hitcon{r3ally_re4lly_rea11y_normal_checker}</code></p><h2 id=other>other</h2><ul><li><a href=https://hackmd.io/@Vincent550102/ByMH8--Do>other</a></li></ul></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#戰績>戰績</a></li><li><a href=#checker>checker</a><ul><li><a href=#exploit>Exploit</a></li><li><a href=#flag>Flag</a></li></ul></li><li><a href=#other>other</a></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=HITCON%20CTF%202021%20Writeup&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=HITCON%20CTF%202021%20Writeup: https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=HITCON%20CTF%202021%20Writeup&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
+
+func allfunc[&lt;span style=&quot;color:#ae81ff&quot;&gt;8&lt;/span&gt;] &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; {func0,func1,func2,func3,func4,func5,func6,func7};
+
+&lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt;(&lt;span style=&quot;color:#66d9ef&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;; i &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;8&lt;/span&gt;; i&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;)
+{
+    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt;(&lt;span style=&quot;color:#66d9ef&quot;&gt;int&lt;/span&gt; k &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;; k &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;43&lt;/span&gt;; k&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;)
+    {
+        data[k] &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; allfunc[i](data[k]);
+    }
+}
+
+printf(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;hex: &amp;#34;&lt;/span&gt;);
+&lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt;(&lt;span style=&quot;color:#66d9ef&quot;&gt;int&lt;/span&gt; i &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;; i &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;43&lt;/span&gt;; i&lt;span style=&quot;color:#f92672&quot;&gt;++&lt;/span&gt;)
+{
+    printf(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;%02x &amp;#34;&lt;/span&gt;, (&lt;span style=&quot;color:#66d9ef&quot;&gt;unsigned&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;char&lt;/span&gt;)data[i]);
+}
+printf(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;);
+printf(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;%s&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;, data);
+</code></pre><p>}</code></pre></div><h3 id=flag>Flag</h3></p><p><code>hitcon{r3ally_re4lly_rea11y_normal_checker}</code></p><h2 id=other>other</h2><ul><li><a href=https://hackmd.io/@Vincent550102/ByMH8--Do>other</a></li></ul></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#戰績>戰績</a></li><li><a href=#checker>checker</a><ul><li><a href=#exploit>Exploit</a></li><li><a href=#flag>Flag</a></li></ul></li><li><a href=#other>other</a></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=HITCON%20CTF%202021%20Writeup&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=HITCON%20CTF%202021%20Writeup: https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=HITCON%20CTF%202021%20Writeup&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fhitconctf-2022-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
 <i class="fas fa-angle-up"></i></button></section><div class=progress><div id=scroll-progress-bar class=progress-bar role=progressbar aria-valuenow=0 aria-valuemin=0 aria-valuemax=100></div></div><script src=/js/scrollProgressBar.js></script><script>var topScroll=document.getElementById("topScroll");window.onscroll=function(){scrollFunction()};function scrollFunction(){if(document.body.scrollTop>20||document.documentElement.scrollTop>20){topScroll.style.display="block";}else{topScroll.style.display="none";}}
 function topFunction(){document.body.scrollTop=0;document.documentElement.scrollTop=0;}</script><script src=/js/readingTime.js></script></div><footer><div class="container py-3" id=recent-posts><div class="h3 text-center text-secondary py-3">Recent Posts</div><div class="row justify-content-center"><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/analysis_linux_host_by_tcp_timestamp/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="利用 TCP 的 Timestamps 做到精準分類來源 linux machine">利用 TCP 的 Timestamps 做到精準分 …</h5></a><div class="card-text secondary-font"><p>利用 TCP 的 Timestamps 做到分類來源 linux machine 緣由 會做這個的原因是因為要打今年的 AIS3 EOF 要做封包的分析工具，然而按照 HITCON CTF 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。
 這會造成甚麼問題，假設有一個 HTTP Post Auth 的 RCE 好了，可能會需要這些流程。

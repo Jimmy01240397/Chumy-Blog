@@ -10,19 +10,18 @@ Jul 10, 2024
         auto=&lt;add | start&gt;	
         type=&lt;tunnel | transport&gt;
         keyexchange=&lt;ike | ikev1 | ikev2&gt;
+<pre><code>    #left mean local
+    left=&amp;lt;left ip addres default is %any&amp;gt;
+    leftauth=&amp;lt;server auth method&amp;gt;
+    leftsubnet=&amp;lt;what subnet that client can forward whan client connect to vpn&amp;gt;
 
-        #left mean local
-        left=&lt;left ip addres default is %any&gt;
-        leftauth=&lt;server auth method&gt;
-        leftsubnet=&lt;what subnet that client can forward whan client connect to vpn&gt;
+    #right mean remote
+    right=&amp;lt;right ip addres default is %any&amp;gt;
+    rightauth=&amp;lt;client auth method&amp;gt;
+    rightsourceip=&amp;lt;if you use tunnel mode. What subnet do you want to assign to client&amp;gt;
 
-        #right mean remote
-        right=&lt;right ip addres default is %any&gt;
-        rightauth=&lt;client auth method&gt;
-        rightsourceip=&lt;if you use tunnel mode. What subnet do you want to assign to client&gt;
-
-        # etc.
-</code></pre><h3 id=simple-config-of-ipsecsecrets>Simple config of ipsec.secrets</h3><pre><code># for public auth
+    # etc.
+</code></pre><p></code></pre><h3 id=simple-config-of-ipsecsecrets>Simple config of ipsec.secrets</h3></p><pre><code># for public auth
 : RSA &quot;&lt;private key file name&gt;&quot;
 
 # for password auth

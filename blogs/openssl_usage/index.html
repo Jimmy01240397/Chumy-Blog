@@ -9,11 +9,10 @@ Jul 10, 2024
 <img src=https://i.imgur.com/RH3dXBZ.png alt>
 key 的內容
 <img src=https://i.imgur.com/FU8bv1Z.png alt></p><h3 id=generate-a-certificate-request>Generate a certificate request</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>openssl req -new -key &lt;private file&gt; -out &lt;request file&gt; -addext <span style=color:#e6db74>&#39;subjectAltName=&lt;Alternative Name&gt;&#39;</span>
-
-<span style=color:#75715e>#addext is optional</span>
+<p><span style=color:#75715e>#addext is optional</span>
 <span style=color:#75715e>#addext 是可選項</span>
 </code></pre></div><p>執行結果
-<img src=https://i.imgur.com/JYYVsH6.png alt></p><h3 id=self-sign-web-certificate>Self sign web certificate</h3><h4 id=init-environment>Init environment</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir demoCA
+<img src=https://i.imgur.com/JYYVsH6.png alt></p></p><h3 id=self-sign-web-certificate>Self sign web certificate</h3><h4 id=init-environment>Init environment</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir demoCA
 mkdir demoCA/newcerts
 mkdir demoCA/private
 &gt; demoCA/index.txt
@@ -59,15 +58,13 @@ cp &lt;CA private key&gt; demoCA/private/cakey.pem
 <img src=https://i.imgur.com/WU3MpFU.png alt></p><h3 id=revoke-certificate>Revoke certificate</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>openssl ca -revoke &lt;certificate file&gt;
 </code></pre></div><p>執行結果
 <img src=https://i.imgur.com/MRVWR1n.png alt></p><h3 id=generate-crl>Generate CRL</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>openssl ca -gencrl -out &lt;crl file&gt;
-
-<span style=color:#75715e># Everytime you revoke your certificate, you need to regenerate your CRL.</span>
+<p><span style=color:#75715e># Everytime you revoke your certificate, you need to regenerate your CRL.</span>
 </code></pre></div><p>執行結果
 <img src=https://i.imgur.com/uBK8LCz.png alt>
-<img src=https://i.imgur.com/TXyTUaM.png alt></p><h2 id=certificate-的信任-trust-of-certificate>certificate 的信任 (trust of certificate)</h2><h3 id=untrusted-certificate-root-ca-untrusted>Untrusted Certificate (Root CA untrusted)</h3><p><img src=https://i.imgur.com/ng4xLgR.png alt></p><h3 id=trusted-certificate-root-ca-trusted>Trusted Certificate (Root CA trusted)</h3><p><img src=https://i.imgur.com/6H04mJB.png alt></p><h3 id=how-to-trust-root-ca-in-windows>How to trust Root CA in windows</h3><ol><li><img src=https://i.imgur.com/MZoNzDe.png alt></li><li><img src=https://i.imgur.com/HRJpxQf.png alt></li><li><img src=https://i.imgur.com/NVTc4FW.png alt></li><li><img src=https://i.imgur.com/1L19EBL.png alt></li><li><img src=https://i.imgur.com/DSEt9SO.png alt></li><li><img src=https://i.imgur.com/17jz2or.png alt></li><li><img src=https://i.imgur.com/Ltm8V6p.png alt></li><li>Reopen Root CA certificate file. <img src=https://i.imgur.com/wufNBsO.png alt></li></ol><h3 id=how-to-trust-root-ca-in-linux>How to trust Root CA in linux</h3><h4 id=for-openssl>For openssl</h4><p>Copy CA certificate to /usr/local/share/ca-certificates/ and run update-ca-certificates</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cp &lt;Root CA certificate&gt; /usr/local/share/ca-certificates/
+<img src=https://i.imgur.com/TXyTUaM.png alt></p></p><h2 id=certificate-的信任-trust-of-certificate>certificate 的信任 (trust of certificate)</h2><h3 id=untrusted-certificate-root-ca-untrusted>Untrusted Certificate (Root CA untrusted)</h3><p><img src=https://i.imgur.com/ng4xLgR.png alt></p><h3 id=trusted-certificate-root-ca-trusted>Trusted Certificate (Root CA trusted)</h3><p><img src=https://i.imgur.com/6H04mJB.png alt></p><h3 id=how-to-trust-root-ca-in-windows>How to trust Root CA in windows</h3><ol><li><img src=https://i.imgur.com/MZoNzDe.png alt></li><li><img src=https://i.imgur.com/HRJpxQf.png alt></li><li><img src=https://i.imgur.com/NVTc4FW.png alt></li><li><img src=https://i.imgur.com/1L19EBL.png alt></li><li><img src=https://i.imgur.com/DSEt9SO.png alt></li><li><img src=https://i.imgur.com/17jz2or.png alt></li><li><img src=https://i.imgur.com/Ltm8V6p.png alt></li><li>Reopen Root CA certificate file. <img src=https://i.imgur.com/wufNBsO.png alt></li></ol><h3 id=how-to-trust-root-ca-in-linux>How to trust Root CA in linux</h3><h4 id=for-openssl>For openssl</h4><p>Copy CA certificate to /usr/local/share/ca-certificates/ and run update-ca-certificates</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cp &lt;Root CA certificate&gt; /usr/local/share/ca-certificates/
 update-ca-certificates
-
-<span style=color:#75715e># flush all ca use: update-ca-certificates -f</span>
-</code></pre></div><p><img src=https://i.imgur.com/5f87Zyh.png alt></p><h4 id=for-linux-browser>For linux browser</h4><p>Go to setting of browser. Ex: Firefox
+<p><span style=color:#75715e># flush all ca use: update-ca-certificates -f</span>
+</code></pre></div><p><img src=https://i.imgur.com/5f87Zyh.png alt></p></p><h4 id=for-linux-browser>For linux browser</h4><p>Go to setting of browser. Ex: Firefox
 <img src=https://i.imgur.com/R0Fjtm1.png alt>
 <img src=https://i.imgur.com/IBKroQi.png alt></p><h2 id=nginx-ssl-setting>Nginx ssl setting</h2><p><img src=https://i.imgur.com/CEIe0RM.png alt>
 Windows
