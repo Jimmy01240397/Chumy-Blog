@@ -31,11 +31,11 @@ toc:
 
 原本會去看 Timestamp 是因為想說有沒有可能用 TCP 的 RTT 來分類隊伍，但是意外發現了很有趣的特性，首先來看看這個封包
 
-![image](https://github.com/user-attachments/assets/1bf4cb92-14d1-4c37-b8dc-837f16cbf4f8)
+<img src="https://github.com/user-attachments/assets/1bf4cb92-14d1-4c37-b8dc-837f16cbf4f8" width="400">
 
 我們有 TSVal: 871787126 如果用 unix timestamp 轉成時間的話會發現
 
-![image](https://github.com/user-attachments/assets/0cea336b-3efc-4121-ad2e-d733b65e610c)
+<img src="https://github.com/user-attachments/assets/0cea336b-3efc-4121-ad2e-d733b65e610c" width="400">
 
 這個時間好像怪怪的，可能是有某種 offset 在，因此去稍微看一下 [linux kernel](https://github.com/torvalds/linux) 是如何實作這個 TCP timestamp 的部分。
 
@@ -67,31 +67,31 @@ return siphash_2u32((__force u32)saddr, (__force u32)daddr,
 
 這邊做一下驗證
 
-![image](https://github.com/user-attachments/assets/fb81c5df-620b-4fcb-8209-61520af3171c)
+<img src="https://github.com/user-attachments/assets/fb81c5df-620b-4fcb-8209-61520af3171c" width="400">
 
-![image](https://github.com/user-attachments/assets/124e1eb9-ff40-4738-9a89-962fe966399d)
+<img src="https://github.com/user-attachments/assets/124e1eb9-ff40-4738-9a89-962fe966399d" width="400">
 
-![image](https://github.com/user-attachments/assets/26e2f2e6-9c3e-426c-9a2b-993f92721345)
+<img src="https://github.com/user-attachments/assets/26e2f2e6-9c3e-426c-9a2b-993f92721345" width="400">
 
-![image](https://github.com/user-attachments/assets/5d257381-5153-4686-8934-d84f8d43746b)
+<img src="https://github.com/user-attachments/assets/5d257381-5153-4686-8934-d84f8d43746b" width="400">
 
-![image](https://github.com/user-attachments/assets/8af7c009-e5d0-4ae2-9f65-5c4e2c0219d6)
+<img src="https://github.com/user-attachments/assets/8af7c009-e5d0-4ae2-9f65-5c4e2c0219d6" width="400">
 
-![image](https://github.com/user-attachments/assets/de697614-0ba5-4a98-8fd4-186a04715fdd)
+<img src="https://github.com/user-attachments/assets/de697614-0ba5-4a98-8fd4-186a04715fdd" width="400">
 
-![image](https://github.com/user-attachments/assets/e160edbf-1427-4786-8f2e-5b86b0e5ae93)
+<img src="https://github.com/user-attachments/assets/e160edbf-1427-4786-8f2e-5b86b0e5ae93" width="400">
 
-![image](https://github.com/user-attachments/assets/e20673eb-0fb8-4ef9-9fbb-50c10974069b)
+<img src="https://github.com/user-attachments/assets/e20673eb-0fb8-4ef9-9fbb-50c10974069b" width="400">
 
 因為一 round 大約 5 分鐘，所以我取前 3 位 hex 作為 user id
 
-![image](https://github.com/user-attachments/assets/fdfd99eb-3d89-4af1-97fc-c46041e92079)
+<img src="https://github.com/user-attachments/assets/fdfd99eb-3d89-4af1-97fc-c46041e92079" width="400">
 
 這樣一來就可以完美的分類出同一台來源 linux 機器的所有 tcp connection，比如 NAS 題的登入後 LFI 我完全只看 PCAP 就看出來了
 
-![image](https://github.com/user-attachments/assets/f74d9de9-6c0d-45c6-bf16-2c2e763479ea)
+<img src="https://github.com/user-attachments/assets/f74d9de9-6c0d-45c6-bf16-2c2e763479ea" width="400">
 
-![image](https://github.com/user-attachments/assets/ef1d75a3-4562-466b-8ed7-9d72187eb868)
+<img src="https://github.com/user-attachments/assets/ef1d75a3-4562-466b-8ed7-9d72187eb868" width="400">
 
 甚至於 passive mode ftp 的 control port 跟 transfer port 的 connection 也能完美對應出來。
 
