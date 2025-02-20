@@ -31,7 +31,7 @@ toc:
 
 原本會去看 Timestamp 是因為想說有沒有可能用 TCP 的 RTT 來分類隊伍，但是意外發現了很有趣的特性，首先來看看這個封包
 
-![image](https://github.com/user-attachments/assets/1bf4cb92-14d1-4c37-b8dc-837f16cbf4f8)
+![image](https://github.com/user-attachments/assets/1bf4cb92-14d1-4c37-b8dc-837f16cbf4f8 =400x)
 
 我們有 TSVal: 871787126 如果用 unix timestamp 轉成時間的話會發現
 
