@@ -9,6 +9,7 @@
 
 #list-page .card a {
     text-decoration: none;
+    color: var(--text-link-color) !important;
 }
 
 #list-page .card a h5 {
