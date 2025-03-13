@@ -201,7 +201,7 @@ params:
       - job: "負責人"
         company: "密友科技有限公司"
         companyUrl: "https://www.twincn.com/item.aspx?no=94229979"
-        date: "Oct 2023 - "
+        date: "Oct 2023 - present"
         content: |-
           [AS152615](https://bgp.tools/as/152615) Maintainer
           - 接案
@@ -213,7 +213,7 @@ params:
       - job: "實習生"
         company: "奧義智慧科技股份有限公司"
         companyUrl: "https://www.cycraft.com/"
-        date: "Feb 2025 - "
+        date: "Feb 2025 - present"
         content: ""
       - job: "資安組實習生"
         company: "TTC"
