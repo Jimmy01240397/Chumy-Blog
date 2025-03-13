@@ -1,0 +1,24 @@
+{{ $recentPostsPath := .Site.Params.footer.recentPosts.path | default "blogs" }}
+{{ $currentNumOfrecentPosts := len (where .Site.RegularPages "Type" $recentPostsPath) }} 
+{{ if and (gt $currentNumOfrecentPosts 0) (.Site.Params.footer.recentPosts.enable | default false) }} 
+<div class="container py-3" id="recent-posts">
+    {{ $recentPostsCount := .Site.Params.footer.recentPosts.count | default 3 }}
+    {{ $recentPosts := where .Site.RegularPages "Section" $recentPostsPath | first $recentPostsCount }}
+    <div class="h3 text-center text-secondary py-3">
+        {{ .Site.Params.footer.recentPosts.title | default "Recent Posts" }}
+    </div>
+    <div class="col">
+        {{ range $recentPosts }}
+        <a href="{{ .Permalink }}">
+            <div class="summary border p-3">
+                <div class="text-gray-900 font-bold text-xl mb-2">{{ .Title }}</div>
+                <p>{{ .Description }}</p>
+                <p class="text-sm text-gray-600 items-center">
+                    {{ .Date | time.Format ":date_long" }}
+                </p>
+            </div>
+        </a>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
