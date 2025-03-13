@@ -1,13 +1,139 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Networking on Chumy's Blog</title><link>https://blog.chummydns.com/tags/networking/</link><description>Recent content in Networking on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 14:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/networking/index.xml" rel="self" type="application/rss+xml"/><item><title>利用 TCP 的 Timestamps 做到精準分類來源 linux machine</title><link>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</link><pubDate>Thu, 20 Feb 2025 14:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</guid><description>利用 TCP 的 Timestamps 做到分類來源 linux machine 緣由 會做這個的原因是因為要打今年的 AIS3 EOF 要做封包的分析工具，然而按照 HITCON CTF 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。
-這會造成甚麼問題，假設有一個 HTTP Post Auth 的 RCE 好了，可能會需要這些流程。
-註冊 登入 前置設定 RCE 如果是走 HTTP/1.0 這樣至少會有 4 個 connection，沒辦法辦識的話在 source port 都不同的情況下要光看這個 pcap 幾乎是很難直接看出這個漏洞怎觸發的，因為我們可能可以用 flag 去 filter 出 RCE 的 connection 但是沒辦法知道前面有哪些動作（註冊、登入、前置動作）。
-為了解決這個問題開始研究 TCP header 與 IP header 的一些 field 有沒有可以利用的，而這邊又有一些限制，因為拿到的 pcap 的 TCP 有可能不是完整的 connection，可能會沒有 SYN 包，如果用只有 SYN 才有的 field 去過濾會不太精準。</description></item><item><title>各常見 VPN 架設簡易教學</title><link>https://blog.chummydns.com/blogs/simple-vpn-generate/</link><pubDate>Wed, 10 Jul 2024 11:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/simple-vpn-generate/</guid><description>IPsec Install strongswan apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins Config file /etc/ipsec.conf for connect config /etc/ipsec.secrets A config to save your password, preshare key, private key /etc/ipsec.d/ The directorys where the certificates or private keys is placed. /etc/ipsec.d/cacerts/ for CA certificate /etc/ipsec.d/certs/ for certificate /etc/ipsec.d/private/ for private key Certificate for IPsec must have EKU: IP security IKE intermediate (oid is 1.</description></item><item><title>從 Wireshark 到 patch OpenVPN driver</title><link>https://blog.chummydns.com/blogs/openvpn-patch/</link><pubDate>Sat, 08 Apr 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/openvpn-patch/</guid><description>緣由 當初會這樣是因為接到一個很有趣的 case
-簡單來說就是想要 client 可以打 VPN 到另一邊，並且讓 PPPoE 可以透過 VPN 拿到中華電信的 public IP address。
-至於他們原本的架構，也是很有趣，首先會找人重架的原因是因為他們說接 VPN 後網路很不穩定，speedtest 也無法測速的那種。
-於是我問了架構發現他們架構很酷。
-首先他們是用那種小電腦做 server，如下圖。
-而裡面長這樣。
-就是他小電腦裝 windows 10，裡面只有裝 VMware，然後開兩台 windows 的 VM，一台是 windows 7 做 VPN server，裡面用 softether vpn，另一台 windows 10 我不知道用途，他們說測試用。
-然後我就想這一台小電腦塞那麼多台 windows 不當才怪，再加上 softether vpn 沒架過並沒有很熟，也不確定這個效能好不好。
-於是我就推薦他們 host 機可以用 Proxmox VE 做虛擬化環境，然後 VPN 的部分由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看這篇文章與這篇文章。
-這邊我選擇用 OpenVPN tap 作為 L2 Tunnel。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Networking on Chumy's Blog</title><link>https://blog.chummydns.com/tags/networking/</link><description>Recent content in Networking on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 14:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/networking/index.xml" rel="self" type="application/rss+xml"/><item><title>利用 TCP 的 Timestamps 做到精準分類來源 linux machine</title><link>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</link><pubDate>Thu, 20 Feb 2025 14:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</guid><description>&lt;h1 id="利用-tcp-的-timestamps-做到分類來源-linux-machine">利用 TCP 的 Timestamps 做到分類來源 linux machine&lt;/h1>
+&lt;h2 id="緣由">緣由&lt;/h2>
+&lt;p>會做這個的原因是因為要打今年的 &lt;a href="https://blog.chummydns.com/blogs/ais3-eof-2025/">AIS3 EOF&lt;/a> 要做封包的分析工具，然而按照 &lt;a href="https://blog.chummydns.com/blogs/hitconctf-2024-final/">HITCON CTF&lt;/a> 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。&lt;/p>
+&lt;p>這會造成甚麼問題，假設有一個 HTTP Post Auth 的 RCE 好了，可能會需要這些流程。&lt;/p>
+&lt;ol>
+&lt;li>註冊&lt;/li>
+&lt;li>登入&lt;/li>
+&lt;li>前置設定&lt;/li>
+&lt;li>RCE&lt;/li>
+&lt;/ol>
+&lt;p>如果是走 HTTP/1.0 這樣至少會有 4 個 connection，沒辦法辦識的話在 source port 都不同的情況下要光看這個 pcap 幾乎是很難直接看出這個漏洞怎觸發的，因為我們可能可以用 flag 去 filter 出 RCE 的 connection 但是沒辦法知道前面有哪些動作（註冊、登入、前置動作）。&lt;/p>
+&lt;p>為了解決這個問題開始研究 TCP header 與 IP header 的一些 field 有沒有可以利用的，而這邊又有一些限制，因為拿到的 pcap 的 TCP 有可能不是完整的 connection，可能會沒有 SYN 包，如果用只有 SYN 才有的 field 去過濾會不太精準。&lt;/p></description></item><item><title>各常見 VPN 架設簡易教學</title><link>https://blog.chummydns.com/blogs/simple-vpn-generate/</link><pubDate>Wed, 10 Jul 2024 11:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/simple-vpn-generate/</guid><description>&lt;h2 id="ipsec">IPsec&lt;/h2>
+&lt;h3 id="install-strongswan">Install strongswan&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>apt install strongswan strongswan-pki libcharon-extra-plugins libcharon-extauth-plugins libstrongswan-extra-plugins
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="config-file">Config file&lt;/h3>
+&lt;ul>
+&lt;li>/etc/ipsec.conf
+&lt;ul>
+&lt;li>for connect config&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>/etc/ipsec.secrets
+&lt;ul>
+&lt;li>A config to save your password, preshare key, private key&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>/etc/ipsec.d/
+&lt;ul>
+&lt;li>The directorys where the certificates or private keys is placed.
+&lt;ul>
+&lt;li>/etc/ipsec.d/cacerts/
+&lt;ul>
+&lt;li>for CA certificate&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>/etc/ipsec.d/certs/
+&lt;ul>
+&lt;li>for certificate&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>/etc/ipsec.d/private/
+&lt;ul>
+&lt;li>for private key&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Certificate for IPsec must have &lt;strong>EKU&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;strong>IP security IKE intermediate (oid is 1.3.6.1.5.5.8.2.2)&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="simple-config-of-ipsecconf">Simple config of ipsec.conf&lt;/h3>
+&lt;pre tabindex="0">&lt;code>conn &amp;lt;connect name&amp;gt;
+ # Auto mean do you want to actively initiate a connection or passively accept a connection?
+ auto=&amp;lt;add | start&amp;gt;	
+ type=&amp;lt;tunnel | transport&amp;gt;
+ keyexchange=&amp;lt;ike | ikev1 | ikev2&amp;gt;
+
+ #left mean local
+ left=&amp;lt;left ip addres default is %any&amp;gt;
+ leftauth=&amp;lt;server auth method&amp;gt;
+ leftsubnet=&amp;lt;what subnet that client can forward whan client connect to vpn&amp;gt;
+
+ #right mean remote
+ right=&amp;lt;right ip addres default is %any&amp;gt;
+ rightauth=&amp;lt;client auth method&amp;gt;
+ rightsourceip=&amp;lt;if you use tunnel mode. What subnet do you want to assign to client&amp;gt;
+
+ # etc.
+&lt;/code>&lt;/pre>&lt;h3 id="simple-config-of-ipsecsecrets">Simple config of ipsec.secrets&lt;/h3>
+&lt;pre tabindex="0">&lt;code># for public auth
+: RSA &amp;#34;&amp;lt;private key file name&amp;gt;&amp;#34;
+
+# for password auth
+&amp;lt;username&amp;gt; : EAP &amp;#34;&amp;lt;password&amp;gt;&amp;#34;
+
+# for preshare key auth
+&amp;lt;remote ip&amp;gt; : PSK &amp;#34;&amp;lt;preshare key&amp;gt;&amp;#34; 
+&lt;/code>&lt;/pre>&lt;h2 id="wireguard">Wireguard&lt;/h2>
+&lt;h3 id="setup-by-commandlinux">Setup by command(Linux)&lt;/h3>
+&lt;ul>
+&lt;li>Add interface
+&lt;ul>
+&lt;li>&lt;code>ip link add dev wg0 type wireguard&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Setup ip
+&lt;ul>
+&lt;li>&lt;code>ip address add dev wg0 192.168.2.1/24&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip address add dev wg0 192.168.2.1 peer 192.168.2.2&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Setup wg configurations
+&lt;ul>
+&lt;li>&lt;code>wg setconf wg0 myconfig.conf&lt;/code>&lt;/li>
+&lt;li>&lt;code>wg set wg0 listen-port 51820 private-key /path/to/private-key peer ABCDEF... allowed-ips 192.168.88.0/24 endpoint 209.202.254.14:8172&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Start interface
+&lt;ul>
+&lt;li>&lt;code>ip link set up dev wg0&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="setup-by-configuration">Setup by configuration&lt;/h3>
+&lt;ul>
+&lt;li>Configuration file
+&lt;ul>
+&lt;li>/etc/wireguard/wg0.conf&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Start interface
+&lt;ul>
+&lt;li>&lt;code>systemctl enable wg-quick@wg0&lt;/code>&lt;/li>
+&lt;li>&lt;code>wg-quick up wg0&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="example-connfigurations---client">Example connfigurations - Client&lt;/h4>
+&lt;p>&lt;img src="https://i.imgur.com/5fzLxqW.png" alt="">&lt;/p></description></item><item><title>從 Wireshark 到 patch OpenVPN driver</title><link>https://blog.chummydns.com/blogs/openvpn-patch/</link><pubDate>Sat, 08 Apr 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/openvpn-patch/</guid><description>&lt;h2 id="緣由">緣由&lt;/h2>
+&lt;p>當初會這樣是因為接到一個很有趣的 case&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/c20e43c3-3ed9-46ad-8c94-657afc66cd3c" alt="image">
+&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/4d1df898-0b4a-4a95-ac08-82b658b97a2c" alt="image">
+&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/acc1825f-0a69-4ec4-8a2e-fa84166df57c" alt="image">&lt;/p>
+&lt;p>簡單來說就是想要 client 可以打 VPN 到另一邊，並且讓 PPPoE 可以透過 VPN 拿到中華電信的 public IP address。&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/d1df4baf-2101-4aee-87d8-555316cc8d23" alt="未命名绘图 drawio (63)">&lt;/p>
+&lt;p>至於他們原本的架構，也是很有趣，首先會找人重架的原因是因為他們說接 VPN 後網路很不穩定，speedtest 也無法測速的那種。&lt;/p>
+&lt;p>於是我問了架構發現他們架構很酷。&lt;/p>
+&lt;p>首先他們是用那種小電腦做 server，如下圖。&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/9f9de987-f4fd-499c-9ca5-f1d345b64b80" alt="image">&lt;/p>
+&lt;p>而裡面長這樣。&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/Chumy-Blog/assets/57281249/339e3dde-62a9-4679-9cb5-5b12bcad7151" alt="image">&lt;/p>
+&lt;p>就是他小電腦裝 windows 10，裡面只有裝 VMware，然後開兩台 windows 的 VM，一台是 windows 7 做 VPN server，裡面用 softether vpn，另一台 windows 10 我不知道用途，他們說測試用。&lt;/p>
+&lt;p>然後我就想這一台小電腦塞那麼多台 windows 不當才怪，再加上 softether vpn 沒架過並沒有很熟，也不確定這個效能好不好。&lt;/p>
+&lt;p>於是我就推薦他們 host 機可以用 Proxmox VE 做虛擬化環境，然後 VPN 的部分由於 PPPoE 是 L2 的協定，需要 ethernet header，因此 VPN 的選擇上就需要用 L2 Tunnel。關於甚麼是 L2 Tunnel 可以去看&lt;a href="https://www.comparitech.com/blog/vpn-privacy/tun-tap-adapters/">這篇文章&lt;/a>與&lt;a href="https://ipwithease.com/layer-2-vs-layer-3-vpn/">這篇文章&lt;/a>。&lt;/p></description></item></channel></rss>

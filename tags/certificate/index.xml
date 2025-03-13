@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Certificate on Chumy's Blog</title><link>https://blog.chummydns.com/tags/certificate/</link><description>Recent content in Certificate on Chumy's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 10 Jul 2024 11:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/certificate/index.xml" rel="self" type="application/rss+xml"/><item><title>OpenSSL 簽憑證教學</title><link>https://blog.chummydns.com/blogs/openssl_usage/</link><pubDate>Wed, 10 Jul 2024 11:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/openssl_usage/</guid><description>OpenSSL Generate a private key openssl genrsa -out &amp;lt;private key file&amp;gt; &amp;lt;key length general we used 2048&amp;gt; 執行結果 key 的內容 Generate a certificate request openssl req -new -key &amp;lt;private file&amp;gt; -out &amp;lt;request file&amp;gt; -addext &amp;#39;subjectAltName=&amp;lt;Alternative Name&amp;gt;&amp;#39; #addext is optional #addext 是可選項 執行結果 Self sign web certificate Init environment mkdir demoCA mkdir demoCA/newcerts mkdir demoCA/private &amp;gt; demoCA/index.txt &amp;gt; demoCA/serial echo 01 &amp;gt; demoCA/crlnumber &amp;gt; demoCA/cacert.pem cp &amp;lt;private key&amp;gt; demoCA/private/cakey.pem Modify /etc/ssl/openssl.cnf Add copy_extensions = copy at /etc/ssl/openssl.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Certificate on Chumy's Blog</title><link>https://blog.chummydns.com/tags/certificate/</link><description>Recent content in Certificate on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 10 Jul 2024 11:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/certificate/index.xml" rel="self" type="application/rss+xml"/><item><title>OpenSSL 簽憑證教學</title><link>https://blog.chummydns.com/blogs/openssl_usage/</link><pubDate>Wed, 10 Jul 2024 11:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/openssl_usage/</guid><description>&lt;h2 id="openssl">OpenSSL&lt;/h2>
+&lt;h3 id="generate-a-private-key">Generate a private key&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>openssl genrsa -out &amp;lt;private key file&amp;gt; &amp;lt;key length general we used 2048&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>執行結果
+&lt;img src="https://i.imgur.com/RH3dXBZ.png" alt="">
+key 的內容
+&lt;img src="https://i.imgur.com/FU8bv1Z.png" alt="">&lt;/p>
+&lt;h3 id="generate-a-certificate-request">Generate a certificate request&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>openssl req -new -key &amp;lt;private file&amp;gt; -out &amp;lt;request file&amp;gt; -addext &lt;span style="color:#e6db74">&amp;#39;subjectAltName=&amp;lt;Alternative Name&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#addext is optional&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#addext 是可選項&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>執行結果
+&lt;img src="https://i.imgur.com/JYYVsH6.png" alt="">&lt;/p>
+&lt;h3 id="self-sign-web-certificate">Self sign web certificate&lt;/h3>
+&lt;h4 id="init-environment">Init environment&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>mkdir demoCA
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir demoCA/newcerts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir demoCA/private
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; demoCA/index.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; demoCA/serial
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo &lt;span style="color:#ae81ff">01&lt;/span> &amp;gt; demoCA/crlnumber
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; demoCA/cacert.pem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cp &amp;lt;private key&amp;gt; demoCA/private/cakey.pem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://i.imgur.com/Ct9Va1h.png" alt="">&lt;/p>
+&lt;h4 id="modify-etcsslopensslcnf">Modify /etc/ssl/openssl.cnf&lt;/h4>
+&lt;p>Add copy_extensions = copy at /etc/ssl/openssl.cnf under [ CA_default ]&lt;/p></description></item></channel></rss>
