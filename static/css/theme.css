@@ -62,14 +62,12 @@ body *::selection {
     line-height: 1.25rem
 }
 
-.text-gray-600 {
-    --tw-text-opacity: 1;
-    color: rgb(75 85 99/var(--tw-text-opacity));
+.text-color {
+    color: var(--text-color) !important;
 }
 
-.text-gray-900 {
-    --tw-text-opacity: 1;
-    color: rgb(17 24 39/var(--tw-text-opacity));
+.text-secondary-color {
+    color: var(--text-secondary-color) !important;
 }
 
 .font-bold {
