@@ -12,10 +12,16 @@ outputs:
     - "HTML"
     - "RSS"
 
-Paginate: 3
 enableRobotsTXT: true
-# disqusShortname: your-disqus-shortname
-# googleAnalytics: G-MEASUREMENT_ID
+
+#services:
+  #googleAnalytics:
+    #id: G-MEASUREMENT_ID
+  #disqus:
+    #shortname: your-disqus-shortname
+
+pagination:
+  pagerSize: 3
 
 markup:
   goldmark:
@@ -29,16 +35,16 @@ Menus:
       title: Blog posts
       url: /blogs
       weight: 1
-    - identifier: gallery
-      name: Gallery
-      title: Blog posts
-      url: /gallery
-      weight: 2
+    #- identifier: gallery
+    #  name: Gallery
+    #  title: Blog posts
+    #  url: /gallery
+    #  weight: 2
     - identifier: cv
       name: CV
       title: CV
       url: /cv.pdf
-      weight: 3
+      weight: 2
     #Dropdown menu
     # - identifier: dropdown
     #   title: Example dropdown menu
@@ -73,6 +79,9 @@ params:
   # Uncomment and change YOUR_CLOUD_NAME to the Cloud Name in your Cloudinary console
   # cloudinary_cloud_name: "YOUR_CLOUD_NAME"
 
+  # Whether to add mathjax support on all pages. Alternatively, you can opt-in per page by adding `mathjax: true` in the frontmatter.
+  mathjax: false
+
   # Whether the fade animations on the home page will be enabled
   animate: true
 
@@ -87,21 +96,24 @@ params:
     textAlign: left # default: left
 
   # color preference
+  # When using hex codes for colors, quotations must be used along with the # sign
   # color:
-  #   textColor:
-  #   secondaryTextColor:
-  #   backgroundColor:
-  #   secondaryBackgroundColor:
-  #   primaryColor:
-  #   secondaryColor:
+  #   textColor: "#343a40"
+  #   secondaryTextColor: "#6c757d"
+  #   textLinkColor: "#007bff"
+  #   backgroundColor: "#eaedf0"
+  #   secondaryBackgroundColor: "#64ffda1a"
+  #   primaryColor: "#007bff"
+  #   secondaryColor: "#f8f9fa"
 
   #   darkmode:
-  #     textColor:
-  #     secondaryTextColor:
-  #     backgroundColor:
-  #     secondaryBackgroundColor:
-  #     primaryColor:
-  #     secondaryColor:
+  #     textColor: "#e4e6eb"
+  #     secondaryTextColor: "#b0b3b8"
+  #     textLinkColor: "#ffffff"
+  #     backgroundColor: "#18191a"
+  #     secondaryBackgroundColor: "#212529"
+  #     primaryColor: "#ffffff"
+  #     secondaryColor: "#212529"
 
   # If you want to customize the menu, you can change it here
   navbar:
@@ -110,6 +122,11 @@ params:
     # showBrandLogo: false # Show brand logo in nav bar | default is true
     brandName: "Chumy's Blog" # Brand name for the brand | default is the title variable
     disableSearch: false
+    # searchPlaceholder: "Search"
+    stickyNavBar:
+      enable : true
+      showOnScrollUp : true
+    enableSeparator: false
     menus:
       disableAbout: false
       disableExperience: false
@@ -126,6 +143,8 @@ params:
     subtitle: "資訊與網路技術的愛好者"
     content: "致力於研究各式各樣的資訊技術並持續探索。"
     image: /images/me.png
+    bottomImage:
+      enable: true
     # roundImage: true # Make hero image circular | default false
     #button:
     #  enable: true
@@ -179,6 +198,23 @@ params:
     enable: true
     # title: "Custom Name"
     items:
+      - job: "負責人"
+        company: "密友科技有限公司"
+        companyUrl: "https://www.twincn.com/item.aspx?no=94229979"
+        date: "Oct 2023 - "
+        content: |-
+          [AS152615](https://bgp.tools/as/152615) Maintainer
+          - 接案
+            - 程式設計
+            - 網路與伺服器規劃與架設
+            - 資安相關
+          - VPS 租借
+          - Public IP 租借
+      - job: "實習生"
+        company: "奧義智慧科技股份有限公司"
+        companyUrl: "https://www.cycraft.com/"
+        date: "Feb 2025 - "
+        content: ""
       - job: "資安組實習生"
         company: "TTC"
         companyUrl: ""
@@ -392,13 +428,14 @@ params:
     enable: true
     # title: "Custom Name"
     content: My inbox is always open. Whether you have a question or just want to say hi, I’ll try my best to get back to you!
-    email: jimmy012403976@gmail.com
     btnName: Mail me
+    btnLink: mailto:jimmy012403976@gmail.com
     # formspree:
     #   enable: true # `contact.email` value will be ignored
     #   formId: abcdefgh # Take it from your form's endpoint, like 'https://formspree.io/f/abcdefgh'
     #   emailCaption: "Enter your email address"
     #   messageCaption: "Enter your message here"
+    #   messageRows: 5
 
   footer:
     recentPosts:
@@ -420,11 +457,14 @@ params:
 
   # Single pages like blog and post
   singlePages:
+    socialShare: true
     readTime:
       enable: true
       content: "min read"
     scrollprogress:
       enable: true
+    tags:
+      openInNewTab: false
 
   # For translations
   terms:
@@ -438,3 +478,24 @@ params:
     article: "Jan 2, 2006"
     articleList: "Jan 2, 2006"
     articleRecent: "Jan 2, 2006"
+
+  customScripts: -|
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "no4s0daf78");
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L02TG541PV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-L02TG541PV');
+    </script>
+
+
