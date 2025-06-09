@@ -296,6 +296,7 @@ params:
                 - [CVE-2024-12641](https://www.twcert.org.tw/tw/cp-132-8292-4fd98-1.html)
                 - [CVE-2024-12642](https://www.twcert.org.tw/tw/cp-132-8294-44d13-1.html)
                 - [CVE-2024-12645](https://www.twcert.org.tw/tw/cp-132-8297-13670-1.html)
+                - [Exploit](https://github.com/Jimmy01240397/CVE-2024-12641_12642_12645)
 
         #featuredLink: 
         #  enable: true
