@@ -1,6 +1,6 @@
 ---
 title: "MPLS 運作原理"
-date: 2025-07-15T00:00:00+08:00
+date: 2030-07-15T00:00:00+08:00
 draft: false
 github_link: ""
 author: "Chumy"
