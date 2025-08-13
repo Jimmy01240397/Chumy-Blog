@@ -1,4 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CTF on Chumy's Blog</title><link>https://blog.chummydns.com/tags/ctf/</link><description>Recent content in CTF on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Tue, 15 Jul 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>Downunder CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/downunder-ctf-2024-writeup/</link><pubDate>Tue, 15 Jul 2025 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/downunder-ctf-2024-writeup/</guid><description>&lt;h1 id="downunder-ctf-2024-writeup">Downunder CTF 2024 Writeup&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CTF on Chumy's Blog</title><link>https://blog.chummydns.com/tags/ctf/</link><description>Recent content in CTF on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 20 Feb 2025 12:00:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/tags/ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>AIS3 EOF 2025 Final 心得</title><link>https://blog.chummydns.com/blogs/ais3-eof-2025/</link><pubDate>Thu, 20 Feb 2025 12:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2025/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
+&lt;p>這波 EOF 自幹全套 A&amp;amp;D 工具兼首次實戰測試大成功，只差 ELK 沒整併進來了，但能夠把上次 HITCON CTF 的一些想法實現出來也是很不錯。&lt;/p>
+&lt;p>round alert 實在方便甚至跳通知比視覺化快，讓 葉東逸 跟 vincent55 可以用最快速度登入 game 完成任務。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f733fb5-aa4b-4630-995e-7e9bb8c43b47" alt="image">&lt;/p>
+&lt;p>attack manager 第一天運行的很完美，舒服的顯示哪一隊這輪有打穿，這樣就能迅速應對更新 exploit 。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/ef8e4bbe-0b84-4e10-bfba-f58b546e0663" alt="image">&lt;/p>
+&lt;p>pcap analysis 也是完美的將所有的流量整理好，也完美的分類每台電腦的流量，只可惜還是需要導入 elk 才能看。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/a481b619-c2cb-4ce9-8e4e-a8e8705be99e" alt="image">&lt;/p>
+&lt;p>patch manager 第一天壞掉所以一直修，但是好險第一天沒有太多人在 patch，當天晚上將他修好測好以後第二天就完美運行，讓 三角蛇 可以快樂追 patch。但是最可惜的是賽前 WeakGod Chiu 準備的 binary diff 沒有用到。&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/35687ed3-9e9a-4d8f-816e-a28733fddd84" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/352f3f21-1ace-4ea8-8f9d-7ddb8b704fe3" alt="image">&lt;/p>
+&lt;p>另外我們的超讚 crypto jeopardy 隊友 李彥佑 也是第一天就解完了超讚的。&lt;/p>
+&lt;p>另外第一次試著戴一台小 server 來充當 router 兼 NAS 也是一個蠻成功的，畢竟能夠內網傳檔案也不用在自己電腦接 vpn 去比賽環境還是比較方便的。&lt;/p>
+&lt;p>最後有些人問我為啥不用現成的，要客製化自己想要的功能直接自幹肯定是最快的對ㄅ（X&lt;/p>
+&lt;p>最後感謝 楊竣鴻 幫我寫前端♥️&lt;/p></description></item><item><title>HITCON CTF 2024 Final 心得</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-final/</link><pubDate>Mon, 11 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-final/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
+&lt;p>承接 &lt;a href="https://blog.chummydns.com/blogs/hitconctf-2024-writeup">Quals&lt;/a> 來聊聊決賽吧！&lt;/p>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>這次參加 HITCON CTF Final 也算是我第一次參加這種比較大型的 CTF 決賽比賽，而我基本上負責規劃與設定整個隊伍的基礎建設，並提供機器給隊友架設並設定對內的自動化攻擊與防禦系統如 attack manager 或封包工具與攻擊重送工具。由於考慮到這場有提供 game box 且不會用到會場內網然後賽中我可能要顧 infra 加上 Ching 通靈到可能有 live CTF 所以我就在場外的飯店房間總部打比賽。&lt;/p>
+&lt;h2 id="賽前準備">賽前準備&lt;/h2>
+&lt;p>賽前一個月先把整個主要架構架好上好 ldap、file server、VPN 等等測試完寫好 document 然後交給 Caleb 架 attack manager 與 elk、Curious 架抓封包與重送工具，然後 Ching 架模擬環境給隊員學工具使用方式。&lt;/p>
+&lt;h2 id="賽前一天">賽前一天&lt;/h2>
+&lt;p>首先比賽前一天因為剛好去取貨撿到的二手 L3 switch 想說飯店如果有網路孔會很方便還能直接打 sitetosite 就扛了一台 7 公斤的東西過去，結果房間沒網路孔只有 wifi&lt;/p>
+&lt;p>晚上十點多規則放出來就要馬上工作當水管工把 tunnel 打通路由設通 MTU 調好然後測試，然後再應 Vincent55 與 kazma 需求把內網也串到社團內網上（外加幫隊友修網路（X）中途設到一半突然 jumpbox 斷線差點嚇死，結果看一下 DC 才發現是大家都斷掉，全部檢查完以後就等隔天。&lt;/p>
+&lt;h2 id="第一天">第一天&lt;/h2>
+&lt;p>比賽第一天剛開賽的時候發現連 scoreboard 會 403 但是 live 組連的上，因為我前一天沒有想到（或者規則沒看到） scoreboard 會鎖 ip，因為我只有設定 10.102.0.0/16，當時意識到在開賽一分鐘內光速把路由調好然後發公告要條 wireguard 的 allowips 以後基本上現場組跟飯店總部都能順利連線開始打了，然後接著幫竹區那邊 sync vpn 設定（他們似乎沒注意到公告）。&lt;/p></description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>&lt;h1 id="hitconctf-2024-writeup">hitconctf-2024-writeup&lt;/h1>
+&lt;p>這場與 &lt;code>星爆吉娃娃&lt;/code>、&lt;code>BambooFox&lt;/code>、以及我們 &lt;code>B33f 50UP&lt;/code> 所組成的 &lt;code>星爆牛炒竹狐&lt;/code> 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。&lt;/p>
+&lt;p>這邊就來寫一下我解的題目 writeup。&lt;/p>
+&lt;h2 id="戰績">戰績&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f60d911-041b-4419-9eb3-b1cfe0e46feb" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/4278d28e-9f26-4ef1-9ebb-443a0a18adce" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/fb014145-7e99-4cb2-8f6d-b3e50ee87d4d" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/f33a0522-3ffc-4306-a5f3-b9f7a180bb7b" alt="image">&lt;/p>
+&lt;h2 id="flag-reader">Flag Reader&lt;/h2>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/a3a33711-1427-4d0b-ab7b-c1c11c218d55" alt="image">&lt;/p>
+&lt;p>目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。&lt;/p>
+&lt;p>首先我先去看&lt;a href="https://github.com/python/cpython/blob/b455a5a55cb1fd5bb6178a969e8ebd0e6e91b610/Lib/tarfile.py#L122">tarfile 定義為 isfile 的檔案類型&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>REGULAR_TYPES &lt;span style="color:#f92672">=&lt;/span> (REGTYPE, AREGTYPE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CONTTYPE, GNUTYPE_SPARSE)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>發現 typebyte 要設成 &lt;code>\0&lt;/code>、&lt;code>0&lt;/code>、&lt;code>7&lt;/code>、&lt;code>S&lt;/code> isfile 結果才會是 true。&lt;/p>
+&lt;p>最一開始我注意到 &lt;code>S&lt;/code> 這個東西，發現是 &lt;a href="https://www.gnu.org/software/tar/manual/html_section/Sparse-Formats.html">GNU 特有的 type&lt;/a> 但是不知道為何我用自己 linux 測以後，發現 &lt;code>tarfile&lt;/code> 會認 Sparse file 但是 &lt;code>tar&lt;/code> 不知道為何還是按照一般的檔案去解，這邊可能有待研究。&lt;/p></description></item><item><title>Downunder CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/downunder-ctf-2024-writeup/</link><pubDate>Mon, 15 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/downunder-ctf-2024-writeup/</guid><description>&lt;h1 id="downunder-ctf-2024-writeup">Downunder CTF 2024 Writeup&lt;/h1>
 &lt;p>第一次解保護全開的 PWN 好開心WW&lt;/p>
 &lt;h2 id="yawa">yawa&lt;/h2>
 &lt;h3 id="exploit">exploit&lt;/h3>
@@ -44,46 +83,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>r&lt;span style="color:#f92672">.&lt;/span>interactive()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="flag">flag&lt;/h3>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/74ae9cb9-f2e9-4981-bed5-fd0671895d89" alt="image">&lt;/p></description></item><item><title>AIS3 EOF 2025 Final 心得</title><link>https://blog.chummydns.com/blogs/ais3-eof-2025/</link><pubDate>Thu, 20 Feb 2025 12:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/ais3-eof-2025/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
-&lt;p>這波 EOF 自幹全套 A&amp;amp;D 工具兼首次實戰測試大成功，只差 ELK 沒整併進來了，但能夠把上次 HITCON CTF 的一些想法實現出來也是很不錯。&lt;/p>
-&lt;p>round alert 實在方便甚至跳通知比視覺化快，讓 葉東逸 跟 vincent55 可以用最快速度登入 game 完成任務。&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f733fb5-aa4b-4630-995e-7e9bb8c43b47" alt="image">&lt;/p>
-&lt;p>attack manager 第一天運行的很完美，舒服的顯示哪一隊這輪有打穿，這樣就能迅速應對更新 exploit 。&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/ef8e4bbe-0b84-4e10-bfba-f58b546e0663" alt="image">&lt;/p>
-&lt;p>pcap analysis 也是完美的將所有的流量整理好，也完美的分類每台電腦的流量，只可惜還是需要導入 elk 才能看。&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/a481b619-c2cb-4ce9-8e4e-a8e8705be99e" alt="image">&lt;/p>
-&lt;p>patch manager 第一天壞掉所以一直修，但是好險第一天沒有太多人在 patch，當天晚上將他修好測好以後第二天就完美運行，讓 三角蛇 可以快樂追 patch。但是最可惜的是賽前 WeakGod Chiu 準備的 binary diff 沒有用到。&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/35687ed3-9e9a-4d8f-816e-a28733fddd84" alt="image">&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/352f3f21-1ace-4ea8-8f9d-7ddb8b704fe3" alt="image">&lt;/p>
-&lt;p>另外我們的超讚 crypto jeopardy 隊友 李彥佑 也是第一天就解完了超讚的。&lt;/p>
-&lt;p>另外第一次試著戴一台小 server 來充當 router 兼 NAS 也是一個蠻成功的，畢竟能夠內網傳檔案也不用在自己電腦接 vpn 去比賽環境還是比較方便的。&lt;/p>
-&lt;p>最後有些人問我為啥不用現成的，要客製化自己想要的功能直接自幹肯定是最快的對ㄅ（X&lt;/p>
-&lt;p>最後感謝 楊竣鴻 幫我寫前端♥️&lt;/p></description></item><item><title>HITCON CTF 2024 Final 心得</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-final/</link><pubDate>Mon, 11 Nov 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-final/</guid><description>&lt;h1 id="hitcon-ctf-2024-final-心得">HITCON CTF 2024 Final 心得&lt;/h1>
-&lt;p>承接 &lt;a href="https://blog.chummydns.com/blogs/hitconctf-2024-writeup">Quals&lt;/a> 來聊聊決賽吧！&lt;/p>
-&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>這次參加 HITCON CTF Final 也算是我第一次參加這種比較大型的 CTF 決賽比賽，而我基本上負責規劃與設定整個隊伍的基礎建設，並提供機器給隊友架設並設定對內的自動化攻擊與防禦系統如 attack manager 或封包工具與攻擊重送工具。由於考慮到這場有提供 game box 且不會用到會場內網然後賽中我可能要顧 infra 加上 Ching 通靈到可能有 live CTF 所以我就在場外的飯店房間總部打比賽。&lt;/p>
-&lt;h2 id="賽前準備">賽前準備&lt;/h2>
-&lt;p>賽前一個月先把整個主要架構架好上好 ldap、file server、VPN 等等測試完寫好 document 然後交給 Caleb 架 attack manager 與 elk、Curious 架抓封包與重送工具，然後 Ching 架模擬環境給隊員學工具使用方式。&lt;/p>
-&lt;h2 id="賽前一天">賽前一天&lt;/h2>
-&lt;p>首先比賽前一天因為剛好去取貨撿到的二手 L3 switch 想說飯店如果有網路孔會很方便還能直接打 sitetosite 就扛了一台 7 公斤的東西過去，結果房間沒網路孔只有 wifi&lt;/p>
-&lt;p>晚上十點多規則放出來就要馬上工作當水管工把 tunnel 打通路由設通 MTU 調好然後測試，然後再應 Vincent55 與 kazma 需求把內網也串到社團內網上（外加幫隊友修網路（X）中途設到一半突然 jumpbox 斷線差點嚇死，結果看一下 DC 才發現是大家都斷掉，全部檢查完以後就等隔天。&lt;/p>
-&lt;h2 id="第一天">第一天&lt;/h2>
-&lt;p>比賽第一天剛開賽的時候發現連 scoreboard 會 403 但是 live 組連的上，因為我前一天沒有想到（或者規則沒看到） scoreboard 會鎖 ip，因為我只有設定 10.102.0.0/16，當時意識到在開賽一分鐘內光速把路由調好然後發公告要條 wireguard 的 allowips 以後基本上現場組跟飯店總部都能順利連線開始打了，然後接著幫竹區那邊 sync vpn 設定（他們似乎沒注意到公告）。&lt;/p></description></item><item><title>HITCON CTF 2024 Writeup</title><link>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</link><pubDate>Tue, 16 Jul 2024 00:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/hitconctf-2024-writeup/</guid><description>&lt;h1 id="hitconctf-2024-writeup">hitconctf-2024-writeup&lt;/h1>
-&lt;p>這場與 &lt;code>星爆吉娃娃&lt;/code>、&lt;code>BambooFox&lt;/code>、以及我們 &lt;code>B33f 50UP&lt;/code> 所組成的 &lt;code>星爆牛炒竹狐&lt;/code> 隊伍一起打到了世界第 24 名、台灣排名第一名，並且打進今年 HITCON CTF 決賽。&lt;/p>
-&lt;p>這邊就來寫一下我解的題目 writeup。&lt;/p>
-&lt;h2 id="戰績">戰績&lt;/h2>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/1f60d911-041b-4419-9eb3-b1cfe0e46feb" alt="image">&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/4278d28e-9f26-4ef1-9ebb-443a0a18adce" alt="image">&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/fb014145-7e99-4cb2-8f6d-b3e50ee87d4d" alt="image">&lt;/p>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/f33a0522-3ffc-4306-a5f3-b9f7a180bb7b" alt="image">&lt;/p>
-&lt;h2 id="flag-reader">Flag Reader&lt;/h2>
-&lt;p>&lt;img src="https://github.com/user-attachments/assets/a3a33711-1427-4d0b-ab7b-c1c11c218d55" alt="image">&lt;/p>
-&lt;p>目標是上傳一個帶有 flag.txt -&amp;gt; /flag.txt 的 symlink，但是 server 的 python 會用 tarfile 做一次 tarinfo 的檢查，檢查一定要是 file 且名字不能帶 flag.txt，檢查過才會用 subprocess 跑 busybox tar 去解檔。&lt;/p>
-&lt;p>首先我先去看&lt;a href="https://github.com/python/cpython/blob/b455a5a55cb1fd5bb6178a969e8ebd0e6e91b610/Lib/tarfile.py#L122">tarfile 定義為 isfile 的檔案類型&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>REGULAR_TYPES &lt;span style="color:#f92672">=&lt;/span> (REGTYPE, AREGTYPE,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CONTTYPE, GNUTYPE_SPARSE)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>發現 typebyte 要設成 &lt;code>\0&lt;/code>、&lt;code>0&lt;/code>、&lt;code>7&lt;/code>、&lt;code>S&lt;/code> isfile 結果才會是 true。&lt;/p>
-&lt;p>最一開始我注意到 &lt;code>S&lt;/code> 這個東西，發現是 &lt;a href="https://www.gnu.org/software/tar/manual/html_section/Sparse-Formats.html">GNU 特有的 type&lt;/a> 但是不知道為何我用自己 linux 測以後，發現 &lt;code>tarfile&lt;/code> 會認 Sparse file 但是 &lt;code>tar&lt;/code> 不知道為何還是按照一般的檔案去解，這邊可能有待研究。&lt;/p></description></item><item><title>Google CTF 2024 WriteUp</title><link>https://blog.chummydns.com/blogs/google-ctf-2024/</link><pubDate>Mon, 24 Jun 2024 03:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/google-ctf-2024/</guid><description>&lt;h1 id="google-ctf-2024-writeup">Google CTF 2024 WriteUp&lt;/h1>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/74ae9cb9-f2e9-4981-bed5-fd0671895d89" alt="image">&lt;/p></description></item><item><title>Google CTF 2024 WriteUp</title><link>https://blog.chummydns.com/blogs/google-ctf-2024/</link><pubDate>Mon, 24 Jun 2024 03:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/google-ctf-2024/</guid><description>&lt;h1 id="google-ctf-2024-writeup">Google CTF 2024 WriteUp&lt;/h1>
 &lt;h2 id="戰績">戰績&lt;/h2>
 &lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/102ab7a2-a951-47de-9dfa-5732cb2cc83a" alt="image">&lt;/p>
 &lt;p>&lt;img src="https://github.com/Jimmy01240397/CTF-writeup/assets/57281249/225aff8b-6771-4163-8635-fe91b0cbc17e" alt="image">&lt;/p>
