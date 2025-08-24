@@ -246,7 +246,7 @@ curl "$1/sandbox/$2/mz.php"
 
 [Hackmd](https://hackmd.io/@Vincent550102/SJdfWT_Feg)
 
-最後題外話，後來我出了一題 ARP Spoofing 一題 TLS MITM 還用 instancer 包的漂漂亮亮的結果沒人機，我真的很難過QQQQ
+最後題外話，後來我出了一題 ARP Spoofing 一題 TLS MITM 還用 instancer 包的漂漂亮亮的結果沒人解，我真的很難過QQQQ
 
 文章最後來補個 [Vincent](https://blog.vincent55.tw/) 表示要 1 個打 100 個的宣言
 
