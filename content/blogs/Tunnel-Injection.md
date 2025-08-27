@@ -1,4 +1,4 @@
-<img width="688" height="175" alt="image" src="https://github.com/user-attachments/assets/e2e70968-86c3-4be8-a675-aad4b330ea66" />---
+---
 title: "Tunnel Injection"
 date: 2030-08-30T00:00:00+08:00
 draft: false
