@@ -36,6 +36,8 @@ toc:
 
 ![image](https://github.com/user-attachments/assets/21be27d8-b269-47ee-8c1b-48f3831bea3d)
 
+這是 [seadog007](https://seadog007.work/) 幫我畫的攻擊手法的詳細圖
+
 ![image](https://github.com/user-attachments/assets/ac66ca21-eadc-4000-98d9-6133a3f8456d)
 
 然而在某天洗澡的時候突然仔細回味了一下就突然想到了這個非常酷的利用手法，順帶一題這題只有 [seadog007](https://seadog007.work/) 有打出來
