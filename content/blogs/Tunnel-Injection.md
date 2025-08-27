@@ -32,11 +32,11 @@ toc:
 
 大三的時候因為接到 [CGGC](https://cggc.nchc.org.tw/) aka 一場台灣辦的 CTF 的出題邀請，因此就開始在想梗。
 
-[](https://github.com/user-attachments/assets/15d204e5-72b9-4827-97a4-9abbcb51f621)
+![image](https://github.com/user-attachments/assets/15d204e5-72b9-4827-97a4-9abbcb51f621)
 
-[](https://github.com/user-attachments/assets/21be27d8-b269-47ee-8c1b-48f3831bea3d)
+![image](https://github.com/user-attachments/assets/21be27d8-b269-47ee-8c1b-48f3831bea3d)
 
-[](https://github.com/user-attachments/assets/ac66ca21-eadc-4000-98d9-6133a3f8456d)
+![image](https://github.com/user-attachments/assets/ac66ca21-eadc-4000-98d9-6133a3f8456d)
 
 然而在某天洗澡的時候突然仔細回味了一下就突然想到了這個非常酷的利用手法，順帶一題這題只有 [seadog007](https://seadog007.work/) 有打出來
 
