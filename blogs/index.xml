@@ -794,4 +794,34 @@ key 的內容
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;invalid input.&amp;#34;&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cnt &lt;span style="color:#f92672">-=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="目標">目標&lt;/h3>
-&lt;p>使用MasterMetaClass這個MetaClass建立一個class並調用裡面的IWantGETFLAGPlz func&lt;/p></description></item></channel></rss>
+&lt;p>使用MasterMetaClass這個MetaClass建立一個class並調用裡面的IWantGETFLAGPlz func&lt;/p></description></item><item><title/><link>https://blog.chummydns.com/blogs/tunnel-injection/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://blog.chummydns.com/blogs/tunnel-injection/</guid><description>&lt;p>&lt;img width="688" height="175" alt="image" src="https://github.com/user-attachments/assets/e2e70968-86c3-4be8-a675-aad4b330ea66" />&amp;mdash;
+title: &amp;ldquo;Tunnel Injection&amp;rdquo;
+date: 2030-08-30T00:00:00+08:00
+draft: false
+github_link: &amp;quot;&amp;quot;
+author: &amp;ldquo;Chumy&amp;rdquo;
+tags:&lt;/p>
+&lt;ul>
+&lt;li>Cyber Security&lt;/li>
+&lt;li>Networking
+image: &amp;quot;&amp;quot;
+description: &amp;quot;&amp;quot;
+toc:&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="tunnel-injection">Tunnel Injection&lt;/h1>
+&lt;h2 id="tldr">TL;DR&lt;/h2>
+&lt;p>這篇文章講述了大多數 stateless tunnel protocol 的缺陷以及我如何把他們變成一個僅僅需要 5 行 linux ip 指令就能夠設定好的免費 VPN&lt;/p>
+&lt;h2 id="感謝">感謝&lt;/h2>
+&lt;p>在進入正題前這邊感謝 &lt;a href="https://seadog007.work/">seadog007&lt;/a> 的 &lt;a href="https://stuix.io/">STUIX&lt;/a>，因為我的網路的 ASN 主要是在 STUIX 做交換的，並且也用到他們很多的資源做測試。&lt;/p>
+&lt;p>也感謝 &lt;a href="https://ncse.tw/">NCSE&lt;/a> 特別幫我在我測試的時候幫我加一點 IPT 的流量。&lt;/p>
+&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>這是一個講述我如何從研究一個協議到讓全世界都有我的 VPN 的小故事&lt;/p>
+&lt;p>事情是這樣發生的，大約在我大一的時候在 cloud native 聽到有關於 segment routing v6 這個酷東西，因此在大二的時候就有稍微研究一下同時也大概理解它的原理，至於這東西到底怎麼運作的，因為不是這篇文的重點所以就不談，可能之後會發其他的文章討論這個。&lt;/p>
+&lt;p>大三的時候因為接到 &lt;a href="https://cggc.nchc.org.tw/">CGGC&lt;/a> aka 一場台灣辦的 CTF 的出題邀請，因此就開始在想梗。&lt;/p>
+&lt;p>&lt;a href="https://github.com/user-attachments/assets/15d204e5-72b9-4827-97a4-9abbcb51f621">&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/user-attachments/assets/21be27d8-b269-47ee-8c1b-48f3831bea3d">&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/user-attachments/assets/ac66ca21-eadc-4000-98d9-6133a3f8456d">&lt;/a>&lt;/p>
+&lt;p>然而在某天洗澡的時候突然仔細回味了一下就突然想到了這個非常酷的利用手法，順帶一題這題只有 &lt;a href="https://seadog007.work/">seadog007&lt;/a> 有打出來&lt;/p>
+&lt;h2 id="what-is-tunnel">What is Tunnel&lt;/h2>
+&lt;p>大家最耳熟能詳的 Tunnel 應該就是 VPN 了，因為 VPN 基本上就是一種 Tunnel，用很多組加密或未加密的 Tunnel 組合成的虛擬網路就是 VPN 的核心概念。&lt;/p></description></item></channel></rss>
