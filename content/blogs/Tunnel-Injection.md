@@ -84,9 +84,9 @@ toc:
 
 首先我們偽造出一個符合這個 tunnel protocol 的封包
 
-外層的 source ip 是自己的 public ip 或者一些 tunnel protocol 因為會驗證 source ip 所以這邊也可能需要做 ip spoofing，destination ip 是 victim tunnel 的 public ip。
+外層的 source ip 是 attacker 的 public ip 或者一些 tunnel protocol 因為會驗證 source ip 所以這邊也可能需要做 ip spoofing，destination ip 是 victim tunnel 的 public ip。
 
-內層的 source ip 是自己的 <font color="red">public ip</font> 這個就是這邊的核心了，而 destination ip 就是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
+內層的 source ip 是 attacker 的 <font color="red">public ip</font> 這個就是這邊的核心了，而 destination ip 就是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1512" height="888" alt="image" src="https://github.com/user-attachments/assets/7a95b8c2-cf6c-4d50-9439-1a7ff17d9f52" />
 
@@ -96,7 +96,7 @@ toc:
 
 <img width="1740" height="881" alt="image" src="https://github.com/user-attachments/assets/d0e5e518-0435-42b3-96c1-5529311bfd73" />
 
-然後內網的機器就會看到一個 src = <font color="red">public ip</font> dest = 自己的 ip 的封包，因此他 response 理所當然會 src = 自己的 ip dest = <font color="red">public ip</font>
+然後內網的機器就會看到一個 src = <font color="red">public ip</font> dest = attacker 的 ip 的封包，因此他 response 理所當然會 src = attacker 的 ip dest = <font color="red">public ip</font>
 
 <img width="1753" height="829" alt="image" src="https://github.com/user-attachments/assets/33f5e5d2-2954-457b-bae5-e43ba2b12040" />
 
@@ -144,9 +144,9 @@ iptables -t nat -A POSTROUTING -o wan -j MASQUERADE
 
 一樣我們偽造出一個符合這個 tunnel protocol 的封包
 
-外層的 source ip 是自己的 public ip 或 ip spoofing 的 IP，destination ip 是 victim tunnel 的 public ip。
+外層的 source ip 是 attacker 的 public ip 或 ip spoofing 的 IP，destination ip 是 victim tunnel 的 public ip。
 
-內層的 source ip 是自己的 <font color="red">public ip</font> ，而 destination ip 這次就改成用<font color="red">你要 access 的外網 target public ip</font>。
+內層的 source ip 是 attacker 的 <font color="red">public ip</font> ，而 destination ip 這次就改成用<font color="red">你要 access 的外網 target public ip</font>。
 
 <img width="1577" height="892" alt="image" src="https://github.com/user-attachments/assets/ffbfa772-3f79-4701-ad49-b968441ba406" />
 
@@ -230,7 +230,7 @@ packet 經過 router 以後會做 NAT 並且同時 conntrack table 會留下一�
 
 我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
 
-source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是自己的 <font color="red">public ip</font>。
+source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是 attacker 的 <font color="red">public ip</font>。
 
 <img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
 
@@ -242,7 +242,7 @@ packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 
 
 接著朝著這個打好的洞發 tcp SYN 
 
-source ip 是自己的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
+source ip 是 attacker 的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
 
@@ -304,7 +304,7 @@ TCP 只有部份的 router 或較舊的 Linux kernel 成立而已。
 
 我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
 
-source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是自己的 <font color="red">public ip</font>。
+source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是 attacker 的 <font color="red">public ip</font>。
 
 <img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
 
@@ -314,7 +314,7 @@ packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 
 
 接著朝著這個打好的洞發 tcp SYN 
 
-source ip 是自己的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
+source ip 是 attacker 的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
 
@@ -372,6 +372,94 @@ Free 掉以後當內網重傳 TCP PUSH
 那該怎麼辦呢？
 
 這時候如果 victim 內網還有一層 tunnel 跟 NAT 的組合，我們就可以<font color="red">串一個 NAT Chain 出來</font>
+
+<img width="1518" height="701" alt="image" src="https://github.com/user-attachments/assets/6e0361aa-f2ed-48ba-8bfa-b97eae5e9a5a" />
+
+我們利用 Tunnel Injection 在 victim 的第一層內網發送 TCP SYN 來做 hole punching
+
+source ip 是 <font color="red">target 的 public ip</font>，而 destination ip 是 <font color="red">attacker 的 public ip</font>。
+
+<img width="1585" height="908" alt="image" src="https://github.com/user-attachments/assets/eccd387e-42e7-44eb-8962-faa95ec0ffb2" />
+
+packet 抵達 victim 的第一層 router 時會依照這台 router 的 routing table 做 forwarding，接著做 NAT 的 source ip 轉換，同時 conntrack table 會留下一條 NAT 的轉換紀錄。
+
+<img width="1468" height="912" alt="image" src="https://github.com/user-attachments/assets/9a6223c9-c748-41be-81c2-9ae450bdc4e7" />
+
+然後我們必須故意打一個 TCP SYN 來讓第一層 router 的 conntrack record 轉成 SYN_SENT2 state
+
+<img width="1628" height="842" alt="image" src="https://github.com/user-attachments/assets/674aa743-e4b6-4bad-b05b-ea7763fb6f79" />
+
+這個封包轉往 target 時就會被 RPF 給 DROP 掉
+
+<img width="1606" height="830" alt="image" src="https://github.com/user-attachments/assets/e8b0399a-96c1-4b5a-98be-a9f29b356cba" />
+
+我們利用 Tunnel Injection 在 victim 從第二層內網發送 TCP SYN 到 target
+
+source ip 是 <font color="red">attacker 的 public ip</font>，而 destination ip 是 <font color="red">target 的 public ip</font>。
+
+<img width="1580" height="836" alt="image" src="https://github.com/user-attachments/assets/59105cb3-cdd6-4808-b561-499c8b839fcf" />
+
+<img width="1546" height="818" alt="image" src="https://github.com/user-attachments/assets/0689a0c6-40e9-4ee9-b5f2-43aa9fed3f1a" />
+
+TCP SYN 會被第二層 router 做 NAT 的 source ip 轉換，同時 conntrack table 會留下一條 NAT 的轉換紀錄。
+
+<img width="1499" height="853" alt="image" src="https://github.com/user-attachments/assets/00729446-faa7-401c-b282-030aae85a543" />
+
+TCP SYN 會被第一層 router 做 NAT 的 source ip 轉換，同時 conntrack table 又會留下一條 NAT 的轉換紀錄。
+
+<img width="1432" height="866" alt="image" src="https://github.com/user-attachments/assets/7be48293-0ae1-4f67-b4c1-bad4cae8c9d0" />
+
+target 會回 SYN/ACK 並且依照 conntrack 的紀錄作 destination ip 的復原
+
+<img width="1581" height="936" alt="image" src="https://github.com/user-attachments/assets/61f1d773-6e80-4f93-a80f-eec9a253db2e" />
+
+destination ip 變成第二層 router 的 wan IP，並傳到第二層 router，一樣依照 conntrack 的紀錄作 destination ip 的復原
+
+<img width="1571" height="848" alt="image" src="https://github.com/user-attachments/assets/0b813ca9-8604-48ad-9eb9-8f18c31d0416" />
+
+destination ip 變成 attacker 的 public ip，並傳到第一層 router
+
+<img width="1432" height="865" alt="image" src="https://github.com/user-attachments/assets/a84a2fcb-a332-4680-8f34-2d07c5cfc5b3" />
+
+這時候很有趣的是 source ip 是 target 的 public ip 當好對應到之前在第一層 route 打好的 conntrack record 的 NAT 轉換紀錄。
+
+因此他會一樣依照 conntrack 的紀錄作 source ip 的 NAT
+
+<img width="1432" height="949" alt="image" src="https://github.com/user-attachments/assets/48ecb285-68ef-4a9f-82aa-030b7e9d910a" />
+
+attacker 收到的就是 source ip 為 <font color="red">victim 的第一層 router 的 public ip</font>
+
+<img width="1436" height="872" alt="image" src="https://github.com/user-attachments/assets/511aede6-4882-4676-a2a8-2204684283d7" />
+
+接下來的流程就跟前面講 [Bypass for Internal Network Access](#bypass-for-internal-network-access) 的流程一樣了
+
+回 ACK
+
+<img width="1354" height="917" alt="image" src="https://github.com/user-attachments/assets/ac76ca3c-6eae-40fb-9aba-fa0a0864c138" />
+
+發 push
+
+<img width="1437" height="919" alt="image" src="https://github.com/user-attachments/assets/32ab2ce8-6caa-482a-add0-144899e0d438" />
+
+發 RST 來 free 掉 conntrack record
+
+<img width="1330" height="911" alt="image" src="https://github.com/user-attachments/assets/5f543174-edbe-4aa2-8aef-bf269000150d" />
+
+target 持續重傳
+
+<img width="1456" height="906" alt="image" src="https://github.com/user-attachments/assets/94a00362-e077-46f6-8c43-0cc7cda68ab3" />
+
+打回來成功 NAT 並且 conntrack record ESTABLISHED
+
+<img width="1649" height="957" alt="image" src="https://github.com/user-attachments/assets/6c0dbb36-6cf7-4b89-b55d-56acf98acaa6" />
+
+以上我們就成功做到 RPF bypass 的 External Network Access 了。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=qWA0cVCgFotki8nm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+而且事實上 NAT Chain 的利用除了上面用來繞 RPF 外，也可以用來在 Internal Network Access 時繞一些 server 對 source 的檢查，畢竟有些 server 也是有自己的 firewall 的。
+
+
 
 
 
