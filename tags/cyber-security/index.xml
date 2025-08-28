@@ -16,6 +16,6 @@
 &lt;h2 id="what-is-tunnel">What is Tunnel&lt;/h2>
 &lt;p>大家最耳熟能詳的 Tunnel 應該就是 VPN 了，因為 VPN 基本上就是一種 Tunnel，用很多組加密或未加密的 Tunnel 組合成的虛擬網路就是 VPN 的核心概念。&lt;/p>
 &lt;p>那它的運作原理其實很簡單，基本上就是信封袋外面再加封一層信封袋的概念。&lt;/p>
-&lt;img width="863" height="351" alt="image" src="https://github.com/user-attachments/assets/6e5c692c-183f-41a2-a4d4-e03cb3eb4202" />
-&lt;img width="1107" height="351" alt="image" src="https://github.com/user-attachments/assets/c71b10e9-f6fa-473d-a94a-77e99d0a3dd5" />
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/6e5c692c-183f-41a2-a4d4-e03cb3eb4202" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/c71b10e9-f6fa-473d-a94a-77e99d0a3dd5" alt="image">&lt;/p>
 &lt;p>用網路的說法講就是，當 packet 從 tunnel 的網卡離開時，負責處理這個 tunnel 的程式就會把這個封包的內容封裝成這個 tunnel protocol 的格式以後作為 tcp 或 udp 又或者是某個 L3 的 protocol 的 payload 從實體網卡（或下一層 tunnel 網卡）送出。&lt;/p></description></item></channel></rss>

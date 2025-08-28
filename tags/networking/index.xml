@@ -16,8 +16,8 @@
 &lt;h2 id="what-is-tunnel">What is Tunnel&lt;/h2>
 &lt;p>大家最耳熟能詳的 Tunnel 應該就是 VPN 了，因為 VPN 基本上就是一種 Tunnel，用很多組加密或未加密的 Tunnel 組合成的虛擬網路就是 VPN 的核心概念。&lt;/p>
 &lt;p>那它的運作原理其實很簡單，基本上就是信封袋外面再加封一層信封袋的概念。&lt;/p>
-&lt;img width="863" height="351" alt="image" src="https://github.com/user-attachments/assets/6e5c692c-183f-41a2-a4d4-e03cb3eb4202" />
-&lt;img width="1107" height="351" alt="image" src="https://github.com/user-attachments/assets/c71b10e9-f6fa-473d-a94a-77e99d0a3dd5" />
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/6e5c692c-183f-41a2-a4d4-e03cb3eb4202" alt="image">&lt;/p>
+&lt;p>&lt;img src="https://github.com/user-attachments/assets/c71b10e9-f6fa-473d-a94a-77e99d0a3dd5" alt="image">&lt;/p>
 &lt;p>用網路的說法講就是，當 packet 從 tunnel 的網卡離開時，負責處理這個 tunnel 的程式就會把這個封包的內容封裝成這個 tunnel protocol 的格式以後作為 tcp 或 udp 又或者是某個 L3 的 protocol 的 payload 從實體網卡（或下一層 tunnel 網卡）送出。&lt;/p></description></item><item><title>利用 TCP 的 Timestamps 做到精準分類來源 linux machine</title><link>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</link><pubDate>Thu, 20 Feb 2025 14:00:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/analysis_linux_host_by_tcp_timestamp/</guid><description>&lt;h1 id="利用-tcp-的-timestamps-做到分類來源-linux-machine">利用 TCP 的 Timestamps 做到分類來源 linux machine&lt;/h1>
 &lt;h2 id="緣由">緣由&lt;/h2>
 &lt;p>會做這個的原因是因為要打今年的 &lt;a href="https://blog.chummydns.com/blogs/ais3-eof-2025/">AIS3 EOF&lt;/a> 要做封包的分析工具，然而按照 &lt;a href="https://blog.chummydns.com/blogs/hitconctf-2024-final/">HITCON CTF&lt;/a> 與往年 AIS3 EOF 的經驗，我們是沒辦法取得每個隊伍的 SRC IP 的，也就是說無法辨識出這個 request 是屬於哪一個隊伍的。&lt;/p>
