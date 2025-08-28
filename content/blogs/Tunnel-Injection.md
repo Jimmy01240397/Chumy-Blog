@@ -282,9 +282,82 @@ TCP 只有部份的 router 或較舊的 Linux kernel 成立而已。
 
 那該怎麼解決問題呢
 
-仔細看 sysctl 的屬性我們會發現 conntrack 的 tcp close 紀錄的壽命只有 10 秒，之後紀錄就會被 free 掉
+仔細看 sysctl 的參數我們會發現 conntrack 的 tcp close 紀錄的壽命只有 10 秒，之後紀錄就會被 free 掉
 
 <img width="666" height="49" alt="image" src="https://github.com/user-attachments/assets/fcab59ab-27a7-4a7f-a1e5-10c82ae13728" />
 
+然後還有一個有趣的參數是 net.netfilter.nf_conntrack_tcp_loose 
+
+<img width="587" height="48" alt="image" src="https://github.com/user-attachments/assets/84632096-8e77-4e61-bb89-35a1617bfbc3" />
+
+這個參數預設是 1
+
+那他有甚麼意思呢？
+
+當 net.netfilter.nf_conntrack_tcp_loose 為 1 時，允許在 conntrack 沒有任何符合條件的紀錄時收到 PUSH 或 ACK 做 NAT
+
+也就是說當我 conntrack 沒有任何符合條件的紀錄時，內網向外發一個 TCP PUSH 或 ACK 他會直接生出一個 ESTABLISHED state 的 NAT 紀錄
+
+那這就非常好玩了，因為 close state 時間夠短，並且 TCP 是會重傳的，我們可以手動發 TCP RST 來 free 掉 conntrack record 然後內網發 PUSH 出來就直接變成 ESTABLISHED state
+
+所以這邊在講一次流程：
+
+我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
+
+source ip 是你想要扁的 victim 內網機器的 ***private ip***，而 destination ip 是自己的 ***public ip***。
+
+<img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
+
+packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 forwarding，接著做 NAT 的 source ip 轉換，同時 conntrack table 會留下一條 NAT 的轉換紀錄。
+
+<img width="1894" height="769" alt="image" src="https://github.com/user-attachments/assets/68ca12ef-176c-42c8-9306-406007a1eaa2" />
+
+接著朝著這個打好的洞發 tcp SYN 
+
+source ip 是自己的 ***public ip***，而 destination ip 是你想要扁的 victim 內網機器的 ***private ip***。
+
+<img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
+
+packet 會依照 conntrack 的紀錄作 destination ip 的復原，並且依照這台 router 的 routing table 做 forwarding 轉到 victim 的內網機器
+
+<img width="1896" height="853" alt="image" src="https://github.com/user-attachments/assets/9da739d2-8185-4c74-a558-1268905a25b5" />
+
+victim 的內網機器收到後會回 TCP SYN/ACK
+
+<img width="1880" height="737" alt="image" src="https://github.com/user-attachments/assets/dd125103-65b5-4ff8-a28d-106f12453ba6" />
+
+並且 source ip 會很正常的 NAT 成 victim 的 public ip
+
+<img width="1906" height="712" alt="image" src="https://github.com/user-attachments/assets/dfc538ec-f8bd-4f92-ad21-d53ad41c4f77" />
+
+接著 attacker 就回 ACK
+
+<img width="1860" height="796" alt="image" src="https://github.com/user-attachments/assets/a0f2a086-4755-4169-9085-daf7b523b6fe" />
+
+我們這邊發一個 PUSH 進去，可能是 HTTP 的 request 之類的
+
+<img width="1890" height="808" alt="image" src="https://github.com/user-attachments/assets/3f55be71-accc-4b0e-8aa1-878ac136cc92" />
+
+因為上面講的機制，內網出來的 PUSH 會被 DROP，attacker 沒收到資料自然不會回 ACK，victim 內網機器沒收到 ACK 就會一直重傳 TCP PUSH
+
+<img width="1848" height="790" alt="image" src="https://github.com/user-attachments/assets/ef676fa9-b7d5-492b-86bd-ffd606b8c0bb" />
+
+接著我們利用 Tunnel Injection 從內網打一個 TCP RST 出來，手動 free 掉這條 conntrack record
+
+<img width="1928" height="762" alt="image" src="https://github.com/user-attachments/assets/7671e6c4-8041-4034-b9da-93fd323e0b1d" />
+
+Free 掉以後當內網重傳 TCP PUSH
+
+<img width="1744" height="820" alt="image" src="https://github.com/user-attachments/assets/115257d7-8133-4b60-9dd9-3177cbb7583d" />
+
+就會成功被 NAT 並且 conntrack table 會留下一條 NAT ***ESTABLISHED state*** 的轉換紀錄。
+
+<img width="1940" height="827" alt="image" src="https://github.com/user-attachments/assets/b04c2350-c5b4-428f-b55d-7f665be6a19e" />
+
+然後 connection 就建立起來了，可以快樂傳資料到內網了
+
+<img width="1922" height="808" alt="image" src="https://github.com/user-attachments/assets/30dec908-b538-4163-8151-7adc197584d2" />
+
+以上我們就成功做到 RPF bypass 的 Internal Network Access 了。
 
 
