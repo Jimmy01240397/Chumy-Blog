@@ -499,6 +499,23 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 <img width="1854" height="248" alt="image" src="https://github.com/user-attachments/assets/9e120a86-764d-4558-992c-07732265b8e0" />
 
+## IPSec
+
+或許大家以為只要啟用 IPSec 就可以防護這類的攻擊，但是事實上只要你的 IPSec 有配置不當，即使開 IPSec 也可能會遭受攻擊。
+
+理論上 IPSec 開啟後，所有指定 protocol 的 packet 離開網卡前會被 xfrm 攔截並且做 IPSec 的加密，同時所有指定 protocol 的 raw packet 進入網卡時應該要被 DROP。
+
+然而 xfrm 上有一個特殊的參數叫做 level，他允許你加密離開網卡的流量的同時 allow 進入網卡的 raw packet，雖說這項設定預設不會開，但你難保你家 IT 設定了一整天 IPSec 還沒設起來整個很躁的時候會做甚麼事情對吧！
+
+<img width="2000" height="178" alt="image" src="https://github.com/user-attachments/assets/58e4082d-c02c-4299-a859-05bf197ea631" />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/y1ZlsGSu-RY?si=9klBHYJLEvnkw1aR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+順帶一題，edgeos 你即使 level 屬性是預設值 require 他也會 allow raw packet，這是我的朋友 aka 現任[成大 CCNS](https://www.ccns.io/) 的網管 [zen](https://zenwen.tw/) 發現的，但基本上這件事還在待確認中。
+
+
+
+
 
 
 
