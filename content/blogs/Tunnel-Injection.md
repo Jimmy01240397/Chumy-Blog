@@ -134,7 +134,7 @@ iptables -t nat -A POSTROUTING -o wan -j MASQUERADE
 
 這條指令的意思是在確定出口網卡時當封包從 <font color="red">wan</font> 網卡離開時，就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
 
-可以發現它少了 source ip 的檢查，所以事實上如果 source ip 已經是 public 他也會做 NAT，畢竟 RFC 1918 只是定義而已，沒說你不能拿 public ip 當 private ip 用。
+可以發現它少了 source ip 的檢查，所以事實上如果 source ip 已經是 public 他也會做 NAT，畢竟 [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) 只是定義而已，沒說你不能拿 public ip 當 private ip 用。
 
 然而如果今天這台 router 同時有一個裸奔的 tunnel 再跑會怎樣呢？
 
@@ -459,7 +459,45 @@ target 持續重傳
 
 而且事實上 NAT Chain 的利用除了上面用來繞 RPF 外，也可以用來在 Internal Network Access 時繞一些 server 對 source 的檢查，畢竟有些 server 也是有自己的 firewall 的。
 
+## L2 Tunnel Abuse
 
+前面主要都是在談 L3 Tunnel 的利用，而 L2 Tunnel 因為多了一層 Ethernet header 要封，所以比較麻煩一些，因為我們需要 router 或者內往機器的 mac address 才可以達成利用，又或者可以做 broadcast 或 multicast。
+
+那我們有沒有可能利用 broadcast 或 multicast 來 leak 一些有用的資訊或者 mac address 呢？
+
+是有可能的
+
+當內網除了有 IPv4 以外還啟用了 IPv6 並且有 unicast address 時，由於預設情況下 ICMPv6 request 是允許 multicast 的，因此我們可以用 multicast 的 IPv6 ping 來 leak IPv6 address
+
+<img width="1586" height="137" alt="image" src="https://github.com/user-attachments/assets/abc2edae-bf6e-46f9-ae66-001080bdffb2" />
+
+首先我們用 multicast mac address 以及 attacker 的 public IPv6 address 在 victim 內網 multicast IPv6 ping
+
+<img width="1686" height="861" alt="image" src="https://github.com/user-attachments/assets/ea7fd3e3-1d59-403d-a125-cbc0243b043e" />
+
+Switch 會把這個 ping multicast 給所有有訂閱這個 multicast mac address 的設備
+
+<img width="1687" height="956" alt="image" src="https://github.com/user-attachments/assets/5465ba53-bc01-486a-806f-8472c1c52097" />
+
+victim 內網設備會回 ICMP pong 給 attacker
+
+<img width="1616" height="1053" alt="image" src="https://github.com/user-attachments/assets/950c89a1-933d-4d69-a962-b042104c807c" />
+
+我們便可拿到所有內網設備的 IPv6 address
+
+<img width="1190" height="880" alt="image" src="https://github.com/user-attachments/assets/4ed1c850-90c0-4e26-824f-82a9a49e0f22" />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Eqb1dv2bPzk?si=gX9q73c6ubSatqVy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+那有 IPv6 address 可以幹嘛呢？
+
+根據 [RFC 4291](https://datatracker.ietf.org/doc/html/rfc4291) 所記載的 SLAAC IPv6 address 的動態生成方式中，有一種方式是用 mac address 算出來的
+
+<img width="1562" height="681" alt="image" src="https://github.com/user-attachments/assets/39dad163-bb73-420f-bced-ca58c684cb1c" />
+
+這個算出的 IPv6 address 我們是可以逆推回 mac address 的，並且 linux 預設便是使用此方法生成 IPv6
+
+<img width="1854" height="248" alt="image" src="https://github.com/user-attachments/assets/9e120a86-764d-4558-992c-07732265b8e0" />
 
 
 
