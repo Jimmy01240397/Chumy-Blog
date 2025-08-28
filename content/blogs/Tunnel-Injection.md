@@ -1,6 +1,6 @@
 ---
 title: "到處都有免費 VPN -- Tunnel Injection"
-date: 2030-08-30T00:00:00+08:00
+date: 2025-08-28T13:50:00+08:00
 draft: false
 github_link: ""
 author: "Chumy"
