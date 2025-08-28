@@ -513,8 +513,33 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 順帶一題，edgeos 你即使 level 屬性是預設值 require 他也會 allow raw packet，這是我的朋友 aka 現任[成大 CCNS](https://www.ccns.io/) 的網管 [zen](https://zenwen.tw/) 發現的，但基本上這件事還在待確認中。
 
+## 掃描與 Real World
 
+最後來談談掃描的部分吧！
 
+雖說[這篇研究](https://www.top10vpn.com/research/tunneling-protocol-vulnerability/)已經講過具體的掃描方式了。
+
+但我這邊也分享一下
+
+## Internal access able
+
+我們可以透過 victim 的 tunnel 在 victim 內網彈一個 ICMP request ping 出來，source ip 是 private IP destination ip 是 scanner 的 IP，並且在 ICMP ping 的 payload 內留一些標記以及寫下 tunnel 外層 src ip 與 dst ip，當我們可以從 wan 收到一模一樣的 ICMP ping 時，就可以確定對方的 router 是否存在該 protocol 的 tunnel，接著我們可以觀察傳過來的的 source ip 是否有變成 public 我們就可以知道 victim router 有沒有 NAT。
+
+<img width="1874" height="792" alt="image" src="https://github.com/user-attachments/assets/5cf3582e-5570-4f27-aa24-9fa9d02f16b4" />
+
+<img width="1796" height="769" alt="image" src="https://github.com/user-attachments/assets/e3347bbf-949f-4682-aca2-051b501daa9d" />
+
+<img width="1916" height="655" alt="image" src="https://github.com/user-attachments/assets/10ca7e2d-3a10-493e-92f3-8574b1fa36e8" />
+
+接著檢查是否有 RPF，可以透過 victim 的 tunnel 在 victim 內網彈一個 ICMP reply pong 出來，source ip 是 private IP destination ip 是 scanner 的 IP，由於[前面講過](#tunnel-injection-to-internal-network) "一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong" 因此就能確定從 victim router 出來絕對會是 private ip，接著只要看 scanner 有沒有收到就知道 victim 的 ISP 有沒有 RPF 了
+
+<img width="1828" height="771" alt="image" src="https://github.com/user-attachments/assets/6f3f4e5e-dee9-4929-9a93-edfb430a7fe2" />
+
+<img width="1876" height="762" alt="image" src="https://github.com/user-attachments/assets/b4ba60ec-3f38-4086-979d-af123ce393e3" />
+
+## External access able
+
+由於 External access able 的 list 必定為 Internal access able 且有開 NAT 的 list 的 sub set，因此我們可以直接拿這個 IP list 再掃一次
 
 
 
