@@ -499,6 +499,8 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 <img width="1854" height="248" alt="image" src="https://github.com/user-attachments/assets/9e120a86-764d-4558-992c-07732265b8e0" />
 
+此外，另外一名來自趨勢科技的研究員 [123ojp](https://github.com/123ojp) 也剛好跟我一樣再研究這個方面的攻擊手法，並且有發現針對 VXLAN 這個 L2 Tunnel 更為高效的利用手法，有興趣可以去看他在 [DEFCON 33 的議程](https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60316)
+
 ## IPSec
 
 或許大家以為只要啟用 IPSec 就可以防護這類的攻擊，但是事實上只要你的 IPSec 有配置不當，即使開 IPSec 也可能會遭受攻擊。
@@ -521,7 +523,7 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 但我這邊也分享一下
 
-## Internal access able
+### Internal access able
 
 我們可以透過 victim 的 tunnel 在 victim 內網彈一個 ICMP request ping 出來，source ip 是 private IP destination ip 是 scanner 的 IP，並且在 ICMP ping 的 payload 內留一些標記以及寫下 tunnel 外層 src ip 與 dst ip，當我們可以從 wan 收到一模一樣的 ICMP ping 時，就可以確定對方的 router 是否存在該 protocol 的 tunnel，接著我們可以觀察傳過來的的 source ip 是否有變成 public 我們就可以知道 victim router 有沒有 NAT。
 
@@ -537,9 +539,58 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 <img width="1876" height="762" alt="image" src="https://github.com/user-attachments/assets/b4ba60ec-3f38-4086-979d-af123ce393e3" />
 
-## External access able
+### External access able
 
 由於 External access able 的 list 必定為 Internal access able 且有開 NAT 的 list 的 sub set，因此我們可以直接拿這個 IP list 再掃一次
+
+一樣的架構但這次多一個可控的 target 機
+
+透過 victim 的 tunnel 在 victim 內網彈一個 ICMP request ping 出來，source ip 是 scanner 的 IP destination ip 是 target 的 ip
+
+<img width="865" height="469" alt="tunnelinjectexternalscan1" src="https://github.com/user-attachments/assets/11f911c5-5654-4810-a88a-9a79596a6c3b" />
+
+如果是 External access able 的話這邊應該會對 public IP 做 NAT 之後送到 target 機，這邊 target 機要記得做 log
+
+<img width="865" height="382" alt="tunnelinjectexternalscan2" src="https://github.com/user-attachments/assets/14d6f543-e252-49c7-ac93-ed754cd525ec" />
+
+target 機收到後會回 ICMP reply pong 到 victim router
+
+<img width="865" height="382" alt="tunnelinjectexternalscan3" src="https://github.com/user-attachments/assets/aed43a57-e31d-4eda-bde2-7c56ba9c588b" />
+
+victim router 復原 destination ip 後會送回 scanner，這時候只需要檢查與比對 scanner 的 log 跟 target 的 log，我們就可以知道哪些是 External access able 的了。
+
+<img width="865" height="424" alt="tunnelinjectexternalscan4" src="https://github.com/user-attachments/assets/dda1ce57-eae0-46a9-88bc-31241d4de968" />
+
+### 掃描結果
+
+這邊針對不須 ip spoofing 的 tunnel 做掃描的結果
+
+總共有：
+- GRE: 230035 台
+  - 有開 NAT: 191961 台
+    - External access able: 22875 台
+- IPIP: 76209 台
+  - 有開 NAT: 23851
+    - External access able: 5438 台
+
+由於有些 ISP 配的是 dynamic ip 所以可能會有誤差
+
+這邊也針對這些 IP 的 ASN 做分析可以看到有一坨中國的 IP
+
+GRE: 
+
+<img width="1642" height="753" alt="image" src="https://github.com/user-attachments/assets/efb0aa63-43e5-45a5-bf00-0dbd50c8e38a" />
+
+IPIP:
+
+<img width="1394" height="753" alt="image" src="https://github.com/user-attachments/assets/a69480e1-7fdc-4045-9b6d-f33a749b5151" />
+
+## 結語
+
+最後只能說很可惜，因為剛剛好 [123ojp](https://github.com/123ojp) 跟我撞到同一個研究且早了一點點，所以最後沒有投上 [HITCON 2025](https://hitcon.org/2025/zh-TW/)，但是最後也有成功上去 HITCON Lightning Talk 講了一下這個有趣的小東西並補充了 [123ojp](https://github.com/123ojp) 沒有講到也沒有想到的 [Tunnel Injection To External Network](#tunnel-injection-to-external-network) 利用手法，且最後其時也聊得蠻開心的，之後我可能會試著拿這個研究去投一些其他的研討會看看。
+
+順帶一題，雖說上面的 Demo 都是用我自己手刻的工具時做的，但是理論上再不需要做 [RPF Bypass](#rpf-or-source-ip-verify-bypass) 的情況下，其實是可以用 <font color="red">5 行 linux ip 指令</font>就能夠把 internal 跟 external 的攻擊打出來，這部分就留給各位當作業了 XXD
+
 
 
 
