@@ -62,7 +62,7 @@ toc:
 
 ## Impact
 
-那沒有驗證會怎樣，基本上我只要能夠偽造出一個符合這個 tunnel protocol 的封包，我就可以做到將惡意的 packet 透過這個裸奔的 tunnel 轉送到對方的內網內，然而過往的研究基本上都是認為這個攻擊是只有單向的，頂多可以做一些 DDoS 而已。
+那沒有驗證會怎樣，基本上我只要能夠偽造出一個符合這個 tunnel protocol 的封包，我就可以做到將惡意的 packet 透過這個裸奔的 tunnel 轉送到 victim 的內網內，然而過往的研究基本上都是認為這個攻擊是只有單向的，頂多可以做一些 DDoS 而已。
 
 <img width="1675" height="886" alt="image" src="https://github.com/user-attachments/assets/9c57dd15-5db7-438b-9d39-d7871cd189aa" />
 
@@ -78,33 +78,33 @@ toc:
 
 畢竟攻擊的核心是需要將流量「注入到 Tunnel 內」因此這邊就先取名叫做 Tunnel Injection。
 
-## Tunnel Injection to Internal Network
+### Tunnel Injection to Internal Network
 
 第一個利用手法是我們可以做到 Interactive Internal Network Access
 
 首先我們偽造出一個符合這個 tunnel protocol 的封包
 
-外層的 source ip 是自己的 public ip 或者一些 tunnel protocol 因為會驗證 source ip 所以這邊也可能需要做 ip spoofing，destination ip 是對方 tunnel 的 public ip。
+外層的 source ip 是自己的 public ip 或者一些 tunnel protocol 因為會驗證 source ip 所以這邊也可能需要做 ip spoofing，destination ip 是 victim tunnel 的 public ip。
 
-內層的 source ip 是自己的 ***public ip*** 這個就是這邊的核心了，而 destination ip 就是你想要扁的對方內網機器的 ***private ip***。
+內層的 source ip 是自己的 ***public ip*** 這個就是這邊的核心了，而 destination ip 就是你想要扁的 victim 內網機器的 ***private ip***。
 
 <img width="1512" height="888" alt="image" src="https://github.com/user-attachments/assets/7a95b8c2-cf6c-4d50-9439-1a7ff17d9f52" />
 
 送出去以後會發生甚麼事呢。
 
-首先 packet 抵達對方的 router 時會被解封裝，並把內層的封包依照這台 router 的 routing table 做 forwarding，同時 conntrack table 會留下一條轉發的紀錄。
+首先 packet 抵達 victim 的 router 時會被解封裝，並把內層的封包依照這台 router 的 routing table 做 forwarding，同時 conntrack table 會留下一條轉發的紀錄。
 
 <img width="1740" height="881" alt="image" src="https://github.com/user-attachments/assets/d0e5e518-0435-42b3-96c1-5529311bfd73" />
 
-然後內網的機器就會看到一個 src = ***public ip*** dest = 自己的 ip 的封包，因此他回信理所當然會 src = 自己的 ip dest = ***public ip***
+然後內網的機器就會看到一個 src = ***public ip*** dest = 自己的 ip 的封包，因此他 response 理所當然會 src = 自己的 ip dest = ***public ip***
 
 <img width="1753" height="829" alt="image" src="https://github.com/user-attachments/assets/33f5e5d2-2954-457b-bae5-e43ba2b12040" />
 
-這個 packet 來到 router 的時候，因為 dest = ***public ip*** 所以就會***依照 routing table 做 forwarding 直接走 default gateway 出去***。
+這個 packet 來到 victim router 的時候，因為 dest = ***public ip*** 所以就會***依照 routing table 做 forwarding 直接走 default gateway 出去***。
 
-這邊同時要補充一點，因為一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong 因此回來的 packet 離開 router 的時候是不會被 NAT 也就是說 ***source ip 是 private ip*** 這在某些場景是會有問題的。
+這邊同時要補充一點，因為一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong 因此回來的 packet 離開 victim router 的時候是不會被 NAT 也就是說 ***source ip 是 private ip*** 這在某些場景是會有問題的。
 
-那接著我們就可以從網路上收到這個來自對方內網的回應。
+那接著我們就可以從網路上收到這個來自 victim 內網的回應。
 
 <img width="1749" height="787" alt="image" src="https://github.com/user-attachments/assets/2a483ec0-2a7d-445a-a8cb-403f24bcd8bc" />
 
@@ -112,4 +112,95 @@ toc:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Tunnel Injection to External Network
+### Tunnel Injection to External Network
+
+在講攻擊手法之前我們先來看看 NAT 一般是怎麼實作的，這邊以 Linux 為例
+
+在 Linux kernel base 的 router 上，一般我們毀使用 `netfilter` 與 `conntrack` 來處理 NAT，而最常見的指令介面會是 `iptables` 與 `nftables`，這邊以 `iptables` 為例
+
+一般情況下要啟動 NAT 我們會下這條 `iptables` 指令
+
+```bash
+iptables -t nat -A POSTROUTING -o wan -s 192.168.0.0/16 -j MASQUERADE
+```
+
+這條指令的意思是在確定出口網卡時當封包從 ***wan*** 網卡離開時，如果 source ip 符合 192.168.0.0/16 就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
+
+但是事實上其實很多 router 的廠商都會偷懶，只這樣寫
+
+```bash
+iptables -t nat -A POSTROUTING -o wan -j MASQUERADE
+```
+
+這條指令的意思是在確定出口網卡時當封包從 ***wan*** 網卡離開時，就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
+
+可以發現它少了 source ip 的檢查，所以事實上如果 source ip 已經是 public 他也會做 NAT，畢竟 RFC 1918 只是定義而已，沒說你不能拿 public ip 當 private ip 用。
+
+然而如果今天這台 router 同時有一個裸奔的 tunnel 再跑會怎樣呢？
+
+答案是我們會得到一個***免費的跳板***
+
+事實上我們只需要將前面 [Tunnel Injection to Internal Network](#tunnel-injection-to-internal-network) 所說的內層的 destination ip 更改成你要 access 的外網 target public ip 就好。
+
+一樣我們偽造出一個符合這個 tunnel protocol 的封包
+
+外層的 source ip 是自己的 public ip 或 ip spoofing 的 IP，destination ip 是 victim tunnel 的 public ip。
+
+內層的 source ip 是自己的 ***public ip*** ，而 destination ip 這次就改成用***你要 access 的外網 target public ip***。
+
+<img width="1577" height="892" alt="image" src="https://github.com/user-attachments/assets/ffbfa772-3f79-4701-ad49-b968441ba406" />
+
+packet 抵達 victim 的 router 時會被解封裝，並把內層的封包依照這台 router 的 routing table 做 forwarding，同時依照上面 `iptables` 做 NAT 的 source ip 轉換，同時 conntrack table 會留下一條 NAT 的轉換紀錄。
+
+<img width="1547" height="1035" alt="image" src="https://github.com/user-attachments/assets/b120f257-d8b2-4392-a619-80133643455c" />
+
+接著你要連的 target 就會收到你的 packet 並且可能會做 response，因為 source ip 已經因為上面所說的做 NAT 所以 target 看到的會是
+
+src = ***victim public ip*** dest = ***target public ip***
+
+因此 response 會是 src = ***target public ip*** dest = ***victim public ip***
+
+<img width="1548" height="896" alt="image" src="https://github.com/user-attachments/assets/92a6f6f4-293e-42ff-80be-e659a6bd32cd" />
+
+接著 victim router 收到 packet 後會依照 conntrack 的紀錄作 destination ip 的復原，並且依照這台 router 的 routing table 做 forwarding
+
+<img width="1550" height="916" alt="image" src="https://github.com/user-attachments/assets/9ab444c2-9e01-4723-996e-e006786c340c" />
+
+然後你就收到 response 了
+
+<img width="1539" height="920" alt="image" src="https://github.com/user-attachments/assets/9c24ec6f-6eae-4fe0-a7fd-df7588e38fd2" />
+
+我們就能夠 Arbitrary Interactive Pivoting Attack via Tunnel 
+
+<img width="2079" height="1269" alt="image" src="https://github.com/user-attachments/assets/6dfa50fa-0f75-46f5-acf2-b4d52f2a313c" />
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=z7rLzEjtBHx35nQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## RPF or source ip verify bypass
+
+當你以為這樣就結束時現實往往會來一巴掌
+
+還記得前面講 [Tunnel Injection to Internal Network](#tunnel-injection-to-internal-network) 時所說的 
+
+```
+一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong 因此回來的 packet 離開 victim router 的時候是不會被 NAT 也就是說 source ip 是 private ip 這在某些場景是會有問題的。
+```
+
+而這邊所說的場景就是指 Reverse path forwarding (RPF) 或者 source ip verify
+
+<img width="874" height="875" alt="image" src="https://github.com/user-attachments/assets/e80bb09f-a306-4308-944b-938e24e01da0" />
+
+首先絕大多數的 ISP 為了要防止客戶對外做 IP Spoofing 的攻擊，一般都會針對 client 方向的網卡開啟 RPF
+
+RPF 就是指說，當網卡收到 packet 時，會拿 source ip 對一次 routing tables，如果這個 source ip 並不符合 routing tables 上送往這張網卡的任何規則的話，這個封包就會被 DROP 掉。
+
+因此如果遇到 victim 的 ISP 有啟用這類防護的情況的話你是收不到 response 的，那該怎麼辦
+
+### Bypass for Internal Network Access
+
+這邊我們就來談談 P2P 網路是怎麼做 NAT hold punching 的
+
+
+
+
+
