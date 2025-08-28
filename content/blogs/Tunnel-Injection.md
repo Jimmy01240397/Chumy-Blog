@@ -226,12 +226,65 @@ packet 經過 router 以後會做 NAT 並且同時 conntrack table 會留下一�
 
 再加上我們可以利用 Tunnel Injection 做到單方向任意存取內網或者從內網發 packet，那我們是否可以手動做 NAT hole punching 以後直接從外網做存取呢？
 
-事實上是可以的。
+事實上是可以的。以下用 TCP 舉例。
 
+我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
 
+source ip 是你想要扁的 victim 內網機器的 ***private ip***，而 destination ip 是自己的 ***public ip***。
 
+<img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
 
+packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 forwarding，接著做 NAT 的 source ip 轉換，同時 conntrack table 會留下一條 NAT 的轉換紀錄。
 
+這樣 hole punching 就完成了
+
+<img width="1894" height="769" alt="image" src="https://github.com/user-attachments/assets/68ca12ef-176c-42c8-9306-406007a1eaa2" />
+
+接著朝著這個打好的洞發 tcp SYN 
+
+source ip 是自己的 ***public ip***，而 destination ip 是你想要扁的 victim 內網機器的 ***private ip***。
+
+<img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
+
+packet 會依照 conntrack 的紀錄作 destination ip 的復原，並且依照這台 router 的 routing table 做 forwarding 轉到 victim 的內網機器
+
+<img width="1896" height="853" alt="image" src="https://github.com/user-attachments/assets/9da739d2-8185-4c74-a558-1268905a25b5" />
+
+victim 的內網機器收到後會回 TCP SYN/ACK
+
+<img width="1880" height="737" alt="image" src="https://github.com/user-attachments/assets/dd125103-65b5-4ff8-a28d-106f12453ba6" />
+
+並且 source ip 會很正常的 NAT 成 victim 的 public ip
+
+<img width="1906" height="712" alt="image" src="https://github.com/user-attachments/assets/dfc538ec-f8bd-4f92-ad21-d53ad41c4f77" />
+
+接著 attacker 就回 ACK
+
+<img width="1876" height="797" alt="image" src="https://github.com/user-attachments/assets/a2f3b7a5-61fd-45f8-a810-3076ed283495" />
+
+然後 connection 就建立起來了，可以快樂傳資料到內網了
+
+<img width="1922" height="808" alt="image" src="https://github.com/user-attachments/assets/30dec908-b538-4163-8151-7adc197584d2" />
+
+然而上面的流程其實只有對 UDP 完全成立。
+
+TCP 只有部份的 router 或較舊的 Linux kernel 成立而已。
+
+主要是因為現今的 Linux kernel 的 conntrack 做 TCP Simultaneous Open 會嚴格檢查封包傳輸的行為是否符合 TCP Simultaneous Open 的行為，如果有一邊的 SYN/ACK 沒收到，你會發現他的 state 會永遠停留在 `SYN_SENT2`，這時候內網對外發 TCP PUSH 的時候***依然不會被 NAT 成 victim 的 public ip***
+
+因為上面的流程會少 attacker 發向 victim 內網機器的 SYN/ACK 因此永遠不會 ESTABLISHED
+
+那如果我補發 attacker 發向 victim 內網機器的 SYN/ACK 是否就能解決呢？
+
+由於 conntrack 只要看到任何 TCP RST 就會直接把這條紀錄轉成 close state 並且在幾秒後 free 掉，並且一般的系統在收到來源不明，或者是不符合握手流程的 TCP 包會直接回 TCP RST（因為 TCP SYN 是我們手動利用 Tunnel Injection 打出去的，因此 victim 內網機器壓根不認識這個 SYN/ACK）
+
+雖說這種作法在一些會 DROP 掉 TCP RST 的內網環境可能是可以成功的，但是這邊還是以預設狀況為主比較好。
+
+那該怎麼解決問題呢
+
+仔細看 sysctl 的屬性我們會發現 conntrack 的 tcp close 紀錄的壽命只有 10 秒，之後紀錄就會被 free 掉
+
+<img width="666" height="49" alt="image" src="https://github.com/user-attachments/assets/fcab59ab-27a7-4a7f-a1e5-10c82ae13728" />
 
 
 
