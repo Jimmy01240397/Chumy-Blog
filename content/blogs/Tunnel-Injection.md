@@ -198,7 +198,38 @@ RPF 就是指說，當網卡收到 packet 時，會拿 source ip 對一次 routi
 
 ### Bypass for Internal Network Access
 
-這邊我們就來談談 P2P 網路是怎麼做 NAT hold punching 的
+這邊我們就來談談 P2P 網路是怎麼做 NAT hole punching 的
+
+首先當雙方的 source port 提前知道，或者可預測的情況（以 p2p 應用程式的情況，會有一個 stun server 協助探測兩邊的 client 使用的 source port 是多少）
+
+雙方可以同時朝對方的 public ip 與 port 發送一個 packet，這邊以 udp 為例
+
+<img width="974" height="292" alt="hownatholepunchwork1" src="https://github.com/user-attachments/assets/590fc3b4-e990-4ebb-8f8d-e44c20f9f30f" />
+
+packet 經過 router 以後會做 NAT 並且同時 conntrack table 會留下一條 NAT 的轉換紀錄。
+
+<img width="1077" height="432" alt="hownatholepunchwork2" src="https://github.com/user-attachments/assets/1a9e7d65-5fc1-44c0-bbed-92361eaed76d" />
+
+兩個封包都各自抵達對方的 router，這邊可以發現抵達的時候 conntrack table 已經有符合條件的 NAT 轉換紀錄。
+
+<img width="1078" height="422" alt="hownatholepunchwork3" src="https://github.com/user-attachments/assets/4e531fdf-9045-44aa-bb86-2b1b7189c7e2" />
+
+因此接著就會依照 conntrack 的紀錄作 destination ip 的復原
+
+<img width="1078" height="422" alt="hownatholepunchwork4" src="https://github.com/user-attachments/assets/368274e7-f142-4270-becf-f3589dfd908a" />
+
+以上就是整個 NAT hole punching 的大概流程，如果說是 tcp 的話會更複雜一點，因為 tcp 是 statefull，有興趣可以去查 TCP Simultaneous Open，剛好今年的 [HITCON CTF 2025 有類似的題目](https://ctf2025.hitcon.org/dashboard/#19) 畢竟 TCP Self Connect 本身也是一種 TCP Simultaneous Open 的特殊案例。
+
+順帶一題我會清楚整個 P2P 傳輸的流程也歸功於我高中時曾經[手刻過整個 P2P 做 NAT hole punching 的流程，也手刻過 STUN server](https://github.com/Jimmy01240397/NetworkServicePackage) ~~雖說現在看他的 code 醜醜的就是了~~，之前有些人總是問我為甚麼要自己造輪子，但是我認為自己手刻輪子也是一種樂趣，並且這樣才能夠真正的學到東西，畢竟使用自己寫出來的工具也是一種樂趣吧？
+
+總之我們可以理解為從內部發 packet 做完 NAT 以後，其時就變相地做完了一個有限制的 port forwarding
+
+再加上我們可以利用 Tunnel Injection 做到單方向任意存取內網或者從內網發 packet，那我們是否可以手動做 NAT hole punching 以後直接從外網做存取呢？
+
+事實上是可以的。
+
+
+
 
 
 
