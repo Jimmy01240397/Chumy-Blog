@@ -86,7 +86,7 @@ toc:
 
 外層的 source ip 是自己的 public ip 或者一些 tunnel protocol 因為會驗證 source ip 所以這邊也可能需要做 ip spoofing，destination ip 是 victim tunnel 的 public ip。
 
-內層的 source ip 是自己的 ***public ip*** 這個就是這邊的核心了，而 destination ip 就是你想要扁的 victim 內網機器的 ***private ip***。
+內層的 source ip 是自己的 <font color="red">public ip</font> 這個就是這邊的核心了，而 destination ip 就是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1512" height="888" alt="image" src="https://github.com/user-attachments/assets/7a95b8c2-cf6c-4d50-9439-1a7ff17d9f52" />
 
@@ -96,13 +96,13 @@ toc:
 
 <img width="1740" height="881" alt="image" src="https://github.com/user-attachments/assets/d0e5e518-0435-42b3-96c1-5529311bfd73" />
 
-然後內網的機器就會看到一個 src = ***public ip*** dest = 自己的 ip 的封包，因此他 response 理所當然會 src = 自己的 ip dest = ***public ip***
+然後內網的機器就會看到一個 src = <font color="red">public ip</font> dest = 自己的 ip 的封包，因此他 response 理所當然會 src = 自己的 ip dest = <font color="red">public ip</font>
 
 <img width="1753" height="829" alt="image" src="https://github.com/user-attachments/assets/33f5e5d2-2954-457b-bae5-e43ba2b12040" />
 
-這個 packet 來到 victim router 的時候，因為 dest = ***public ip*** 所以就會***依照 routing table 做 forwarding 直接走 default gateway 出去***。
+這個 packet 來到 victim router 的時候，因為 dest = <font color="red">public ip</font> 所以就會<font color="red">依照 routing table 做 forwarding 直接走 default gateway 出去</font>。
 
-這邊同時要補充一點，因為一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong 因此回來的 packet 離開 victim router 的時候是不會被 NAT 也就是說 ***source ip 是 private ip*** 這在某些場景是會有問題的。
+這邊同時要補充一點，因為一般的 router 不會對奇怪類型的封包做 SNAT 比如 TCP SYN/ACK、ICMP type 0 aka pong 因此回來的 packet 離開 victim router 的時候是不會被 NAT 也就是說 <font color="red">source ip 是 private ip</font> 這在某些場景是會有問題的。
 
 那接著我們就可以從網路上收到這個來自 victim 內網的回應。
 
@@ -124,7 +124,7 @@ toc:
 iptables -t nat -A POSTROUTING -o wan -s 192.168.0.0/16 -j MASQUERADE
 ```
 
-這條指令的意思是在確定出口網卡時當封包從 ***wan*** 網卡離開時，如果 source ip 符合 192.168.0.0/16 就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
+這條指令的意思是在確定出口網卡時當封包從 <font color="red">wan</font> 網卡離開時，如果 source ip 符合 192.168.0.0/16 就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
 
 但是事實上其實很多 router 的廠商都會偷懶，只這樣寫
 
@@ -132,13 +132,13 @@ iptables -t nat -A POSTROUTING -o wan -s 192.168.0.0/16 -j MASQUERADE
 iptables -t nat -A POSTROUTING -o wan -j MASQUERADE
 ```
 
-這條指令的意思是在確定出口網卡時當封包從 ***wan*** 網卡離開時，就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
+這條指令的意思是在確定出口網卡時當封包從 <font color="red">wan</font> 網卡離開時，就做 NAT 並使用 wan 網卡的 public ip 作為 source ip。
 
 可以發現它少了 source ip 的檢查，所以事實上如果 source ip 已經是 public 他也會做 NAT，畢竟 RFC 1918 只是定義而已，沒說你不能拿 public ip 當 private ip 用。
 
 然而如果今天這台 router 同時有一個裸奔的 tunnel 再跑會怎樣呢？
 
-答案是我們會得到一個***免費的跳板***
+答案是我們會得到一個<font color="red">免費的跳板</font>
 
 事實上我們只需要將前面 [Tunnel Injection to Internal Network](#tunnel-injection-to-internal-network) 所說的內層的 destination ip 更改成你要 access 的外網 target public ip 就好。
 
@@ -146,7 +146,7 @@ iptables -t nat -A POSTROUTING -o wan -j MASQUERADE
 
 外層的 source ip 是自己的 public ip 或 ip spoofing 的 IP，destination ip 是 victim tunnel 的 public ip。
 
-內層的 source ip 是自己的 ***public ip*** ，而 destination ip 這次就改成用***你要 access 的外網 target public ip***。
+內層的 source ip 是自己的 <font color="red">public ip</font> ，而 destination ip 這次就改成用<font color="red">你要 access 的外網 target public ip</font>。
 
 <img width="1577" height="892" alt="image" src="https://github.com/user-attachments/assets/ffbfa772-3f79-4701-ad49-b968441ba406" />
 
@@ -156,9 +156,9 @@ packet 抵達 victim 的 router 時會被解封裝，並把內層的封包依照
 
 接著你要連的 target 就會收到你的 packet 並且可能會做 response，因為 source ip 已經因為上面所說的做 NAT 所以 target 看到的會是
 
-src = ***victim public ip*** dest = ***target public ip***
+src = <font color="red">victim public ip</font> dest = <font color="red">target public ip</font>
 
-因此 response 會是 src = ***target public ip*** dest = ***victim public ip***
+因此 response 會是 src = <font color="red">target public ip</font> dest = <font color="red">victim public ip</font>
 
 <img width="1548" height="896" alt="image" src="https://github.com/user-attachments/assets/92a6f6f4-293e-42ff-80be-e659a6bd32cd" />
 
@@ -174,7 +174,7 @@ src = ***victim public ip*** dest = ***target public ip***
 
 <img width="2079" height="1269" alt="image" src="https://github.com/user-attachments/assets/6dfa50fa-0f75-46f5-acf2-b4d52f2a313c" />
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=z7rLzEjtBHx35nQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EC9qySzo6J4?si=mF9rBsuFrUwao2-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## RPF or source ip verify bypass
 
@@ -230,7 +230,7 @@ packet 經過 router 以後會做 NAT 並且同時 conntrack table 會留下一�
 
 我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
 
-source ip 是你想要扁的 victim 內網機器的 ***private ip***，而 destination ip 是自己的 ***public ip***。
+source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是自己的 <font color="red">public ip</font>。
 
 <img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
 
@@ -242,7 +242,7 @@ packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 
 
 接著朝著這個打好的洞發 tcp SYN 
 
-source ip 是自己的 ***public ip***，而 destination ip 是你想要扁的 victim 內網機器的 ***private ip***。
+source ip 是自己的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
 
@@ -270,7 +270,7 @@ victim 的內網機器收到後會回 TCP SYN/ACK
 
 TCP 只有部份的 router 或較舊的 Linux kernel 成立而已。
 
-主要是因為現今的 Linux kernel 的 conntrack 做 TCP Simultaneous Open 會嚴格檢查封包傳輸的行為是否符合 TCP Simultaneous Open 的行為，如果有一邊的 SYN/ACK 沒收到，你會發現他的 state 會永遠停留在 `SYN_SENT2`，這時候內網對外發 TCP PUSH 的時候***依然不會被 NAT 成 victim 的 public ip***
+主要是因為現今的 Linux kernel 的 conntrack 做 TCP Simultaneous Open 會嚴格檢查封包傳輸的行為是否符合 TCP Simultaneous Open 的行為，如果有一邊的 SYN/ACK 沒收到，你會發現他的 state 會永遠停留在 `SYN_SENT2`，這時候內網對外發 TCP PUSH 的時候<font color="red">依然不會被 NAT 成 victim 的 public ip</font>
 
 因為上面的流程會少 attacker 發向 victim 內網機器的 SYN/ACK 因此永遠不會 ESTABLISHED
 
@@ -304,7 +304,7 @@ TCP 只有部份的 router 或較舊的 Linux kernel 成立而已。
 
 我們利用 Tunnel Injection 在 victim 的內網發送 TCP SYN 來做 hole punching
 
-source ip 是你想要扁的 victim 內網機器的 ***private ip***，而 destination ip 是自己的 ***public ip***。
+source ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>，而 destination ip 是自己的 <font color="red">public ip</font>。
 
 <img width="1797" height="864" alt="image" src="https://github.com/user-attachments/assets/34fa43d2-f10d-4c30-bf6b-9bba2537b88d" />
 
@@ -314,7 +314,7 @@ packet 抵達 victim 的 router 時會依照這台 router 的 routing table 做 
 
 接著朝著這個打好的洞發 tcp SYN 
 
-source ip 是自己的 ***public ip***，而 destination ip 是你想要扁的 victim 內網機器的 ***private ip***。
+source ip 是自己的 <font color="red">public ip</font>，而 destination ip 是你想要扁的 victim 內網機器的 <font color="red">private ip</font>。
 
 <img width="1894" height="750" alt="image" src="https://github.com/user-attachments/assets/6a05f51d-89e9-4b54-a0d8-a1af4b66f30e" />
 
@@ -350,7 +350,7 @@ Free 掉以後當內網重傳 TCP PUSH
 
 <img width="1744" height="820" alt="image" src="https://github.com/user-attachments/assets/115257d7-8133-4b60-9dd9-3177cbb7583d" />
 
-就會成功被 NAT 並且 conntrack table 會留下一條 NAT ***ESTABLISHED state*** 的轉換紀錄。
+就會成功被 NAT 並且 conntrack table 會留下一條 NAT <font color="red">ESTABLISHED state</font> 的轉換紀錄。
 
 <img width="1940" height="827" alt="image" src="https://github.com/user-attachments/assets/b04c2350-c5b4-428f-b55d-7f665be6a19e" />
 
@@ -359,5 +359,20 @@ Free 掉以後當內網重傳 TCP PUSH
 <img width="1922" height="808" alt="image" src="https://github.com/user-attachments/assets/30dec908-b538-4163-8151-7adc197584d2" />
 
 以上我們就成功做到 RPF bypass 的 Internal Network Access 了。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### Bypass for External Network Access
+
+前面會比較簡單是因為整個 Bypass 過程中只用到一次的 NAT，但是對於 External Network Access 我們如果要 Bypass 就需要做兩次 NAT。
+
+1. 把去程的 source ip 換成 victim 的 public ip
+2. 把回程的 source ip 換成 victim 的 public ip
+
+那該怎麼辦呢？
+
+這時候如果 victim 內網還有一層 tunnel 跟 NAT 的組合，我們就可以<font color="red">串一個 NAT Chain 出來</font>
+
+
 
 
