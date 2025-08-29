@@ -96,7 +96,7 @@ toc:
 
 ![image](https://github.com/user-attachments/assets/d0e5e518-0435-42b3-96c1-5529311bfd73)
 
-然後內網的機器就會看到一個 src = <font color="red">public ip</font> dest = attacker 的 ip 的封包，因此他 response 理所當然會 src = attacker 的 ip dest = <font color="red">public ip</font>
+然後內網的機器就會看到一個 src = <font color="red">public ip</font> dest = 自己 ip 的封包，因此他 response 理所當然會 src = 自己 ip dest = <font color="red">public ip</font>
 
 ![image](https://github.com/user-attachments/assets/33f5e5d2-2954-457b-bae5-e43ba2b12040)
 
