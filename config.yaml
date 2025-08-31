@@ -162,7 +162,7 @@ params:
           url: https://www.instagram.com/rm_rf_chumy/
         - icon: fab fa-telegram
           url: https://t.me/Jimmy0124
-        - icon: fab fab-x-twitter
+        - icon: fab fab-x
           url: https://x.com/rm_rf_chumy
      #customIcons:
      #  - icon: /fav.png
@@ -453,7 +453,7 @@ params:
     socialNetworks:
       github: https://github.com/Jimmy01240397
       linkedin: https://www.linkedin.com/in/%E8%81%BF%E5%96%84-%E8%94%A1-9b01b4254/
-      twitter: https://x.com/rm_rf_chumy
+      x: https://x.com/rm_rf_chumy
       instagram: https://www.instagram.com/rm_rf_chumy/
       facebook: https://www.facebook.com/profile.php?id=100005111161079
 
@@ -503,6 +503,7 @@ params:
 
       gtag('config', 'G-L02TG541PV');
     </script>
+
 
 
 
