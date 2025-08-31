@@ -14,7 +14,7 @@ toc:
 
 # Tunnel Injection
 
-[English](/blogs/tunnel-injection)
+[English](/blogs/tunnel-injection-english)
 
 ## TL;DR
 
