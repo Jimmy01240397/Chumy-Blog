@@ -127,7 +127,7 @@ Finally, the attacker receives these responses from the victim’s internal netw
 
 This enables Arbitrary Interactive Internal Network Access.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Tunnel Injection to External Network
 
@@ -201,7 +201,7 @@ This enables an Arbitrary Interactive Pivoting Attack via Tunnel.
 
 ![image](https://github.com/user-attachments/assets/6dfa50fa-0f75-46f5-acf2-b4d52f2a313c)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EC9qySzo6J4?si=mF9rBsuFrUwao2-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/EC9qySzo6J4?si=mF9rBsuFrUwao2-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ## RPF or source ip verify bypass
 
@@ -397,7 +397,7 @@ Now the connection is fully established, and we can happily send data into the i
 
 With this, we have successfully achieved RPF bypass for Internal Network Access.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Bypass for External Network Access
 
@@ -494,7 +494,7 @@ It is successfully NATed, and conntrack now records an ESTABLISHED entry.
 
 Thus, we have successfully achieved RPF bypass for External Network Access.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=qWA0cVCgFotki8nm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=qWA0cVCgFotki8nm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 Moreover, the use of a NAT Chain is not limited to bypassing RPF. It can also be used during Internal Network Access to bypass server-side source checks, since some servers also enforce their own firewall rules.
 
@@ -526,7 +526,7 @@ As a result, we can obtain all IPv6 addresses of devices in the internal network
 
 ![image](https://github.com/user-attachments/assets/4ed1c850-90c0-4e26-824f-82a9a49e0f22)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Eqb1dv2bPzk?si=gX9q73c6ubSatqVy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/Eqb1dv2bPzk?si=gX9q73c6ubSatqVy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 Now, what can we do with these IPv6 addresses?
 
@@ -550,7 +550,7 @@ However, xfrm has a special parameter called level. This parameter allows outbou
 
 ![image](https://github.com/user-attachments/assets/58e4082d-c02c-4299-a859-05bf197ea631)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y1ZlsGSu-RY?si=9klBHYJLEvnkw1aR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/y1ZlsGSu-RY?si=9klBHYJLEvnkw1aR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 As a side note: on EdgeOS, even when the level attribute is set to its default value require, raw packets may still be allowed. This was discovered by my friend [zen](https://zenwen.tw/), the current network administrator of [NCKU CCNS](https://www.ccns.io/). However, this finding is still pending further confirmation.
 
