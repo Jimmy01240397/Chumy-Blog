@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blogs on Chumy's Blog</title><link>https://blog.chummydns.com/blogs/</link><description>Recent content in Blogs on Chumy's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 29 Aug 2025 13:50:00 +0800</lastBuildDate><atom:link href="https://blog.chummydns.com/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>Free VPNs Everywhere -- Tunnel Injection</title><link>https://blog.chummydns.com/blogs/tunnel-injection-english/</link><pubDate>Fri, 29 Aug 2025 13:50:00 +0800</pubDate><guid>https://blog.chummydns.com/blogs/tunnel-injection-english/</guid><description>&lt;h1 id="tunnel-injection">Tunnel Injection&lt;/h1>
+&lt;p>&lt;a href="https://blog.chummydns.com/blogs/tunnel-injection">Chinese&lt;/a>&lt;/p>
 &lt;h2 id="tldr">TL;DR&lt;/h2>
 &lt;p>This blog discusses the flaws of most stateless tunnel protocols and how I turned them into a free VPN that can be set up with just 5 lines of Linux &lt;code>ip&lt;/code> commands.&lt;/p>
 &lt;h2 id="acknowledgments">Acknowledgments&lt;/h2>
