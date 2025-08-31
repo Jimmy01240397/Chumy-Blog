@@ -17,7 +17,7 @@ toc:
 [Chinese](/blogs/tunnel-injection)
 
 ## TL;DR
-This blog discusses the flaws of most stateless tunnel protocols and how I turned them into a free VPN that can be set up with just 5 lines of Linux `ip` commands.
+This blog discusses the flaws of most Stateless Tunnel Protocols and how I turned them into a free VPN that can be set up with just 5 lines of Linux `ip` commands.
 
 ## Acknowledgments
 
