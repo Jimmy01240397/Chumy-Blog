@@ -513,7 +513,7 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 ![image](https://github.com/user-attachments/assets/58e4082d-c02c-4299-a859-05bf197ea631)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y1ZlsGSu-RY?si=9klBHYJLEvnkw1aR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/y1ZlsGSu-RY?si=9klBHYJLEvnkw1aR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 順帶一題，edgeos 你即使 level 屬性是預設值 require 他也會 allow raw packet，這是我的朋友 aka 現任[成大 CCNS](https://www.ccns.io/) 的網管 [zen](https://zenwen.tw/) 發現的，但基本上這件事還在待確認中。
 
