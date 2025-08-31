@@ -30,17 +30,17 @@ toc:
 
 事情是這樣發生的，大約在我大一的時候在 cloud native 聽到有關於 segment routing v6 這個酷東西，因此在大二的時候就有稍微研究一下同時也大概理解它的原理，至於這東西到底怎麼運作的，因為不是這篇文的重點所以就不談，可能之後會發其他的文章討論這個。
 
-大三的時候因為接到 [CGGC](https://cggc.nchc.org.tw/) aka 一場台灣辦的 CTF 的出題邀請，因此就開始在想梗。
+大三的時候因為接到 [2024 CGGC](https://cggc.nchc.org.tw/) aka 一場台灣辦的 CTF 的出題邀請，因此就開始在想梗。
 
 ![image](https://github.com/user-attachments/assets/15d204e5-72b9-4827-97a4-9abbcb51f621)
 
 ![image](https://github.com/user-attachments/assets/21be27d8-b269-47ee-8c1b-48f3831bea3d)
 
+然而在某天洗澡的時候突然仔細回味了一下就突然想到了這個非常酷的利用手法，順帶一題這題只有 [seadog007](https://seadog007.work/) 有打出來
+
 這是 [seadog007](https://seadog007.work/) 幫我畫的攻擊手法的詳細圖
 
 ![image](https://github.com/user-attachments/assets/ac66ca21-eadc-4000-98d9-6133a3f8456d)
-
-然而在某天洗澡的時候突然仔細回味了一下就突然想到了這個非常酷的利用手法，順帶一題這題只有 [seadog007](https://seadog007.work/) 有打出來
 
 ## What is Tunnel
 
