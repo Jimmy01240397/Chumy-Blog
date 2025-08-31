@@ -29,7 +29,7 @@ This is a little story about how I went from researching a protocol to essential
 
 Here’s how it happened: around my freshman year, I heard about this cool thing called Segment Routing v6 at a Cloud Native event. So, during my sophomore year, I started digging into it a bit and got a general understanding of its principles. As for how it actually works—since that’s not the focus of this post—I won’t go into detail here. I may publish another article on it in the future.
 
-By junior year, I received an invitation from [CGGC](https://cggc.nchc.org.tw/) (a CTF held in Taiwan) to contribute a challenge, which got me brainstorming for ideas.
+By junior year, I received an invitation from [2024 CGGC](https://cggc.nchc.org.tw/) (a CTF held in Taiwan) to contribute a challenge, which got me brainstorming for ideas.
 
 ![image](https://github.com/user-attachments/assets/15d204e5-72b9-4827-97a4-9abbcb51f621)
 
