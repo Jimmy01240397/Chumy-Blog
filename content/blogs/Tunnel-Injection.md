@@ -14,6 +14,8 @@ toc:
 
 # Tunnel Injection
 
+[English](/blogs/tunnel-injection)
+
 ## TL;DR
 
 這篇文章講述了大多數 stateless tunnel protocol 的缺陷以及我如何把他們變成一個僅僅需要 5 行 linux ip 指令就能夠設定好的免費 VPN
