@@ -86,3 +86,8 @@ body *::selection {
 .items-center {
     align-items: center
 }
+
+.youtube {
+    max-width: 100%;
+}
+
