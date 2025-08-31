@@ -112,7 +112,7 @@ toc:
 
 我們就能夠 Arbitrary Interactive Internal Network Access
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Tunnel Injection to External Network
 
@@ -176,7 +176,7 @@ src = <font color="red">victim public ip</font> dest = <font color="red">target 
 
 ![image](https://github.com/user-attachments/assets/6dfa50fa-0f75-46f5-acf2-b4d52f2a313c)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EC9qySzo6J4?si=mF9rBsuFrUwao2-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/EC9qySzo6J4?si=mF9rBsuFrUwao2-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ## RPF or source ip verify bypass
 
@@ -362,7 +362,7 @@ Free 掉以後當內網重傳 TCP PUSH
 
 以上我們就成功做到 RPF bypass 的 Internal Network Access 了。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Bypass for External Network Access
 
@@ -457,7 +457,7 @@ target 持續重傳
 
 以上我們就成功做到 RPF bypass 的 External Network Access 了。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=qWA0cVCgFotki8nm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/_GcIFKyjGmE?si=qWA0cVCgFotki8nm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 而且事實上 NAT Chain 的利用除了上面用來繞 RPF 外，也可以用來在 Internal Network Access 時繞一些 server 對 source 的檢查，畢竟有些 server 也是有自己的 firewall 的。
 
@@ -489,7 +489,7 @@ victim 內網設備會回 ICMP pong 給 attacker
 
 ![image](https://github.com/user-attachments/assets/4ed1c850-90c0-4e26-824f-82a9a49e0f22)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Eqb1dv2bPzk?si=gX9q73c6ubSatqVy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/Eqb1dv2bPzk?si=gX9q73c6ubSatqVy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 那有 IPv6 address 可以幹嘛呢？
 
