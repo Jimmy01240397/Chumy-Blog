@@ -162,7 +162,7 @@ params:
           url: https://www.instagram.com/rm_rf_chumy/
         - icon: fab fa-telegram
           url: https://t.me/Jimmy0124
-        - icon: fab fa-x
+        - icon: fab fa-x-twitter
           url: https://x.com/rm_rf_chumy
      #customIcons:
      #  - icon: /fav.png
@@ -503,6 +503,7 @@ params:
 
       gtag('config', 'G-L02TG541PV');
     </script>
+
 
 
 
