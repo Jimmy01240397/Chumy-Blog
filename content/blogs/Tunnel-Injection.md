@@ -82,6 +82,8 @@ toc:
 
 ### Tunnel Injection to Internal Network
 
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/internalaccess)
+
 第一個利用手法是我們可以做到 Interactive Internal Network Access
 
 首先我們偽造出一個符合這個 tunnel protocol 的封包
@@ -115,6 +117,8 @@ toc:
 <p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Tunnel Injection to External Network
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/externalaccess)
 
 在講攻擊手法之前我們先來看看 NAT 一般是怎麼實作的，這邊以 Linux 為例
 
@@ -199,6 +203,8 @@ RPF 就是指說，當網卡收到 packet 時，會拿 source ip 對一次 routi
 因此如果遇到 victim 的 ISP 有啟用這類防護的情況的話你是收不到 response 的，那該怎麼辦
 
 ### Bypass for Internal Network Access
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/internalaccess)
 
 這邊我們就來談談 P2P 網路是怎麼做 NAT hole punching 的
 
@@ -365,6 +371,8 @@ Free 掉以後當內網重傳 TCP PUSH
 <p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Bypass for External Network Access
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/externalaccess)
 
 前面會比較簡單是因為整個 Bypass 過程中只用到一次的 NAT，但是對於 External Network Access 我們如果要 Bypass 就需要做兩次 NAT。
 
