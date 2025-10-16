@@ -83,6 +83,8 @@ The real essence of the attack is simply being able to inject traffic into the t
 
 ### Tunnel Injection to Internal Network
 
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/internalaccess)
+
 The first exploitation method allows us to achieve Interactive Internal Network Access.
 
 We begin by crafting a forged packet that conforms to the tunnel protocol.
@@ -130,6 +132,8 @@ This enables Arbitrary Interactive Internal Network Access.
 <p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/KSNkpPdzw8o?si=pE8cLkI-OTlZILsh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Tunnel Injection to External Network
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/externalaccess)
 
 Before explaining the attack, let’s first look at how NAT is usually implemented—using Linux as an example.
 
@@ -227,6 +231,8 @@ So if the victim’s ISP enforces this protection, you won’t receive a respons
 How do we bypass this?
 
 ### Bypass for Internal Network Access
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/internalaccess)
 
 Let’s take a look at how P2P networks implement NAT hole punching.
 
@@ -400,6 +406,8 @@ With this, we have successfully achieved RPF bypass for Internal Network Access.
 <p><iframe class="youtube" width="560" height="315" src="https://www.youtube.com/embed/1YkltH1gCz4?si=V0iYDhGsGvKnd70O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
 
 ### Bypass for External Network Access
+
+[Example Topology](https://github.com/Jimmy01240397/tunnelinjection/tree/master/externalaccess)
 
 The previous section was simpler because the entire bypass process only required a single NAT operation. However, for External Network Access, bypassing requires performing two NAT translations:
 
