@@ -427,7 +427,7 @@ params:
     items:
       - title: NCKU SA/NA 課程 Online Judge
         content: Online Judge system for NCKU System and Network Administrator Course.
-        image: ""
+        image: images/github.png
         badges:
           - "online judge"
         links:
@@ -435,7 +435,7 @@ params:
             url: https://github.com/NCKU-NASA/nasa-judge
       - title: CTF Instancer
         content: A simple CTF challenge instancer for CTF competition.
-        image: ""
+        image: images/github.png
         badges:
           - "instancer"
           - "docker"
@@ -452,7 +452,7 @@ params:
             url: https://github.com/Jimmy01240397/LDAPUserTools
       - title: Telegram 匿名聊天機器人
         content: A telegram bot for anonymous chat
-        image: ""
+        image: images/github.png
         badges:
           - "golang"
         links:
@@ -460,7 +460,7 @@ params:
             url: https://github.com/Jimmy01240397/TGMessageForwarderBot
       - title: Wireguard LDAP Manager
         content:  LDAP manager for wireguard users
-        image: ""
+        image: images/github.png
         badges:
           - "golang"
         links:
@@ -486,7 +486,7 @@ params:
             url: https://github.com/Jimmy01240397/LANRSAAuthenticationService
       - title: NetworkServicePackage
         content: A Framwork for Network Application for C#
-        image: /images/me.png
+        image: images/github.png
         #featured:
         #  name: Github
         #  link: https://github.com/Jimmy01240397/NetworkServicePackage
@@ -509,7 +509,7 @@ params:
             url: https://github.com/Jimmy01240397/Chuon
       - title: FL_Note
         content: This is a APP for magic props. Magician shows a Sketch to spectator, then let spectator write something on app. Magician can reveal spectator write.
-        image: /images/projects/FL_note_demo.png
+        image: images/projects/FL_note_demo.png
         featured:
           name: Demo
           link: https://github.com/Jimmy01240397/FL_Note/releases/tag/v1.1
