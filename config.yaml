@@ -240,8 +240,8 @@ params:
             - [github issue](https://github.com/OpenVPN/tap-windows6/issues/158)
           - [2023 雲科大研發成果展活動網站](https://nyust.chummydns.com/)
 
-  # Activty
-  activty:
+  # Activity
+  activity:
     enable: true
     index: false
     items:

@@ -1,10 +1,10 @@
-{{ if .Site.Params.activty.enable | default false }}
-<section id="activty" class="py-5">
+{{ if .Site.Params.activity.enable | default false }}
+<section id="activity" class="py-5">
     <div class="container">
-        <h3 class="text-center">{{ .Site.Params.activty.title | default "Activty" }}</h3>
+        <h3 class="text-center">{{ .Site.Params.activity.title | default "Activity" }}</h3>
         <div class="row justify-content-center py-5">
-            {{ $indexMenu := .Site.Params.activty.index }}
-            {{ range $index, $element := .Site.Params.activty.items }}
+            {{ $indexMenu := .Site.Params.activity.index }}
+            {{ range $index, $element := .Site.Params.activity.items }}
             <div class="col-12 p-0">
                 <div class="row row align-items-center justify-content-center m-1 mb-4">
                     {{ if $indexMenu }}
@@ -22,7 +22,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ .title }}</h5>
 
-                                <div class="py-1 activty-content">
+                                <div class="py-1 activity-content">
                                     {{ .content | markdownify}}
                                 </div>
 
