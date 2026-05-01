@@ -248,6 +248,10 @@ params:
       - title: "Bug Bounty & CVE"
         content: |-
           - PWN2OWN
+            - Automotive 2026
+              - Grizzl-E
+                - [Result](https://www.zerodayinitiative.com/blog/2026/1/21/pwn2own-automotive-2026-day-one-results)
+                - [highlights](https://www.youtube.com/shorts/lLEuPOFjvro)
             - Ireland 2025
               - QNAP TS-453E
                 - [Result](https://www.zerodayinitiative.com/blog/2025/10/22/pwn2own-ireland-2025-day-two-results)
