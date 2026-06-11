@@ -256,6 +256,8 @@ params:
               - QNAP TS-453E
                 - [Result](https://www.zerodayinitiative.com/blog/2025/10/22/pwn2own-ireland-2025-day-two-results)
                 - [highlights](https://www.youtube.com/shorts/x3fRe2YtOXA)
+          - SharePoint
+            - [CVE-2026-47298](https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-47298)
           - QNAP Malware Remover
             - [CVE-2025-11837](https://www.qnap.com/en/security-advisory/qsa-25-47)
           - Apache Tomcat
