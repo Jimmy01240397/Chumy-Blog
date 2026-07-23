@@ -139,7 +139,7 @@ params:
   hero:
     enable: true
     intro: "Hi, I'm"
-    title: "Chumy"
+    title: "Chumy Tsai (Tsai, YU-Shan)"
     subtitle: "資訊與網路技術的愛好者"
     content: "致力於研究各式各樣的資訊技術並持續探索。"
     image: /images/me.png
